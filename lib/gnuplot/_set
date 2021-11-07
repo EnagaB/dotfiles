@@ -1,0 +1,64 @@
+# gnuplot set (init)
+
+### parameter
+load '_params'
+
+### figure
+# size
+set size ratio _size_ratio
+# polar coodinate plot, theta : radians
+set angles radians
+# label
+set xlabel _xlabel
+set ylabel _ylabel
+set zlabel _zlabel
+# border
+set border linewidth _border_linewidth
+
+### default line config: linetype (lt)
+# usage: > p sin(x)
+#      : > p sin(x) lt 1
+set linetype 1 linecolor rgbcolor _color1 \
+linewidth _linewidth pointtype _pointtype pointsize _pointsize
+set linetype 2 linecolor rgbcolor _color2 \
+linewidth _linewidth pointtype _pointtype pointsize _pointsize
+set linetype 3 linecolor rgbcolor _color3 \
+linewidth _linewidth pointtype _pointtype pointsize _pointsize
+set linetype 4 linecolor rgbcolor _color4 \
+linewidth _linewidth pointtype _pointtype pointsize _pointsize
+set linetype 5 linecolor rgbcolor _color5 \
+linewidth _linewidth pointtype _pointtype pointsize _pointsize
+set linetype 6 linecolor rgbcolor _color6 \
+linewidth _linewidth pointtype _pointtype pointsize _pointsize
+set linetype 7 linecolor rgbcolor _color7 \
+linewidth _linewidth pointtype _pointtype pointsize _pointsize
+set linetype 8 linecolor rgbcolor _color8 \
+linewidth _linewidth pointtype _pointtype pointsize _pointsize
+set linetype cycle 8
+
+### linestyle (ls)
+# usage: > p sin(x) ls 1
+set style line 1 linecolor rgbcolor _color1 \
+linewidth _linewidth pointtype _pointtype pointsize _pointsize
+set style line 2 linecolor rgbcolor _color2 \
+linewidth _linewidth pointtype _pointtype pointsize _pointsize
+set style line 3 linecolor rgbcolor _color3 \
+linewidth _linewidth pointtype _pointtype pointsize _pointsize
+set style line 4 linecolor rgbcolor _color4 \
+linewidth _linewidth pointtype _pointtype pointsize _pointsize
+set style line 5 linecolor rgbcolor _color5 \
+linewidth _linewidth pointtype _pointtype pointsize _pointsize
+set style line 6 linecolor rgbcolor _color6 \
+linewidth _linewidth pointtype _pointtype pointsize _pointsize
+set style line 7 linecolor rgbcolor _color7 \
+linewidth _linewidth pointtype _pointtype pointsize _pointsize
+set style line 8 linecolor rgbcolor _color8 \
+linewidth _linewidth pointtype _pointtype pointsize _pointsize
+
+### variable
+# pi=3.1415926535897932384626433832795 # circular constant
+p=pi                                 # 
+zi={0.0,1.0}                         # imaginary unit
+e =2.718281828459045235360287471352  # Napier's constant
+
+# EOF

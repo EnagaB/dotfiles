@@ -1,0 +1,161 @@
+%%% documentclass
+% \documentclass[10pt,a4paper]{article}
+\documentclass[10pt,a4paper,twocolumn]{article}
+% \documentclass[10pt,a4paper,uplatex]{jsarticle}
+% \documentclass[10pt,a4paper,twocolumn,uplatex]{jsarticle}
+
+%%% papar parameters
+% title
+\newcommand{\paperTitle}{TITLE}
+% affiliation - name
+\newcommand{\affiliation}{AFFILIATION}
+\newcommand{\name}{NAME}
+% created date
+\newcommand{\createdDate}{YYYY-MM-DD}
+% addres
+\newcommand{\email}{EMAIL}
+% abstract
+% \renewcommand{\abstractname}{}
+\newcommand{\abst}{%
+  abstract
+}
+% page/title style
+\newcommand{\pageStyle}{fancy}  % empty/plane/fancy
+\newcommand{\titleStyle}{dctop} % none/page/top/dctop
+
+%%% environments
+\usepackage[top=25truemm,bottom=25truemm,left=15truemm,right=15truemm]{geometry}
+\usepackage{ifthen,iftex,ifuptex}
+\ifupTeX\usepackage[dvipdfmx]{graphicx,xcolor,hyperref}\usepackage{pxjahyper}\fi
+\ifPDFTeX\usepackage[pdftex]{graphicx,xcolor,hyperref}\fi
+\ifLuaTeX\usepackage[luatex]{graphicx,xcolor,hyperref}\usepackage{luatexja}\fi
+\usepackage{wrapfig}
+\hypersetup{
+  setpagesize=false,
+  bookmarksnumbered=true,
+  bookmarksopen=false,
+  colorlinks=true,
+  allcolors=blue,
+}
+\newcommand{\newsetcounter}[2]{\newcounter{#1}\setcounter{#1}{#2}}
+% math
+\usepackage{amsmath,amssymb,amsfonts,bm,braket}
+\newcommand{\dif}[2]{\frac{\mathrm{d} #1}{\mathrm{d} #2}}
+\newcommand{\pdif}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\fdif}[2]{\frac{\delta #1}{\delta #2}}
+\newcommand{\itg}[3]{\int_{#1}^{#2}\mathrm{d}#3}
+\newcommand{\itgf}[4]{\int_{#1}^{#2}\frac{\mathrm{d}#3}{#4}}
+\newcommand{\abs}[1]{\left| #1 \right|}
+\newcommand{\absl}[1]{\left| #1 \right.} \newcommand{\absr}[1]{\left. #1 \right|}
+\newcommand{\spa}[1]{\left( #1 \right)}
+\newcommand{\spal}[1]{\left( #1 \right.} \newcommand{\spar}[1]{\left. #1 \right)}
+\newcommand{\bpa}[1]{\left[ #1 \right]}
+\newcommand{\bpal}[1]{\left[ #1 \right.} \newcommand{\bpar}[1]{\left. #1 \right]}
+\newcommand{\lpa}[1]{\left\{ #1 \right\}}
+\newcommand{\lpal}[1]{\left\{ #1 \right.} \newcommand{\lpar}[1]{\left. #1 \right\}}
+\newcommand{\ua}{\uparrow}\newcommand{\da}{\downarrow}
+\newcommand{\la}{\leftarrow}\newcommand{\ra}{\rightarrow}
+\newcounter{e@QuadLoopCounter}
+\newcommand{\ql}[1]{%
+  \setcounter{e@QuadLoopCounter}{0}%
+  \loop\ifnum\value{e@QuadLoopCounter}<#1
+  \quad%
+  \stepcounter{e@QuadLoopCounter}\repeat}
+\DeclareMathOperator{\re}{Re}
+\DeclareMathOperator{\im}{Im}
+\DeclareMathOperator*{\res}{Res}
+\DeclareMathOperator{\tr}{Tr}
+\DeclareMathOperator{\sgn}{sgn}
+% fonts
+\usepackage[T1]{fontenc} \usepackage{newtxtext,newtxmath}
+% other
+\newcommand{\etal}{${\it et}$ ${\it al.}$} 
+\newcounter{e@LoopNumContentCounter}
+\newcommand{\lnc}[2]{%
+  \setcounter{e@LoopNumContentCounter}{0}%
+  \loop\ifnum\value{e@LoopNumContentCounter}<#1%
+  #2%
+  \stepcounter{e@LoopNumContentCounter}\repeat}
+\usepackage{cite}
+%%% document
+\ifthenelse{\equal{\pageStyle}{empty}}{\pagestyle{empty}}{}
+\ifthenelse{\equal{\pageStyle}{plain}}{\pagestyle{plain}}{}
+\ifthenelse{\equal{\pageStyle}{fancy}}{
+  \usepackage{fancyhdr}
+  \pagestyle{fancy}
+  % left/right header
+  \lhead{\rightmark}
+  \renewcommand{\sectionmark}[1]{\markright{\thesection \quad #1}{}}
+  \rhead{\thepage}
+  % left/right footer
+  \let\origtitle\title
+  \renewcommand{\title}[1]{\lfoot{#1}\origtitle{#1}}
+  \let\origdate\date
+  \renewcommand{\date}[1]{\rfoot{#1}\origdate{#1}}}{}
+\title{\paperTitle}
+\author{\affiliation \, \name}
+\newcommand{\todayk}{%
+  \the\year-{\ifnum \month <10 0\the\month \else \the\month \fi}-%
+  {\ifnum \day <10 0\the\day \else \the\day \fi}}
+\newcommand{\version}{created : \createdDate \quad modified : \todayk}
+\date{\version}
+\begin{document}
+\setlength{\abovedisplayskip}{1mm} % display skip
+\setlength{\belowdisplayskip}{1mm} % top/bottom margin of eq.
+% make title
+\ifthenelse{\equal{\titleStyle}{none}}{}{} % none
+\ifthenelse{\equal{\titleStyle}{page}}{ % only title page
+  \maketitle\thispagestyle{\pageStyle}
+  \begin{abstract}\abst\end{abstract}
+  \newpage\tableofcontents\newpage}{}
+\ifthenelse{\equal{\titleStyle}{top}}{ % top of first page
+  \begin{center}{\huge \paperTitle}\end{center}
+  \begin{flushright}\affiliation \, \name\end{flushright}
+  \begin{abstract}\abst\end{abstract}
+  \vspace{1em}
+  \tableofcontents
+  \vspace{1cm}}{}
+\ifthenelse{\equal{\titleStyle}{dctop}}{ % double column, top
+  \twocolumn[
+    \maketitle\thispagestyle{\pageStyle}
+    \begin{@twocolumnfalse}\begin{abstract}
+      \abst
+    \end{abstract}\end{@twocolumnfalse}
+  ]
+  \tableofcontents}{}
+
+%%% local commands
+
+%%% contents
+
+%%% section 1
+\section{1}
+{\lnc{10}{AAA }}
+ABC123abc
+\begin{align}
+  \left(\int_0^\infty \frac{\sin x}{\sqrt{x}} dx \right)^2
+  =
+  \sum_{k=0}^{\infty}\frac{(2k)!}{2^{2k}(k!)^2}\frac{1}{2k+1}=\frac{\pi}{2}
+\end{align}
+% \begin{figure}[htb]
+%   \centering
+%   \includegraphics[width=0.3\linewidth]{./test.pdf}
+%   \caption{Test}
+%   \label{fg:test}
+% \end{figure}
+aa bb
+
+%%% appendix
+\appendix
+\section{A}
+
+%%% reference
+\begin{thebibliography}{99}
+  \bibitem{jaea}
+    AAA
+  \bibitem{jaea1}
+    BBB
+\end{thebibliography}
+
+\end{document}
+% EOF

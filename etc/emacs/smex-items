@@ -1,0 +1,17 @@
+
+;; ----- smex-history -----
+(
+ describe-bindings
+ cd
+ 5x5
+ arp
+ dbx
+ dig
+ erc
+)
+
+;; ----- smex-data -----
+(
+ (cd . 1)
+ (describe-bindings . 3)
+)

@@ -1,0 +1,15 @@
+# gnuplot pm3d map file type 1
+# write cbrange[down:up] when using this gp
+# ex:	se cbr[down:up]
+# sp'A.txt'u x:y:z w pm
+# black-blue-cyan-green-yellow-red-white
+# 0 to +A
+_pm_rate1=1 ; _pm_color1="#000000"
+_pm_rate2=2 ; _pm_color2="#0000ff"
+_pm_rate3=3 ; _pm_color3="#00ffff"
+_pm_rate4=4 ; _pm_color4="#00ff00"
+_pm_rate5=5 ; _pm_color5="#ffff00"
+_pm_rate6=6 ; _pm_color6="#ff0000"
+_pm_rate7=7 ; _pm_color7="#ffffff"
+load '_pm'
+# EOF

@@ -1,0 +1,8 @@
+### output pdf file
+load '_params'
+set terminal _term_output_pdf
+set output _file_output_pdf
+replot
+set terminal _term_default
+replot
+# EOF

@@ -1,0 +1,14 @@
+### zathura settings
+# see man: $ man zathurarc
+map <C-k>      scroll full-up
+map K          scroll full-up
+map <PageUp>   scroll full-up
+map <M-k>      scroll half-up
+map h          navigate previous
+map <C-j>      scroll full-down
+map J          scroll full-down
+map <PageDown> scroll full-down
+map <M-j>      scroll half-down
+map l          navigate next
+
+# end

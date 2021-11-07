@@ -1,0 +1,42 @@
+# keymap : ~/.w3m/keymap
+# C-m == C-j == RET
+# C-[ == ESC
+# C-i == TAB
+# C-h /= BS
+# move
+keymap h     MOVE_LEFT1 
+keymap j     MOVE_DOWN1
+keymap k     MOVE_UP1
+keymap l     MOVE_RIGHT1
+keymap H     LINE_BEGIN
+keymap J     NEXT_PAGE
+keymap K     PREV_PAGE
+keymap L     LINE_END
+keymap C-h   PREV_WORD
+keymap C-l   NEXT_WORD
+keymap t     NEXT_LINK
+keymap T     PREV_LINK
+keymap e     UP
+keymap E     DOWN
+# buffer
+keymap s     SELECT_MENU
+keymap b     SELECT
+keymap C-n   NEXT
+keymap C-p   PREV
+keymap B     VIEW_BOOKMARK
+keymap C-b   ADD_BOOKMARK
+# w3m system
+keymap q     QUIT
+keymap Q     ABORT
+keymap :     COMMAND
+keymap !     SHELL
+keymap m     MENU
+keymap ESC-h HELP
+keymap ESC-u HISTORY
+keymap ESC-c COOKIE
+# inv
+keymap C-z   UP # INTERRUPT
+keymap C-k   UP # COOKIE
+keymap ESC-k UP # DEFINE_KEY
+keymap ESC-o UP # SET_OPTION
+keymap r     UP # VERSION

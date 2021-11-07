@@ -1,0 +1,8 @@
+### output eps file
+load '_params'
+set terminal _term_output_eps
+set output _file_output_eps
+replot
+set terminal _term_default
+replot
+# EOF

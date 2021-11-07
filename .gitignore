@@ -1,0 +1,13 @@
+# .gitignore
+
+# compiler exefile
+a.out
+# python
+__pycache__/
+
+### allowlist
+# safety
+!.gitignore
+!.gitkeep
+
+# EOF

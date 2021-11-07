@@ -1,0 +1,10 @@
+### gnuplot pm base file
+load '_params'
+set terminal _term_default
+set pm3d map
+set size ratio _size_ratio
+set ticslevel 0
+set palette defined \
+      (_pm_rate1 _pm_color1,_pm_rate2 _pm_color2,_pm_rate3 _pm_color3, \
+       _pm_rate4 _pm_color4,_pm_rate5 _pm_color5,_pm_rate6 _pm_color6,_pm_rate7 _pm_color7)
+# EOF

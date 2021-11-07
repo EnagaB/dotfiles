@@ -1,0 +1,95 @@
+""" .vimrc
+
+""" pray 
+if &compatible | set nocompatible | endif
+if !1 | finish | endif
+set nomodeline
+if !has('nvim')
+  unlet! skip_defaults_vim
+  source $VIMRUNTIME/defaults.vim
+endif
+
+""" parameters
+if has('vim_starting')
+  let g:params = {}
+  """ path
+  let g:params['path'] = {}
+  let g:params['path']['base']  = expand('$HOME/.vim')
+  let g:params['path']['after'] = g:params['path']['base'] . '/after'
+  let g:params['path']['tmp']   = g:params['path']['base'] .'/tmp'
+  let g:params['path']['tpl']   = expand('$HOME/.template')
+  """ packages
+  let g:params['pack'] = {}
+  " start: auto init load packages
+  " caw.vim - commentary.vim, tcomment.vim
+  let g:params['pack']['start'] = [
+        \ 'Shougo/denite.nvim',
+        \ 'easymotion/vim-easymotion',
+        \ 'tpope/vim-surround',
+        \ 'tyru/caw.vim',
+        \ 'vim-jp/cpp-vim',
+        \ 'octol/vim-cpp-enhanced-highlight',
+        \ 'sheerun/vim-polyglot'
+        \ ]
+  " opt: anytime (in-vimrc/lazy) load packages
+  let g:params['pack']['opt'] = [
+        "\ 'lervag/vimtex',
+        \ 'junegunn/goyo.vim'
+        \ ]
+  " colorscheme: [package, colorscheme, background [,background2 ,...]]
+  let g:params['pack']['colorscheme'] = [
+        \ ['morhetz/gruvbox'            , 'gruvbox'       , 'dark' , 'light'],
+        \ ['gosukiwi/vim-atom-dark'     , 'atom-dark'     , ''              ],
+        \ ['jacoborus/tender.vim'       , 'tender'        , ''              ],
+        \ ['raphamorim/lucario'         , 'lucario'       , ''              ]
+        \ ]
+  """ register
+  let g:params['register'] = {}
+  let g:params['register']['kbd_macro'] = 'y'
+  let g:params['register']['hilight_word'] = 'z'
+  """ other
+  let g:params['line_margin'] = 2
+endif
+
+""" path
+" runtimepath
+set runtimepath&
+" set to the first of runtimepath
+if match(&runtimepath, g:params['path']['base']) != -1
+  execute 'set runtimepath-='.g:params['path']['base']
+endif
+execute 'set runtimepath^='.g:params['path']['base']
+" set to the last of runtimepath
+if match(&runtimepath, g:params['path']['after']) != -1
+  execute 'set runtimepath-='.g:params['path']['after']
+endif
+execute 'set runtimepath+='.g:params['path']['after']
+" packpath
+set packpath&
+execute 'set packpath^='.g:params['path']['base']
+
+""" prepare
+" lib
+runtime! init/lib/*.vim
+" clear e augroup
+augroup eau
+  autocmd!
+  " clear mark
+  autocmd eau BufReadPost * delmarks!
+augroup end
+" clear registers
+if has('vim_starting')
+  for s:reg in Lowerlist()
+    call setreg(s:reg,'')
+  endfor
+endif
+" filetype
+filetype plugin indent on
+" syntax
+if !exists("g:syntax_on") | syntax enable | endif
+
+""" load init-files
+runtime! init/packconf/*.vim
+runtime! init/*.vim
+
+" EOF

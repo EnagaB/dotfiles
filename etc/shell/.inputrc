@@ -1,0 +1,12 @@
+# GNU readline (bash)
+# for japanese
+set convert-meta off
+set meta-flag on
+set input-meta on
+set output-meta on
+# no beep sound
+set bell-style none
+# file-type colored
+set colored-stats on
+# ignore case at completion
+set completion-ignore-case on

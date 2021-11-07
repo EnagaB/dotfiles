@@ -1,0 +1,8 @@
+### output png file
+load '_params'
+set terminal _term_output_png
+set output _file_output_png
+replot
+set terminal _term_default
+replot
+# EOF

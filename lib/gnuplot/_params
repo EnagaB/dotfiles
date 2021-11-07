@@ -1,0 +1,42 @@
+### parameter for gnuplot load library
+# in GNUPLOT_LIB
+
+### terminal
+# default
+_term_default='x11'
+# output
+_term_output_eps='epscairo'
+_term_output_pdf='pdfcairo'
+_term_output_png='pngcairo'
+
+### file
+# output
+_file_output_eps='output.eps'
+_file_output_pdf='output.pdf'
+_file_output_png='output.png'
+
+### plot style
+### figure
+_size_ratio=1                 # square
+# _size_ratio=2.0/(1.0+sqrt(5)) # golden ratio
+### plot line
+_linewidth=3
+_pointtype=7
+_pointsize=1
+# color
+_color1="#ff0000" # red
+_color2="#008000" # green
+_color3="#0000ff" # blue
+_color4="#800080" # purple
+_color5="#808000" # olive
+_color6="#008080" # teal
+_color7="#808080" # gray
+_color8="#000000" # black
+### border
+_border_linewidth=2
+### label
+_xlabel='x'
+_ylabel='y'
+_zlabel='z'
+
+# EOF
