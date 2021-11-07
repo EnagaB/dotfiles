@@ -19,7 +19,7 @@ augroup eau:instpl
 augroup end
 function! s:insert_template(tplfile)
   if exists('b:did_instpl') | return | endif
-  execute ':1r '.g:dottpl.'/'.a:tplfile
+  execute ':1r ' . g:params['path']['tpl'] . '/' . a:tplfile
   execute ':1s/\n//'
   let b:did_instpl=1
 endfunction
