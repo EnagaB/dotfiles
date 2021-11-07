@@ -41,6 +41,9 @@ type apt &> /dev/null && . $sh_apt_install
 type curl &> /dev/null && . $sh_curl_install
 type git &> /dev/null && . $sh_git_install
 
+### build
+type g++ &> /dev/null && . $sh_cpp_build
+
 ### link
 . $sh_link
 
