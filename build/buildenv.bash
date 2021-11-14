@@ -18,6 +18,7 @@ if ! ps --pid $$ -o command | tail -1 | grep  '^bash' &> /dev/null ;then
   exit 1
 fi
 
+
 ### path
 # dir
 declare -r spt=$(cd $(dirname ${BASH_SOURCE[0]:-$0}); pwd)
@@ -28,6 +29,8 @@ declare -r config=${spt}/config.bash
 declare -r df=${DOTFILES:-${HOME}/df}
 declare -r loc=${LOCAL:-${HOME}/.local}
 declare -r tbox=${TRASHBOX:-${HOME}/.t}
+declare -r dfbin=${df}/bin
+declare -r dfsrc=${df}/src
 declare -r dfetc=${df}/etc
 declare -r dfsh=${dfetc}/shell
 declare -r appconfig=${HOME}/.config

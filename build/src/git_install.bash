@@ -15,7 +15,7 @@ function gclone_autoch() {
 ### fzf
 if $git_fzf;then
   rrepo=junegunn/fzf
-  lrepo=${LOCAL}/src/fzf
+  lrepo=${loc}/src/fzf
   # download
   gclone_autoch "$rrepo" "$lrepo"
   # install
@@ -25,7 +25,7 @@ fi
 ### enhancd
 if $git_enhancd;then
   rrepo=b4b4r07/enhancd
-  lrepo=${LOCAL}/src/enhancd
+  lrepo=${loc}/src/enhancd
   # download
   gclone_autoch "$rrepo" "$lrepo"
 fi

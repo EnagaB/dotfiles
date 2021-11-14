@@ -11,7 +11,7 @@ function curl_autoch() {
 ### latest neovim
 if $curl_latest_neovim;then
   url=${gurl}/neovim/neovim/releases/download/stable/nvim.appimage
-  lfile=${LOCAL}/bin/nvim.appimage
+  lfile=${loc}/bin/nvim.appimage
   curl_autoch "$url" "$lfile"
   chmod u+x "$lfile"
 fi
