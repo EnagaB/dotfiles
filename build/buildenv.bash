@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 # build develop environment in ubuntu + apt
 # > bash buildenv.bash
-# assump 1: path of this script is /path/to/dotfiles/<scrdir>/<this_script>
-#        2: path of config file is /path/to/dotfiles/<scrdir>/config.bash
-#        3: path of src dir is /path/to/dotfiles/src/<scrdir>
-#        4: bash
+# assump 1: path of config file is ./config.bash
+#        2: path of src dir is ./src
+#        3: bash
 set -u
 
 ### check
@@ -19,13 +18,26 @@ if ! ps --pid $$ -o command | tail -1 | grep  '^bash' &> /dev/null ;then
   exit 1
 fi
 
-### get path (assump 1-3)
+### path
 # dir
-declare -r scrdir=$(cd $(dirname ${BASH_SOURCE[0]:-$0}); pwd)
-declare -r df=$(dirname $scrdir)
-declare -r src=${df}/src/$(basename $scrdir)
-# file
-declare -r config=${scrdir}/config.bash
+declare -r spt=$(cd $(dirname ${BASH_SOURCE[0]:-$0}); pwd)
+declare -r src=${spt}/src
+# config
+declare -r config=${spt}/config.bash
+# path
+declare -r df=${DOTFILES:-${HOME}/df}
+declare -r loc=${LOCAL:-${HOME}/.local}
+declare -r tbox=${TRASHBOX:-${HOME}/.t}
+declare -r dfetc=${df}/etc
+declare -r dfsh=${dfetc}/shell
+declare -r appconfig=${HOME}/.config
+# src
+declare -r sh_mkdir_init=${src}/mkdir_init.bash
+declare -r sh_link=${src}/link.bash
+declare -r sh_apt_install=${src}/apt_install.bash
+declare -r sh_curl_install=${src}/curl_install.bash
+declare -r sh_git_install=${src}/git_install.bash
+declare -r sh_cpp_build=${src}/cpp_build.bash
 
 ### WD
 cd $df

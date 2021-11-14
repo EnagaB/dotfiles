@@ -1,21 +1,6 @@
 #!/usr/bin/env bash
 set -u
 
-### parameters
-# path
-declare -r loc=${LOCAL:-${HOME}/.local}
-declare -r tbox=${TRASHBOX:-${HOME}/.t}
-declare -r dfetc=${df}/etc
-declare -r dfsh=${dfetc}/shell
-declare -r appconfig=${HOME}/.config
-# src
-declare -r sh_mkdir_init=${src}/mkdir_init.bash
-declare -r sh_link=${src}/link.bash
-declare -r sh_apt_install=${src}/apt_install.bash
-declare -r sh_curl_install=${src}/curl_install.bash
-declare -r sh_git_install=${src}/git_install.bash
-declare -r sh_cpp_build=${src}/cpp_build.bash
-
 ### make init dir
 declare -ar make_initdir=(
   ### local
