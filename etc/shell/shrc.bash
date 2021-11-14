@@ -12,10 +12,9 @@
 eval $(dircolors -b ${HOME}/.dir_colors)
 
 ### tmux
-alias tx='tmux'
-alias tx.a='tmux a'
-alias tx.at='tmux a -t'
-alias tx.ls='tmux ls'
+alias tmux.resume='tmux a'
+alias tmux.resume.name='tmux a -t'
+alias tmux.ls='tmux ls'
 # autostart
 if [[ "${__tmux_autostart:-0}" -ne 0 ]] && [[ ! -n "$TMUX" ]];then
   declare __tmuxid="$(tmux list-sessions 2>/dev/null)"
