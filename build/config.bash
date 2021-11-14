@@ -3,19 +3,19 @@ set -u
 
 ### make init dir
 declare -ar make_initdir=(
-  ### local
+  # local
   ${loc}/bin
   ${loc}/etc
   ${loc}/lib
   ${loc}/share
   ${loc}/src
   ${loc}/include
-  ### trashbox
+  # trashbox
   ${tbox}
-  ### ~/.config
+  # ~/.config
   ${appconfig}/nvim
   ${appconfig}/zathura
-  ### other
+  # other
   ${HOME}/.fonts
   ${HOME}/.w3m
 )
@@ -29,120 +29,87 @@ declare -ar apt_repo_packs=(
 declare -ar apt_ppa_repos=(
   ppa:jonathonf/vim     # later vim
   ppa:neovim-ppa/stable # later neovim
-  # ppa:mozillateam/ppa   # firefox-esr
-  # ppa:japaneseteam/ppa  # Ubuntu Japanese Team
-  # ppa:kelleyk/emacs     # later emacs (err?: ubuntu18.04)
-  # ppa:webupd8team/atom  # atom (err?: ubuntu18.04)
 )
 # packages
 declare -ar apt_packs=(
-  ##### base
-  ### shell
+  # shell
   bash
   zsh
-  ### packages
+  shellcheck
+  # packages
   curl
   git
-  ### measures
-  busybox
-
-  ##### std
-  ### japanese
+  # editor
+  emacs
+  vim
+  vim-gnome
+  neovim
+  # terminal
+  tmux
+  # japanese env
   language-pack-ja
   manpages-ja
   manpages-ja-dev
-  ### insert jp
   fcitx
   fcitx-mozc
-  ### font
+  # font
   fontconfig
   fonts-ipafont
   fonts-ipaexfont
   fonts-noto
-  ### x11
+  # x11
   x11-apps
   x11-utils
   x11-xserver-utils
   dbus-x11
   xauth
-  ### terminal
-  tmux
-  ### editor
-  emacs
-  vim
-  vim-gnome
-  neovim
-
-  ##### image
-  eog
-  evince
-  feh
-  okular
+  # image
+  feh # eog
+  okular # evince
   zathura
-  inkscape
-  gimp
-  # mupdf
-  # mupdf-tools
-  ### library
+  inkscape # gimp
+  # image library
   imagemagick
-  pstoedit
-  python-lxml
-  epstool
   poppler-utils
-
-  ##### development/programming
-  ### compiler
+  pstoedit
+  epstool
+  # compiler
   build-essential
   gfortran
   gcc
   g++
-  ### library
+  # prg library
   liblapack-dev
   libblas-dev
-  # libopencv-dev
-  ### shell
-  shellcheck
-  ### C/C++
-  ### python (latest)
+  # python (latest)
   python3.9
   python3.9-distutils
   tk-dev
   python3-tk
-  ### Go
-  # golang
-  ### Rust
-  # rustc
-  ### JavaScript
-  # nodejs
-  # npm
-  ### graph
+  # other prg
+  # golang rustc nodejs npm
+  # graph
   gnuplot-x11
-  ### tex
+  # tex
   texlive-latex-base
   texlive-latex-extra
   texlive-latex-recommended
   texlive-publishers
   texlive-extra-utils
   texlive-lang-japanese
-  texlive-lang-cjk
+  # texlive-lang-cjk
   xdvik-ja
   texlive-plain-generic
   texlive-fonts-recommended
   texlive-fonts-extra
   texlive-luatex
   latexmk
-
-  ##### other
-  ### web browser
+  # web browser
   w3m
-  # firefox-esr
-  # firefox
-  # google-chrome
-  ### other
+  # other
+  busybox
   file
-  jq
-  peco
-  fzy
+  fzf # peco # fzy
   nkf
   bc
   xsel

@@ -27,11 +27,9 @@ if [[ "${__tmux_autostart:-0}" -ne 0 ]] && [[ ! -n "$TMUX" ]];then
 fi
 
 ### packages
-# fzf
-[[ -f "${HOME}/.fzf.${__shell}" ]] && . "${HOME}/.fzf.${__shell}"
 # enhancd
 if [[ -d "${LOCAL}/src/enhancd" ]] ; then
-  export ENHANCD_FILTER=fzy:fzf:peco
+  export ENHANCD_FILTER=fzf:fzy:peco
   SHELL="/bin/${__shell}" . "${LOCAL}/src/enhancd/init.sh"
 fi
 

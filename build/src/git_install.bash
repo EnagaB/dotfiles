@@ -12,16 +12,6 @@ function gclone_autoch() {
   git clone --depth 1 "${gurl}/${rrepo}.git" "${lrepo}"
 }
 
-### fzf
-if $git_fzf;then
-  rrepo=junegunn/fzf
-  lrepo=${loc}/src/fzf
-  # download
-  gclone_autoch "$rrepo" "$lrepo"
-  # install
-  [[ ! -f "${HOME}/.fzf.bash" ]] && echo "[${rrepo}: install]" && "${lrepo}/install"
-fi
-
 ### enhancd
 if $git_enhancd;then
   rrepo=b4b4r07/enhancd
