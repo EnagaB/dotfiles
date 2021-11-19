@@ -2,9 +2,8 @@
 set -u
 
 # parameters
-declare -r editor='vim'
+declare -r editor='nano'
 declare -r pager='cat'
-declare -r dt="$(date +"%Y%m%dT%H%M%S%z")"
 
 # get cmd arg
 argcmd="$1"
@@ -32,7 +31,7 @@ elif [[ "$argcmd" = 'push' ]];then
   echo '[git add -A]'
   git add -A || exit 1
   echo '[git commit -m "date"]'
-  git commit -m "$dt" || exit 1
+  git commit || exit 1
   echo '[git push]'
   git push
 elif [[ "$argcmd" = 'pull' ]];then
