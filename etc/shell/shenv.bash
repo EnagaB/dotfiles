@@ -34,8 +34,8 @@ export LANG=ja_JP.UTF-8
 export LC_TIME=C
 
 ### editor/pager
-export EDITOR='vim'
-export PAGER='less'
+export EDITOR=nano
+export PAGER=less
 export LESS='-q -iMR -x2'
 which lesspipe &>/dev/null && [[ -x "$(which lesspipe)" ]] && eval "$(SHELL=/bin/sh lesspipe)"
 

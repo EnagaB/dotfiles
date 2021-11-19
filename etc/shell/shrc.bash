@@ -12,8 +12,8 @@
 eval $(dircolors -b ${HOME}/.dir_colors)
 
 ### tmux
-alias tmux.resume='tmux a'
-alias tmux.resume.name='tmux a -t'
+alias tmux.attach='tmux a'
+alias tmux.attach.name='tmux a -t'
 alias tmux.ls='tmux ls'
 # autostart
 if [[ "${__tmux_autostart:-0}" -ne 0 ]] && [[ ! -n "$TMUX" ]];then
@@ -153,14 +153,14 @@ alias ce.c="__compile_execute.bash -c ${__pg_cout_file} ${__pg_exe_file}"
 alias ce.ac="__compile_execute.bash -a -c ${__pg_cout_file} ${__pg_exe_file}"
 # python
 declare -r __pipcmd="$__python_defver -m pip"
-alias python="$__python_defver"
-alias python.version="$__python_defver --version"
-alias pip="$__pipcmd"
-alias pip.upgrade="$__pipcmd install --upgrade pip"
-alias pip.install="$__pipcmd install"
-alias pip.uninstall="$__pipcmd uninstall"
-alias pip.input_file="$__pipcmd install -r"
-alias pip.output_file="$__pipcmd freeze -l >"
+alias py="$__python_defver"
+alias py.pip="$__pipcmd"
+alias py.pip.install="$__pipcmd install"
+alias py.pip.upgrade="$__pipcmd install --upgrade"
+alias py.pip.uninstall="$__pipcmd uninstall"
+alias py.pip.input="$__pipcmd install -r"
+alias py.pip.output="$__pipcmd freeze -l >"
+
 # gnuplot
 alias gp='gnuplot'
 ### cprg
