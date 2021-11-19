@@ -11,4 +11,10 @@ If use zsh,
 chsh -s $(which zsh)
 ```
 
+vim/neovim
+```
+:PackUpdate
+:PackLoad
+```
+
 <!-- end -->
