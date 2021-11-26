@@ -19,4 +19,7 @@ declare -r __wsl_fcitx_autostart=0
 # default version
 declare -r __python_defver=python3.9
 
+# local config
+declare -r __path_shrc_local=~/.shrc_local
+
 # EOF

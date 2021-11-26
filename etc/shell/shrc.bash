@@ -271,4 +271,7 @@ alias utf8unix='nkf -w -Lu --overwrite'
 alias utf8dos='nkf -w -Lw --overwrite'
 alias sjisdos='nkf -s -Lw --overwrite'
 
+# load local config
+[[ -f ${__path_shrc_local} ]] && . ${__path_shrc_local}
+
 # end
