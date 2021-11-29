@@ -35,16 +35,6 @@ if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
 fi
 
 ### prompt
-case "$TERM" in
-  xterm-color|*-256color) color_prompt=yes;;
-esac
-if [ -n "$force_color_prompt" ]; then
-  if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-    color_prompt=yes
-  else
-    color_prompt=
-  fi
-fi
 function __prompt_git_branch() {
   git symbolic-ref HEAD &>/dev/null &&
     echo "$(git symbolic-ref HEAD 2>/dev/null | sed 's/^refs\/heads\///')"
@@ -54,7 +44,7 @@ function __prompt_git_branch_brackets() {
   [[ ! -z "$ps1str" ]] && echo "[${ps1str}]"
 }
 PS1='${debian_chroot:+($debian_chroot)}'
-if [ "$color_prompt" = yes ]; then
+if $__color_prompt; then
   if [ "$__prompt_style" = 'normal' ];then
     PS1=${PS1}'[\[\033[32m\]\u\[\033[00m\]@\[\033[32m\]\h\[\033[00m\]:\[\033[34m\]\w\[\033[00m\]]\[\033[36m\]'
     PS1=${PS1}'$(__prompt_git_branch_brackets)'
@@ -75,7 +65,6 @@ else
     PS1=${PS1}'\n> '
   fi
 fi
-unset color_prompt force_color_prompt
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
   xterm*|rxvt*)

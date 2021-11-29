@@ -2,6 +2,8 @@
 # source in shrc.bash/.bashrc/.zshrc
 
 ### prompt
+# color
+declare __color_prompt=true
 # style
 declare __prompt_style='simple'     # normal/simple/adam (zsh)
 # zsh vcs_info check_for_change
