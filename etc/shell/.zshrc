@@ -17,8 +17,9 @@ function __autozcomp() {
 }
 
 ### load config
-__autozcomp "${DOTSH}/config.bash"
-[[ -f "${DOTSH}/config.bash" ]] && . "${DOTSH}/config.bash"
+[[ ! -f "${HOME}/.shrc_local.bash" ]] && cp "${DOTSH}/.shrc_local.bash" "${HOME}/.shrc_local.bash"
+__autozcomp "${HOME}/.shrc_local.bash"
+. "${HOME}/.shrc_local.bash"
 
 ### zcompile .zshenv/.zshrc
 __autozcomp "${HOME}/.zshenv"
@@ -30,16 +31,17 @@ autoload -Uz is-at-least
 autoload -Uz add-zsh-hook
 
 ### prompt
-if [ "$__prompt_style" = 'adam' ];then
+declare -r __prompt_style_fc=${__prompt_style:-'simple'}
+if [ "$__prompt_style_fc" = 'adam' ];then
   autoload -Uz promptinit && promptinit
   prompt adam1 blue write green
 else
   setopt prompt_subst
-  if [ "$__prompt_style" = 'normal' ];then
+  if [ "$__prompt_style_fc" = 'normal' ];then
     declare -r __prompt_std=$'[%F{yellow}%n%f@%F{yellow}%m%f:%F{cyan}%~%f]'
     declare -r __prompt_date=$'[%F{cyan}%D{%F(%a)%T}%f]'
     declare -r __prompt_last=$'\n %# '
-  elif [ "$__prompt_style" = 'simple' ];then
+  elif [ "$__prompt_style_fc" = 'simple' ];then
     declare -r __prompt_std=$'%F{cyan}%~%f'
     declare -r __prompt_date=$''
     declare -r __prompt_last=$'\n%F{cyan}>%f '
@@ -49,17 +51,17 @@ else
   if is-at-least 4.3.11 ;then
     autoload -Uz vcs_info
     zstyle ':vcs_info:*' enable git hg
-    if $__vcs_check_for_change;then
+    if ${__vcs_check_for_change:-false}; then
       zstyle ':vcs_info:git:*' check-for-changes true
       zstyle ':vcs_info:git:*' unstagedstr "%F{red}+"
       zstyle ':vcs_info:git:*' stagedstr "%F{yellow}!"
     else
       zstyle ':vcs_info:git:*' check-for-changes false
     fi
-    if [ "$__prompt_style" = 'normal' ];then
+    if [ "$__prompt_style_fc" = 'normal' ];then
       zstyle ':vcs_info:*' formats "%F{green}%u%c[%b]%f"
       zstyle ':vcs_info:*' actionformats "[%b|%a]"
-    elif [ "$__prompt_style" = 'simple' ];then
+    elif [ "$__prompt_style_fc" = 'simple' ];then
       zstyle ':vcs_info:*' formats " %F{green}%u%c%b%f"
       zstyle ':vcs_info:*' actionformats " %b|%a"
     fi

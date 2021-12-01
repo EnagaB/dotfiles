@@ -16,13 +16,12 @@ alias tmux.attach='tmux a'
 alias tmux.attach.name='tmux a -t'
 alias tmux.ls='tmux ls'
 # autostart
-if [[ "${__tmux_autostart:-0}" -ne 0 ]] && [[ ! -n "$TMUX" ]];then
+if ${__tmux_autostart:-false} && [[ ! -n "$TMUX" ]];then
   declare __tmuxid="$(tmux list-sessions 2>/dev/null)"
   if [[ -z "$__tmuxid" ]] ; then tmux -u new-session
   else
     tmux a
   fi
-  unset -v __tmuxid
 fi
 
 ### packages
@@ -35,13 +34,13 @@ fi
 ### WSL
 if [[ ! -z "${WSLENV:-}" ]] ; then
   # VcXsrv autostart
-  if [[ "${__wsl_vcxsrv_autostart:-0}" -ne 0 ]];then
+  if ${__wsl_vcxsrv_autostart:-false};then
     if [[ -e /mnt/c/WINDOWS/System32/wsl.exe ]] && [[ -z "$(tasklist.exe | grep vcxsrv)" ]] ; then
       cmd.exe /c config.xlaunch
     fi
   fi
   # fcitx autostart
-  if [[ "${__wsl_fcitx_autostart:-0}" -ne 0 ]] && [[ $SHLVL = 1 ]] ; then
+  if ${__wsl_fcitx_autostart:-false} && [[ $SHLVL = 1 ]] ; then
     xset -r 49  &>/dev/null
     (fcitx-autostart &>/dev/null &)
   fi
@@ -152,8 +151,9 @@ alias ce.a="__compile_execute.bash -a ${__pg_cout_file} ${__pg_exe_file}"
 alias ce.c="__compile_execute.bash -c ${__pg_cout_file} ${__pg_exe_file}"
 alias ce.ac="__compile_execute.bash -a -c ${__pg_cout_file} ${__pg_exe_file}"
 # python
-declare -r __pipcmd="$__python_defver -m pip"
-alias py="$__python_defver"
+declare -r __python_defver_rc=${__python_defver:-python}
+declare -r __pipcmd="$__python_defver_rc -m pip"
+alias py="$__python_defver_rc"
 alias py.pip="$__pipcmd"
 alias py.pip.install="$__pipcmd install"
 alias py.pip.upgrade="$__pipcmd install --upgrade"
@@ -271,7 +271,7 @@ alias utf8unix='nkf -w -Lu --overwrite'
 alias utf8dos='nkf -w -Lw --overwrite'
 alias sjisdos='nkf -s -Lw --overwrite'
 
-# load local config
-[[ -f ${__path_shrc_local} ]] && . ${__path_shrc_local}
+# local config
+__shrc_local_last
 
 # end

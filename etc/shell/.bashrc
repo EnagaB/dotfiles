@@ -14,7 +14,8 @@ export DOTSH=${DOTFILES}/etc/shell
 [[ -f "${DOTSH}/.bashenv" ]] && . "${DOTSH}/.bashenv"
 
 # config
-[[ -f "${DOTSH}/config.bash" ]] && . "${DOTSH}/config.bash"
+[[ ! -f "${HOME}/.shrc_local.bash" ]] && cp "${DOTSH}/.shrc_local.bash" "${HOME}/.shrc_local.bash"
+. "${HOME}/.shrc_local.bash"
 
 # disable starting message
 if [ ! -f "${HOME}/.sudo_as_admin_successful" ];then
@@ -35,6 +36,7 @@ if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
 fi
 
 ### prompt
+declare -r __prompt_style_fc=${__prompt_style:-'simple'}
 function __prompt_git_branch() {
   git symbolic-ref HEAD &>/dev/null &&
     echo "$(git symbolic-ref HEAD 2>/dev/null | sed 's/^refs\/heads\///')"
@@ -44,22 +46,22 @@ function __prompt_git_branch_brackets() {
   [[ ! -z "$ps1str" ]] && echo "[${ps1str}]"
 }
 PS1='${debian_chroot:+($debian_chroot)}'
-if $__color_prompt; then
-  if [ "$__prompt_style" = 'normal' ];then
+if ${__color_prompt:-true}; then
+  if [ "$__prompt_style_fc" = 'normal' ];then
     PS1=${PS1}'[\[\033[32m\]\u\[\033[00m\]@\[\033[32m\]\h\[\033[00m\]:\[\033[34m\]\w\[\033[00m\]]\[\033[36m\]'
     PS1=${PS1}'$(__prompt_git_branch_brackets)'
     PS1=${PS1}'[\D{%F(%a)%T}]\[\033[00m\]\n \$ '
-  elif [ "$__prompt_style" = 'simple' ];then
+  elif [ "$__prompt_style_fc" = 'simple' ];then
     PS1=${PS1}'\[\033[33m\]\w\[\033[00m\]'
     PS1=${PS1}' \[\033[32m\]$(__prompt_git_branch)\[\033[00m\]'
     PS1=${PS1}'\[\033[33m\]\n> \[\033[00m\]'
   fi
 else
-  if [ "$__prompt_style" = 'normal' ];then
+  if [ "$__prompt_style_fc" = 'normal' ];then
     PS1=${PS1}'[\u@\h:\w]'
     PS1=${PS1}'$(__prompt_git_branch_brackets)'
     PS1=${PS1}'[\D{%F(%a)%T}]\n \$ '
-  elif [ "$__prompt_style" = 'simple' ];then
+  elif [ "$__prompt_style_fc" = 'simple' ];then
     PS1=${PS1}'\w'
     PS1=${PS1}' $(__prompt_git_branch)'
     PS1=${PS1}'\n> '
