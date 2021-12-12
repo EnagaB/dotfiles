@@ -1,6 +1,26 @@
 #!/usr/bin/env bash
 # source in (bash|zsh)rc
 
+### Prompt
+# true/false. Color of bash prompt.
+declare __color_prompt=true
+# 'normal'/'simple'/'adam'. Prompt style.
+declare __prompt_style='simple'
+# true/false. In zsh, vcs_info check_for_change.
+declare __vcs_check_for_change=true
+
+### tmux
+# true/false. Tmux autostart.
+declare -r __tmux_autostart=false
+
+### wsl
+declare -r __wsl_vcxsrv_autostart=false
+declare -r __wsl_fcitx_autostart=false
+
+### python
+# default version
+declare -r __python_defver=python3.9
+
 # shell
 [[ ! -z "${BASH_VERSION:-}" ]] && declare -r __shell='bash'
 [[ ! -z  "${ZSH_VERSION:-}" ]] && declare -r __shell='zsh'

@@ -13,10 +13,6 @@ export DOTSH=${DOTFILES}/etc/shell
 # .bashenv
 [[ -f "${DOTSH}/.bashenv" ]] && . "${DOTSH}/.bashenv"
 
-# config
-[[ ! -f "${HOME}/.shrc_local.bash" ]] && cp "${DOTSH}/.shrc_local.bash" "${HOME}/.shrc_local.bash"
-. "${HOME}/.shrc_local.bash"
-
 # disable starting message
 if [ ! -f "${HOME}/.sudo_as_admin_successful" ];then
   :> "${HOME}/.sudo_as_admin_successful"
@@ -125,6 +121,8 @@ fi
 ulimit -c 0 # not output core files
 
 # rc
+[[ ! -f "${HOME}/.shrc_local.bash" ]] && cp "${DOTSH}/shrc_local.bash" "${HOME}/.shrc_local.bash"
+. "${HOME}/.shrc_local.bash"
 [[ -f "${DOTSH}/shrc.bash" ]] && source "${DOTSH}/shrc.bash"
 
 # EOF

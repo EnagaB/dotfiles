@@ -16,11 +16,6 @@ function __autozcomp() {
   fi
 }
 
-### load config
-[[ ! -f "${HOME}/.shrc_local.bash" ]] && cp "${DOTSH}/.shrc_local.bash" "${HOME}/.shrc_local.bash"
-__autozcomp "${HOME}/.shrc_local.bash"
-. "${HOME}/.shrc_local.bash"
-
 ### zcompile .zshenv/.zshrc
 __autozcomp "${HOME}/.zshenv"
 __autozcomp "${ZDOTDIR}/.zshrc"
@@ -165,6 +160,11 @@ zstyle ':zle:*' word-chars " _-./;@"
 zstyle ':zle:*' word-style unspecified
 
 ### source rc
+# local
+[[ ! -f "${HOME}/.shrc_local.bash" ]] && cp "${DOTSH}/shrc_local.bash" "${HOME}/.shrc_local.bash"
+__autozcomp "${HOME}/.shrc_local.bash"
+. "${HOME}/.shrc_local.bash"
+# glob
 __autozcomp "${DOTSH}/shrc.bash"
 [[ -f "${DOTSH}/shrc.bash" ]] && . "${DOTSH}/shrc.bash"
 
