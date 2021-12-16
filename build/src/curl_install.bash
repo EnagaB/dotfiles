@@ -22,7 +22,7 @@ cd $fontdir
 for fonturl in ${fonts_url[@]}; do
   filename=$(basename ${fonturl})
   curl_autoch "$fonturl" "${filename}"
-  unzip $filename
+  unzip -o $filename
   rm $filename
 done
 rm *.md
