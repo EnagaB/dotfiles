@@ -17,7 +17,7 @@ function __help_text() {
   echo ""
   echo "  gconfig                   : Get or set global options."
   echo "          without_arguments : Display global options and gconfig help information."
-  echo "          setup             : Set basic config (editor, pager, etc.)."
+  echo "          setup             : Set basic config (editor, pager)."
   echo "          email <user-email>: Set user.email."
   echo "          name  <user-name> : Set user.name."
   echo ""
