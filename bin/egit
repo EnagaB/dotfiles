@@ -12,6 +12,9 @@ function __help_text() {
   echo ""
   echo "command and args:"
   echo ""
+  echo "  log                       : Display commit logs."
+  echo "          without_arguments : Display commit oneline logs in reverse."
+  echo ""
   echo "  commit                    : Record changes to the repository."
   echo "          without_arguments : Add all files and commit."
   echo ""
@@ -64,6 +67,10 @@ function __commit() {
   git commit || return 1
 }
 
+function __log() {
+  git log --reverse --oneline
+}
+
 # no arguments
 if [[ "$#" -eq 0 ]];then
   __help_text
@@ -80,6 +87,8 @@ elif [[ "$cmd" = "gconfig" ]]; then
   __gconfig "$@"
 elif [[ "$cmd" = "commit" ]]; then
   __commit "$@"
+elif [[ "$cmd" = "log" ]]; then
+  __log "$@"
 else
   __echo_err "Given command '${cmd}' is wrong."
 fi
