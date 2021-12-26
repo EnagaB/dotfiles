@@ -2,41 +2,86 @@
 set -u
 
 # parameters
-declare -r editor='nano'
-declare -r pager='cat'
+declare -r __git_editor='nano'
+declare -r __git_pager='cat'
 
-# get cmd arg
-argcmd="$1"
-shift 1
+function __help_text() {
+  echo "egit - Wrapper command for git."
+  echo ""
+  echo "Usage: egit <command> <args>"
+  echo ""
+  echo "command and args:"
+  echo ""
+  echo "  commit                    : Record changes to the repository."
+  echo "          without_arguments : Add all files and commit."
+  echo ""
+  echo "  gconfig                   : Get or set global options."
+  echo "          without_arguments : Display global options and gconfig help information."
+  echo "          setup             : Set basic config (editor, pager, etc.)."
+  echo "          email <user-email>: Set user.email."
+  echo "          name  <user-name> : Set user.name."
+  echo ""
+  echo "  help                      : Display help information."
+  echo "                            : Also, if command is not given, display that."
+}
 
-# exe
-if [[ "$argcmd" = 'set.def' ]];then
-  echo '[git config --global: set default]'
-  git config --global core.editor "$editor"
-  git config --global core.pager "$pager"
-  git config --global color.ui auto
-  git config --global credential.helper cache --timeout=86400
-  git config --global push.default simple
-  git config --global core.autocrlf false
-  git config --global core.safecrlf true
-  git config --global core.ignorecase false
-  git config --global core.quotepath false
-elif [[ "$argcmd" = 'set.name' ]];then
-  echo "[git config --global: set user.name $1]"
-  git config --global user.name "$1"
-elif [[ "$argcmd" = 'set.email' ]];then
-  echo "[git config --global: set user.email $1]"
-  git config --global user.email "$1"
-elif [[ "$argcmd" = 'push' ]];then
-  echo '[git add -A]'
-  git add -A || exit 1
-  echo '[git commit -m "date"]'
-  git commit || exit 1
-  echo '[git push]'
-  git push
-elif [[ "$argcmd" = 'pull' ]];then
-  echo '[git pull]'
-  git pull
+function __echo_err() {
+  echo "Error: $@"
+  echo "Help command is 'egit help'"
+}
+
+function __gconfig() {
+  if [[ "$#" -eq 0 ]]; then
+    git config --global --list
+    return
+  fi
+  local -r subcmd="$1"
+  shift 1
+  if [[ "$subcmd" = "setup" ]]; then
+    echo "egit setup"
+    echo "editor = $__git_editor"
+    git config --global core.editor "$__git_editor"
+    echo "pager = $__git_pager"
+    git config --global core.pager "$__git_pager"
+    git config --global color.ui auto
+    git config --global credential.helper cache --timeout=86400
+    git config --global push.default simple
+    git config --global core.autocrlf false
+    git config --global core.safecrlf true
+    git config --global core.ignorecase false
+    git config --global core.quotepath false
+  elif [[ "$subcmd" = "email" ]]; then
+    git config --global user.email "$1"
+  elif [[ "$subcmd" = "name" ]]; then
+    git config --global user.name "$1"
+  else
+    __echo_err "Number of arguments '$#' for egit-gconfig is wrong."
+  fi
+}
+
+function __commit() {
+  git add -A || return 1
+  git commit || return 1
+}
+
+# no arguments
+if [[ "$#" -eq 0 ]];then
+  __help_text
+  exit 0
 fi
 
-# end
+# get command
+declare -r cmd="$1"
+shift 1
+
+if [[ "$cmd" = "help" ]]; then
+  __help_text
+elif [[ "$cmd" = "gconfig" ]]; then
+  __gconfig "$@"
+elif [[ "$cmd" = "commit" ]]; then
+  __commit "$@"
+else
+  __echo_err "Given command '${cmd}' is wrong."
+fi
+
+# EOF
