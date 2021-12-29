@@ -10,6 +10,7 @@ declare -ar make_initdir=(
   ${loc}/share
   ${loc}/src
   ${loc}/include
+  ${loc}/tmp
   # trashbox
   ${tbox}
   # ~/.config
