@@ -126,17 +126,6 @@ alias apt.upgrade.full='__upgrade.bash apt-full'
 # clipboard copy
 alias cb='head -c -1 | xsel --clipboard --input'
 
-# git
-alias git.status='git status'
-alias git.log='git log -1'
-alias git.clone='git clone'
-alias git.clone1='git clone --depth 1'
-alias git.push='__git.bash push'
-alias git.pull='__git.bash pull'
-alias git.set.def='__git.bash set.def'
-alias git.set.name='__git.bash set.name'
-alias git.set.email='__git.bash set.email'
-
 ### alias/function for cd/ls/mkdir/link
 alias j='builtin cd'
 alias jb='builtin cd ..'
