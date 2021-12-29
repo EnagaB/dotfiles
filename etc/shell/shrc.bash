@@ -229,11 +229,6 @@ alias ch.cpu='htop'
 alias ch.gpu='intel_gpu_top'
 # alias ch.gpu='nvidia-smi'
 
-### echo
-alias echo.date='date +"%Y%m%dT%H%M"'
-alias echo.dateUTC='env TZ=UTC date +"%Y%m%dT%H%M"'
-alias echo.dateUNIX='date +"%s"'
-
 ### alias e-cmd
 # bash/zsh alias
 if [[ "$__shell" = 'bash' ]] ; then
