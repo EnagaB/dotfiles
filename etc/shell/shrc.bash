@@ -204,32 +204,19 @@ alias dkr='docker'
 alias dkr.img='docker image'
 alias dkr.cnt='docker container'
 
-### compress/extract
-# tar
-alias tar.show='tar -tf'
-alias tar.cmp.tgz='tar -zcvf'
-alias tar.cmp.tbz2='tar -jcvf'
-alias tar.cmp.txz='tar -Jcvf'
-alias tar.ext='tar -xvf'
-# zip
-alias zip.cmp.file='zip'
-alias zip.cmp.dir='zip -r'
-alias zip.ext='unzip'
-# cmp/ext
-alias cmp='__compress'
-alias ext='__extract'
-function __compress() {
-  while true; do
-    if [[ -f "$1" ]];then
-      gzip "$1"
-      shift 1
-    elif [[ -d "$2" ]];then
-      tar -zcvf "$1" "$2"
-      shift 2
-    fi
-    [[ "$#" -eq 0 ]] && break
-  done
-}
+# compress
+alias tgz='tar -zcvf'
+alias tbz='tar -jcvf'
+alias txz='tar -Jcvf'
+alias zip='zip -r'
+alias gz='gzip'
+alias bz2='bzip2'
+# extract
+alias untgz='tar -zxvf'
+alias untbz='tar -jxvf'
+alias untxz='tar -Jxvf'
+alias ungz='gzip -d'
+alias unbz2='bzip2 -d'
 function __extract() {
   for ff in "$@"; do
     case $ff in
