@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+set -u
+
+declare -r code="$1"
+declare -r exe="./a.out"
+declare -r ts_code=$(date +%s -r "$code")
+declare -r ts_exe=$(date +%s -r "$exe")
+
+if [[ "$ts_code" -gt "$ts_exe" ]]; then
+  g++ -D_DEBUG \
+      -std=gnu++17 \
+      -Wall \
+      -Wextra \
+      -O2 \
+      -DONLINE_JUDGE \
+      -I/opt/boost/gcc/include \
+      -L/opt/boost/gcc/lib \
+      -I/opt/ac-library \
+      "$code"
+fi
+
+${exe}
+
+# EOF
