@@ -8,7 +8,7 @@ set textwidth=100
 set colorcolumn=+1
 """ character encode
 set encoding=utf-8
-set fileencodings=utf-8,utf-16le,iso-2022-jp,sjis,euc-jp
+set fileencodings=utf-8,sjis,utf-16le,iso-2022-jp,euc-jp
 set fileformats=unix,dos,mac
 " scriptencoding utf-8
 """ backup
