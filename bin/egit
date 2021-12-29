@@ -18,6 +18,9 @@ function __help_text() {
   echo "  commit                    : Record changes to the repository."
   echo "          without_arguments : Add all files and commit."
   echo ""
+  echo "  clone                     : Clone a repository into a new directory."
+  echo "          without_arguments : Shallow clone a repository."
+  echo ""
   echo "  gconfig                   : Get or set global options."
   echo "          without_arguments : Display global options and gconfig help information."
   echo "          setup             : Set basic config (editor, pager, etc.)."
@@ -77,6 +80,10 @@ function __log() {
   git log --reverse --oneline
 }
 
+function __clone() {
+  git clone --depth 1 "$@"
+}
+
 # no arguments
 if [[ "$#" -eq 0 ]];then
   __help_text
@@ -95,6 +102,8 @@ elif [[ "$cmd" = "commit" ]]; then
   __commit "$@"
 elif [[ "$cmd" = "log" ]]; then
   __log "$@"
+elif [[ "$cmd" = "clone" ]]; then
+  __clone "$@"
 else
   __echo_err "Given command '${cmd}' is wrong."
 fi
