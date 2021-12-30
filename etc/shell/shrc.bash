@@ -139,7 +139,6 @@ alias md.cd='__func_mdcd'
 function __func_mdcd() { mkdir "$1" && cd "$1" ; }
 alias ln='ln -snf'
 alias unlinknull='find . -maxdepth 1 -xtype l | xargs rm'
-alias mf='__makefile.bash'
 
 ### jump: record path (add/rm) and cd record-path
 declare -r __jump_file=${HOME}/.jump
