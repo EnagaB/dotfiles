@@ -189,8 +189,6 @@ alias tex.mk.up='latexmk -gg -pdfdvi -pvc'
 
 # docker
 alias dkr='docker'
-alias dkr.img='docker image'
-alias dkr.cnt='docker container'
 
 # compress
 alias tgz='tar -zcvf'
