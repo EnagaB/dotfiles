@@ -241,8 +241,6 @@ fi
 # mv args to trash box
 alias trm='__mv_to_trashbox.bash'
 alias trm.clean='__clean_trashbox.bash'
-# backup
-alias bu='__backup.bash'
 # dictionary
 alias di='__ej_dictionary.bash chars'
 alias di.w='__ej_dictionary.bash word'
