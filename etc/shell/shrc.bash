@@ -72,22 +72,22 @@ fi
 ### alias/function for edit/view
 # emacs, vi/vim/nvim
 alias em='emacs -nw'
-alias em.g='__guiapp_bg.bash emacs'
+alias em.g='__guiapp_background emacs'
 alias em.r='__func_emacs_readonly'
 alias vi='nvim'
-alias vi.g='__guiapp_bg.bash gvim'
+alias vi.g='__guiapp_background gvim'
 alias vi.r='nvim -M'
 function __func_emacs_readonly() { emacs -nw "$@" --eval '(setq buffer-read-only t)' ; }
 # inkscape
-alias ink='__guiapp_bg.bash inkscape -f'
+alias ink='__guiapp_background inkscape -f'
 # edit
 alias edit='__edit'
 # view
-alias fe='__guiapp_bg.bash feh'
-alias eo='__guiapp_bg.bash eog'
-alias ev='__guiapp_bg.bash evince'
-alias ok='__guiapp_bg.bash okular'
-alias za='__guiapp_bg.bash zathura'
+alias fe='__guiapp_background feh'
+alias eo='__guiapp_background eog'
+alias ev='__guiapp_background evince'
+alias ok='__guiapp_background okular'
+alias za='__guiapp_background zathura'
 alias view='__view'
 # functions
 function __edit() {
