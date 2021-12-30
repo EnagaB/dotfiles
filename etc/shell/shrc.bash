@@ -246,8 +246,6 @@ alias bu='__backup.bash'
 # dictionary
 alias di='__ej_dictionary.bash chars'
 alias di.w='__ej_dictionary.bash word'
-# image convert
-alias cv='__image_convert.bash'
 
 ### others
 alias le='less'
