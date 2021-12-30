@@ -224,8 +224,8 @@ function __extract() {
 }
 
 ### cpu/gpu
-alias ch.cpu='htop'
-alias ch.gpu='intel_gpu_top'
+alias cpu='htop'
+alias gpu='intel_gpu_top'
 # alias ch.gpu='nvidia-smi'
 
 ### alias e-cmd
