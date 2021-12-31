@@ -152,14 +152,6 @@ alias py.pip.output="$__pipcmd freeze -l >"
 
 # gnuplot
 alias gp='gnuplot'
-### cprg
-# atcoder-tools, install: $ pip3 install atcoder-tools
-alias atc='__atcoder_tools_func'
-function __atcoder_tools_func() {
-  local cmd=$1
-  local contest=$2
-  atcoder-tools "$cmd" "$contest" --without-login
-}
 
 # tex
 alias tex.lts="__lts.bash"
@@ -217,9 +209,6 @@ elif [[ "$__shell" = 'zsh' ]] ; then
   alias zmv="noglob __zmv.bash"
   alias fin="noglob __fin.bash"
 fi
-# mv args to trash box
-alias trm='__mv_to_trashbox.bash'
-alias trm.clean='__clean_trashbox.bash'
 # dictionary
 alias di='__ej_dictionary.bash chars'
 alias di.w='__ej_dictionary.bash word'
