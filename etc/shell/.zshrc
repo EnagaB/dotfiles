@@ -171,8 +171,6 @@ __autozcomp "${DOTSH}/shrc.bash"
 ### alias
 ### suffix alias
 alias -s {gz,tgz,zip,lzh,bz2,tbz,Z,tar,arj,xz}=__extract
-alias -s {png,pgm,bmp,eps,pdf}=__view
-alias -s svg=__edit
 ### global alias
 alias -g L='| less'
 alias -g GI='| grep -i'

@@ -69,48 +69,29 @@ if [[ ! -z "${WSLENV:-}" ]] ; then
   alias we='/mnt/c/Windows/explorer.exe .'
 fi
 
-### alias/function for edit/view
-# emacs, vi/vim/nvim
+# text editor
+function __df::func_emacs_readonly() { emacs -nw "$@" --eval '(setq buffer-read-only t)' ; }
 alias em='emacs -nw'
-alias em.g='__guiapp_background emacs'
-alias em.r='__func_emacs_readonly'
+alias emr='__df::func_emacs_readonly'
 alias vi='nvim'
-alias vi.g='__guiapp_background gvim'
-alias vi.r='nvim -M'
-function __func_emacs_readonly() { emacs -nw "$@" --eval '(setq buffer-read-only t)' ; }
-# inkscape
-alias ink='__guiapp_background inkscape -f'
-# edit
-alias edit='__edit'
-# view
-alias fe='__guiapp_background feh'
-alias eo='__guiapp_background eog'
-alias ev='__guiapp_background evince'
-alias ok='__guiapp_background okular'
-alias za='__guiapp_background zathura'
-alias view='__view'
-# functions
-function __edit() {
-  [[ "$#" -eq 0 ]] && return 1
-  case "$1" in
-    *.svg) inkscape     "$@" & ;;
-    *.png) inkscape     "$@" & ;;
-    *.eps) inkscape     "$@" & ;;
-    *.pdf) inkscape     "$@" & ;;
-    *)     vim          "$@"   ;;
-  esac
-}
-function __view() {
-  [[ "$#" -eq 0 ]] && return 1
-  case "$1" in
-    *.png) feh      "$1" & ;;
-    *.pgm) feh      "$1" & ;;
-    *.bmp) feh      "$1" & ;;
-    *.eps) okular   "$1" & ;;
-    *.pdf) zathura  "$1" & ;;
-    *.svg) inkscape "$1" & ;;
-  esac
-}
+alias vir='nvim -M'
+alias emacs='__guiapp_background emacs'
+alias gvim='__guiapp_background gvim'
+
+# image editor/viewer
+alias inkscape='__guiapp_background inkscape -f'
+alias feh='__guiapp_background feh'
+alias eog='__guiapp_background eog'
+alias evince='__guiapp_background evince'
+alias okular='__guiapp_background okular'
+alias zathura='__guiapp_background zathura'
+# extension alias
+alias png='__guiapp_background feh'
+alias pgm='__guiapp_background feh'
+alias bmp='__guiapp_background feh'
+alias eps='__guiapp_background okular'
+alias pdf='__guiapp_background zathura'
+alias svg='__guiapp_background inkscape'
 
 ### alias/function for PC/shell/terminal/clipboard
 alias shutdown='sudo shutdown -h now'
