@@ -84,6 +84,21 @@ function __clone() {
   git clone --depth 1 "$@"
 }
 
+function __egit_diff() {
+  cd $(git rev-parse --show-toplevel)
+  local add_paths=( $(git add --dry-run --update) )
+  even=false
+  for filepath in "${add_paths[@]}"; do
+    if $even; then
+      filepath="${filepath#\'}"
+      filepath="${filepath%\'}"
+      # echo $filepath
+      git diff "$filepath"
+    fi
+    $even && even=false || even=true
+  done
+}
+
 # no arguments
 if [[ "$#" -eq 0 ]];then
   __help_text
@@ -104,6 +119,8 @@ elif [[ "$cmd" = "log" ]]; then
   __log "$@"
 elif [[ "$cmd" = "clone" ]]; then
   __clone "$@"
+elif [[ "$cmd" = "diff" ]]; then
+  __egit_diff "$@"
 else
   __echo_err "Given command '${cmd}' is wrong."
 fi
