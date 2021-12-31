@@ -1,19 +1,45 @@
 #!/usr/bin/env bash
 set -u
 
-packcmd="$1"
+function __echo_helptext() {
+  echo "upd - Update packages."
+  echo ""
+  echo "Usage: upd <command> <subcommand>"
+  echo ""
+  echo "command and subcommand:"
+  echo ""
+  echo "  apt                  : Ubuntu package manager."
+  echo "      without_arguments: update and upgrade."
+  echo "      full             : update and full-upgrade and clean."
+}
 
-if [[ "$packcmd" =~ apt ]];then
-  sudo apt update
-  if [[ ! "$packcmd" =~ full ]];then
-    sudo apt -y upgrade
+function __upd_apt() {
+  if [[ "$#" -eq 0 ]]; then
+    sudo apt update && sudo apt -y upgrade
+  elif [[ "$1" = 'full' ]]; then
+    if (sudo apt update); then
+      sudo apt -y full-upgrade
+      sudo apt -y autoremove
+      sudo apt -y autoclean
+    fi
   else
-    sudo apt -y full-upgrade
-    sudo apt -y autoremove
-    sudo apt -y autoclean
+    __echo_helptext
   fi
-  # apt-file
-  sudo apt-file update
+}
+
+if [[ "$#" -eq 0 ]] || [[ "$#" -ge 3 ]]; then
+  __echo_helptext
+  exit 1
 fi
 
-# end
+cmd="$1"
+shift 1
+
+if [[ "$cmd" = 'apt' ]]; then
+  __upd_apt "$@"
+else
+  __echo helptext
+  exit 1
+fi
+
+# EOF
