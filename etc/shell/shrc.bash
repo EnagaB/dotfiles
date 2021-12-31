@@ -70,9 +70,9 @@ if [[ ! -z "${WSLENV:-}" ]] ; then
 fi
 
 # text editor
-function __df::func_emacs_readonly() { emacs -nw "$@" --eval '(setq buffer-read-only t)' ; }
+function __df_emacs_readonly() { emacs -nw "$@" --eval '(setq buffer-read-only t)' ; }
 alias em='emacs -nw'
-alias emr='__df::func_emacs_readonly'
+alias emr='__df_emacs_readonly'
 alias vi='nvim'
 alias vir='nvim -M'
 alias emacs='__guiapp_background emacs'
