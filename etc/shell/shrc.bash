@@ -79,7 +79,7 @@ alias emacs='__guiapp_background emacs'
 alias gvim='__guiapp_background gvim'
 
 # image editor/viewer
-alias inkscape='__guiapp_background inkscape -f'
+alias inkscape='__guiapp_background inkscape'
 alias feh='__guiapp_background feh'
 alias eog='__guiapp_background eog'
 alias evince='__guiapp_background evince'
