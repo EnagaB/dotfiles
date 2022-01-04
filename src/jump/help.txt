@@ -1,0 +1,14 @@
+jump - Save and load key and path.
+
+Usage: jump <keypaths_filepath> <command> <key>
+<command> and <key> are optional arguments.
+
+<command>:
+  add        : Add key and path of current directory to file.
+  rm         : Remove key and its path in file.
+  rep        : rm + add.
+  jump       : output path corresponding to key.
+  show       : Display files.
+  help       : Display help text.
+  <otherwise>: <command> = jump and given <command> (second argument) is key.
+  <not_given>: <command> = show.

@@ -122,12 +122,12 @@ alias ln='ln -snf'
 alias unlinknull='find . -maxdepth 1 -xtype l | xargs rm'
 
 ### jump: record path (add/rm) and cd record-path
-declare -r __jump_file=${HOME}/.jump
-function __jumpfunc() {
-  local tmp=$(__jump.out "$__jump_file" "${1:-}" "${2:-}")
+declare -r __jump_file=${HOME}/.jumplist
+function __df_jumpfunc() {
+  local tmp=$(__jump.out "$__jump_file" "$@")
   [[ -d "$tmp" ]] && cd "$tmp" || echo "$tmp"
 }
-alias jj="__jumpfunc"
+alias jj='__df_jumpfunc'
 
 ### programming
 # parameters
