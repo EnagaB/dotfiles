@@ -1,0 +1,18 @@
+# Install packages in this list and derived packages which version is same.
+
+# shell
+zsh
+
+# editor
+nano
+vim
+
+# programing
+cygport
+python (latest)
+
+# other
+tmux
+git
+
+# EOF
