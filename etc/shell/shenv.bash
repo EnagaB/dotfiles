@@ -16,7 +16,9 @@ export T=$TRASHBOX
 ### PATH
 [[ -d "${DOTFILES}/bin" ]]  && export PATH=$PATH:${DOTFILES}/bin
 [[ -d "${LOCAL}/bin" ]] && export PATH=$PATH:${LOCAL}/bin
-[[ -d "${HOME}/.cargo/env" ]] && . ${HOME}/.cargo/env
+# Rust
+[[ -f "${HOME}/.cargo/env" ]] && . ${HOME}/.cargo/env
+# Go
 [[ -d "${LOCAL}/go/bin" ]] && export PATH=$PATH:${LOCAL}/go/bin
 
 ### shell
