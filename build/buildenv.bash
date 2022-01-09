@@ -12,7 +12,7 @@ if [ "$EUID" -eq 0 ];then
   echo "Please run as non-root"
   exit 1
 fi
-# bash (assump 4)
+# bash
 if ! ps --pid $$ -o command | tail -1 | grep  '^bash' &> /dev/null ;then
   echo "err: not bash"
   exit 1
