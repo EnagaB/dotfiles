@@ -13,7 +13,7 @@ if [ "$EUID" -eq 0 ];then
   exit 1
 fi
 # bash
-if ! ps --pid $$ -o command | tail -1 | grep  '^bash' &> /dev/null ;then
+if ! ps --p $$ -o command | tail -1 | grep  '^bash' &> /dev/null ;then
   echo "err: not bash"
   exit 1
 fi
