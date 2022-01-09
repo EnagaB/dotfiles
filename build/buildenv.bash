@@ -18,6 +18,16 @@ if ! ps --pid $$ -o command | tail -1 | grep  '^bash' &> /dev/null ;then
   exit 1
 fi
 
+# get option
+for opt in "$@"; do
+  case "$opt" in
+    --no-admin) declare -r use_admin=false ;;
+    --no-install) declare -r install_packages=false ;;
+  esac
+done
+[[ ! -v use_admin ]] && declare -r use_admin=true
+[[ ! -v install_packages ]] && declare -r install_packages=true
+
 ### path
 # dir
 declare -r spt=$(cd $(dirname ${BASH_SOURCE[0]:-$0}); pwd)
@@ -51,9 +61,16 @@ cd $df
 . $sh_mkdir_init
 
 ### install packages
-type apt &> /dev/null && . $sh_apt_install
-type curl &> /dev/null && . $sh_curl_install
-type git &> /dev/null && . $sh_git_install
+$install_package && \
+  $use_admin && \
+  type apt &> /dev/null && \
+  . $sh_apt_install
+$install_package && \
+  type curl &> /dev/null && \
+  . $sh_curl_install
+t$install_package && \
+  type git &> /dev/null && \
+  . $sh_git_install
 
 ### build
 type g++ &> /dev/null && . $sh_cpp_build
