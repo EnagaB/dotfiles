@@ -23,10 +23,18 @@ for opt in "$@"; do
   case "$opt" in
     --no-admin) declare -r use_admin=false ;;
     --no-install) declare -r install_packages=false ;;
+    *)
+      echo "Error: Option ${opt} is not implemented."
+      exit 1
+      ;;
   esac
 done
 [[ ! -v use_admin ]] && declare -r use_admin=true
 [[ ! -v install_packages ]] && declare -r install_packages=true
+
+# os
+[[ $(uname -s) =~ ^CYGWIN ]] && declare -r os='cygwin'
+[[ ! -v os ]] && declare -r os='ubuntu'
 
 ### path
 # dir
@@ -61,14 +69,18 @@ cd $df
 . $sh_mkdir_init
 
 ### install packages
-$install_package && \
+# apt
+[[ "$os" = 'ubuntu' ]] && \
+  $install_package && \
   $use_admin && \
   type apt &> /dev/null && \
   . $sh_apt_install
+# curl
 $install_package && \
   type curl &> /dev/null && \
   . $sh_curl_install
-t$install_package && \
+# git
+$install_package && \
   type git &> /dev/null && \
   . $sh_git_install
 
