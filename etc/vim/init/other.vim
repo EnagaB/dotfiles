@@ -19,7 +19,9 @@ set hidden
 set whichwrap=b,s,h,l,<,>,[,]
 set backspace=indent,eol,start
 set clipboard&
-set clipboard^=unnamedplus
+if has('unnamedplus')
+  set clipboard^=unnamedplus
+endif
 set visualbell
 set viminfo=
 set noundofile
