@@ -2,11 +2,11 @@
 
 ### usr local env variables
 # dotfiles
-export DOTFILES=${HOME}/df
+export DOTFILES="${HOME}/df"
 # local directories
-export LOCAL=${HOME}/.local
-export TRASHBOX=${HOME}/.t
-export T=$TRASHBOX
+export LOCAL="${HOME}/.local"
+export TRASHBOX="${HOME}/.t"
+export T="$TRASHBOX"
 
 ### font color (escape-sequence \e[3(COL1/2/3)m)
 # export COL1=2 COL2=3 COL3=6
@@ -14,18 +14,18 @@ export T=$TRASHBOX
 # export ELIB_BASH=${DOTFILES}/lib/shell/elib.bash
 
 ### PATH
-[[ -d "${DOTFILES}/bin" ]]  && export PATH=$PATH:${DOTFILES}/bin
-[[ -d "${LOCAL}/bin" ]] && export PATH=$PATH:${LOCAL}/bin
+[[ -d "${DOTFILES}/bin" ]]  && export PATH=$PATH:"${DOTFILES}/bin"
+[[ -d "${LOCAL}/bin" ]] && export PATH=$PATH:"${LOCAL}/bin"
 # Rust
-[[ -f "${HOME}/.cargo/env" ]] && . ${HOME}/.cargo/env
+[[ -f "${HOME}/.cargo/env" ]] && . "${HOME}/.cargo/env"
 # Go
-[[ -d "${LOCAL}/go/bin" ]] && export PATH=$PATH:${LOCAL}/go/bin
+[[ -d "${LOCAL}/go/bin" ]] && export PATH=$PATH:"${LOCAL}/go/bin"
 
 ### shell
-export DOTSH=${DOTFILES}/etc/shell
-export BASH_ENV=${DOTSH}/.bashenv
-export ZDOTDIR=${DOTSH}
-[[ -z "$ZDOTDIR" ]] && export ZDOTDIR=$HOME
+export DOTSH="${DOTFILES}/etc/shell"
+export BASH_ENV="${DOTSH}/.bashenv"
+export ZDOTDIR="${DOTSH}"
+[[ -z "$ZDOTDIR" ]] && export ZDOTDIR="$HOME"
 
 # terminal
 export TERM=xterm-256color
@@ -43,13 +43,13 @@ which lesspipe &>/dev/null && [[ -x "$(which lesspipe)" ]] && eval "$(SHELL=/bin
 
 ### gnuplot
 export GNUTERM=x11
-export GNUPLOT_LIB=${DOTFILES}/lib/gnuplot
+export GNUPLOT_LIB="${DOTFILES}/lib/gnuplot"
 
 ### C/C++
-export C_INCLUDE_PATH=${DOTFILES}/lib/c/include
-export CPLUS_INCLUDE_PATH=${C_INCLUDE_PATH}
+export C_INCLUDE_PATH="${DOTFILES}/lib/c/include"
+export CPLUS_INCLUDE_PATH="${C_INCLUDE_PATH}"
 # local
-export CPLUS_INCLUDE_PATH=${CPLUS_INCLUDE_PATH}:~/.local/include
+export CPLUS_INCLUDE_PATH=${CPLUS_INCLUDE_PATH}:"~/.local/include"
 # opencv
 export CPLUS_INCLUDE_PATH=${CPLUS_INCLUDE_PATH}:/usr/include/opencv4
 
@@ -72,7 +72,7 @@ export DefaultIMModule=fcitx
 
 ### others
 # tex/latex library directory
-export TEXMFHOME=${DOTFILES}/lib/tex/texmf
+export TEXMFHOME="${DOTFILES}/lib/tex/texmf"
 # w3m
 export WWW_HOME="https://www.google.com"
 # XDG Base Directory

@@ -34,7 +34,7 @@ declare -r __kernel_name=$(uname -s)
 [[ -t 0 ]] && stty -ixon
 
 # LS_COLORS
-eval $(dircolors -b ${HOME}/.dir_colors)
+eval $(dircolors -b "${HOME}/.dir_colors")
 
 ### tmux
 alias tmux.attach='tmux a'
@@ -132,7 +132,7 @@ alias ln='ln -snf'
 alias unlinknull='find . -maxdepth 1 -xtype l | xargs rm'
 
 ### jump: record path (add/rm) and cd record-path
-declare -r __jump_file=${HOME}/.jumplist
+declare -r __jump_file="${HOME}/.jumplist"
 function __df_jumpfunc() {
   local tmp=$(__jump.out "$__jump_file" "$@")
   [[ -d "$tmp" ]] && cd "$tmp" || echo "$tmp"
