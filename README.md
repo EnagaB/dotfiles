@@ -11,6 +11,8 @@ Build my environment.
 
 ## Notes
 
+**Never include spaces in username.**
+
 Set zsh as login shell.
 ```
 chsh -s $(which zsh)
