@@ -12,11 +12,6 @@ if [ "$EUID" -eq 0 ];then
   echo "Please run as non-root"
   exit 1
 fi
-# bash
-if ! ps --p $$ -o command | tail -1 | grep  '^bash' &> /dev/null ;then
-  echo "err: not bash"
-  exit 1
-fi
 
 # get option
 for opt in "$@"; do
