@@ -112,13 +112,6 @@ alias svg='__guiapp_background inkscape'
 # alias shutdown='sudo shutdown -h now'
 # alias reboot='sudo shutdown -r now'
 alias relogin='exec $SHELL -l'
-# package
-alias apt.install='sudo apt install'
-alias apt.rm='sudo apt remove'
-alias apt.show='apt show'
-alias apt.search='apt search'
-alias apt.upgrade='__upgrade.bash apt'
-alias apt.upgrade.full='__upgrade.bash apt-full'
 # clipboard copy
 alias cb='head -c -1 | xsel --clipboard --input'
 
