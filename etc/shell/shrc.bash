@@ -25,6 +25,11 @@ declare -r __python_defver=python3.9
 [[ ! -z "${BASH_VERSION:-}" ]] && declare -r __shell='bash'
 [[ ! -z  "${ZSH_VERSION:-}" ]] && declare -r __shell='zsh'
 
+# os
+declare -r __kernel_name=$(uname -s)
+[[ "$__kernel_name" =~ ^CYGWIN ]] && declare -r __os='cygwin'
+[[ ! -v __os ]] && declare -r __os='ubuntu'
+
 # stty
 [[ -t 0 ]] && stty -ixon
 
@@ -66,7 +71,12 @@ if [[ ! -z "${WSLENV:-}" ]] ; then
   fi
   ### wsl alias
   # filer
-  alias we='/mnt/c/Windows/explorer.exe .'
+  alias wf='/mnt/c/Windows/explorer.exe .'
+fi
+
+# Cygwin
+if [[ "__os" = 'cygwin' ]]; then
+  alias wf='/cygdrive/c/Windows/explorer.exe .'
 fi
 
 # text editor
