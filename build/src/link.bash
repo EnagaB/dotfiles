@@ -16,13 +16,13 @@ for ff in "${link_tohome[@]}"; do
   [[ "${ffbase}" = '.gitmodules' ]] && continue
   [[ "${ffbase}" = '.DS_Store'   ]] && continue
   [[ "${ffbase}" = '.travis.yml' ]] && continue
-  ${lncmd[@]} $ff ${HOME}/$(basename $ff)
+  ${lncmd[@]} "$ff" "${HOME}/$(basename $ff)"
 done
 
 # link to any
 for ((ii=0; ii<"${#link_toany[@]}"; ++ii)); do
   [[ $((ii%2)) -eq 1 ]] && continue
-  ${lncmd[@]} ${link_toany[$ii]} ${link_toany[$((ii+1))]}
+  ${lncmd[@]} "${link_toany[$ii]}" "${link_toany[$((ii+1))]}"
 done
 
 # EOF
