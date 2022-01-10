@@ -83,8 +83,13 @@ fi
 function __df_emacs_readonly() { emacs -nw "$@" --eval '(setq buffer-read-only t)' ; }
 alias em='emacs -nw'
 alias emr='__df_emacs_readonly'
-alias vi='nvim'
-alias vir='nvim -M'
+if [[ "__os" = 'cygwin' ]]; then
+  alias vi='vim -X'
+  alias vir='vim -X -M'
+else
+  alias vi='nvim'
+  alias vir='nvim -M'
+fi
 alias emacs='__guiapp_background emacs'
 alias gvim='__guiapp_background gvim'
 
