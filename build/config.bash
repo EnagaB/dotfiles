@@ -4,21 +4,21 @@ set -u
 ### make init dir
 declare -ar make_initdir=(
   # local
-  ${loc}/bin
-  ${loc}/etc
-  ${loc}/lib
-  ${loc}/share
-  ${loc}/src
-  ${loc}/include
-  ${loc}/tmp
+  "${loc}/bin"
+  "${loc}/etc"
+  "${loc}/lib"
+  "${loc}/share"
+  "${loc}/src"
+  "${loc}/include"
+  "${loc}/tmp"
   # trashbox
-  ${tbox}
+  "${tbox}"
   # ~/.config
-  ${appconfig}/nvim
-  ${appconfig}/zathura
+  "${appconfig}/nvim"
+  "${appconfig}/zathura"
   # other
-  ${HOME}/.fonts
-  ${HOME}/.w3m
+  "${HOME}/.fonts"
+  "${HOME}/.w3m"
 )
 
 ### apt
@@ -129,30 +129,29 @@ declare -ar fonts_url=(
 
 ### link
 declare -ar link_tohome=(
-  ${df}/.*
-  ${dfetc}/tmux/.*
-  ${dfetc}/tex/.*
-  ${dfetc}/gnuplot/.*
-  # shell
-  ${dfsh}/.inputrc
-  ${dfsh}/.bashrc
-  ${dfsh}/.bash_profile
-  ${dfsh}/.sudo_as_admin_successful
-  ${dfsh}/.zshenv
-  ${dfsh}/.dir_colors
+  "${dfetc}/tmux/.tmux.conf"
+  "${dfetc}/tex/.latexmkrc"
+  "${dfetc}/gnuplot/.gnuplot"
+  "${dfetc}/gnuplot/.gnuplot-wxt"
+  "${dfsh}/.inputrc"
+  "${dfsh}/.bashrc"
+  "${dfsh}/.bash_profile"
+  "${dfsh}/.sudo_as_admin_successful"
+  "${dfsh}/.zshenv"
+  "${dfsh}/.dir_colors"
 )
 declare -ar link_toany=(
-  ${dfetc}/template          ${HOME}/.template
-  ${dfetc}/zathurarc         ${appconfig}/zathura/zathurarc
+  "${dfetc}/template"          "${HOME}/.template"
+  "${dfetc}/zathurarc"         "${appconfig}/zathura/zathurarc"
   # w3m (not link directory, for cookie, history, ...)
-  ${dfetc}/w3m/bookmark.html ${HOME}/.w3m/bookmark.html
-  ${dfetc}/w3m/keymap        ${HOME}/.w3m/keymap
+  "${dfetc}/w3m/bookmark.html" "${HOME}/.w3m/bookmark.html"
+  "${dfetc}/w3m/keymap"        "${HOME}/.w3m/keymap"
   # editor
-  ${dfetc}/emacs      ${HOME}/.emacs.d
-  ${dfetc}/vim        ${HOME}/.vim
-  ${HOME}/.vim/vimrc  ${HOME}/.vimrc
-  ${HOME}/.vim/gvimrc ${HOME}/.gvimrc
-  ${HOME}/.vim/vimrc  ${appconfig}/nvim/init.vim
+  "${dfetc}/emacs"      "${HOME}/.emacs.d"
+  "${dfetc}/vim"        "${HOME}/.vim"
+  "${HOME}/.vim/vimrc"  "${HOME}/.vimrc"
+  "${HOME}/.vim/gvimrc" "${HOME}/.gvimrc"
+  "${HOME}/.vim/vimrc"  "${appconfig}/nvim/init.vim"
 )
 
 # EOF
