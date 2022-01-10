@@ -55,34 +55,34 @@ declare -r sh_git_install=${src}/git_install.bash
 declare -r sh_cpp_build=${src}/cpp_build.bash
 
 ### WD
-cd $df
+cd "$df"
 
 ### source parameters/config
 . "$config"
 
 ### make dirs
-. $sh_mkdir_init
+. "$sh_mkdir_init"
 
 ### install packages
 # apt
 [[ "$os" = 'ubuntu' ]] && \
-  $install_package && \
-  $use_admin && \
+  "$install_package" && \
+  "$use_admin" && \
   type apt &> /dev/null && \
-  . $sh_apt_install
+  . "$sh_apt_install"
 # curl
-$install_package && \
+"$install_package" && \
   type curl &> /dev/null && \
-  . $sh_curl_install
+  . "$sh_curl_install"
 # git
-$install_package && \
+"$install_package" && \
   type git &> /dev/null && \
-  . $sh_git_install
+  . "$sh_git_install"
 
 ### build
-type g++ &> /dev/null && . $sh_cpp_build
+type g++ &> /dev/null && . "$sh_cpp_build"
 
 ### link
-. $sh_link
+. "$sh_link"
 
 # EOF
