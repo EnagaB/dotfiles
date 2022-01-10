@@ -51,10 +51,10 @@ fi
 
 ### packages
 # enhancd
-if [[ -d "${LOCAL}/src/enhancd" ]] ; then
-  export ENHANCD_FILTER=fzf:fzy:peco
-  SHELL="/bin/${__shell}" . "${LOCAL}/src/enhancd/init.sh"
-fi
+# if [[ -d "${LOCAL}/src/enhancd" ]] ; then
+#   export ENHANCD_FILTER=fzf:fzy:peco
+#   SHELL="/bin/${__shell}" . "${LOCAL}/src/enhancd/init.sh"
+# fi
 
 ### WSL
 if [[ ! -z "${WSLENV:-}" ]] ; then
