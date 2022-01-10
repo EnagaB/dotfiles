@@ -38,7 +38,7 @@ shift 1
 if [[ "$cmd" = 'apt' ]]; then
   __upd_apt "$@"
 else
-  __echo helptext
+  __echo_helptext
   exit 1
 fi
 
