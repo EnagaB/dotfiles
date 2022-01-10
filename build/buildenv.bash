@@ -66,16 +66,16 @@ cd "$df"
 ### install packages
 # apt
 [[ "$os" = 'ubuntu' ]] && \
-  "$install_package" && \
+  "$install_packages" && \
   "$use_admin" && \
   type apt &> /dev/null && \
   . "$sh_apt_install"
 # curl
-"$install_package" && \
+"$install_packages" && \
   type curl &> /dev/null && \
   . "$sh_curl_install"
 # git
-"$install_package" && \
+"$install_packages" && \
   type git &> /dev/null && \
   . "$sh_git_install"
 
