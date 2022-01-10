@@ -109,8 +109,8 @@ alias pdf='__guiapp_background zathura'
 alias svg='__guiapp_background inkscape'
 
 ### alias/function for PC/shell/terminal/clipboard
-alias shutdown='sudo shutdown -h now'
-alias reboot='sudo shutdown -r now'
+# alias shutdown='sudo shutdown -h now'
+# alias reboot='sudo shutdown -r now'
 alias relogin='exec $SHELL -l'
 # package
 alias apt.install='sudo apt install'
