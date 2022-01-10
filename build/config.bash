@@ -120,7 +120,7 @@ declare -ar apt_packs=(
 ### other packages
 declare -r curl_latest_neovim=false
 declare -r git_fzf=true
-declare -r git_enhancd=true
+declare -r git_enhancd=false
 # fonts
 declare -ar fonts_url=(
   'https://github.com/yuru7/HackGen/releases/download/v2.5.2/HackGenNerd_v2.5.2.zip'
