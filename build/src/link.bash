@@ -6,7 +6,7 @@ declare -r lncmd=("ln" "-snfv")
 
 # link to home
 for ff in "${link_tohome[@]}"; do
-  ffbase=$(basename $ff)
+  ffbase=$(basename "$ff")
   [[ "${ffbase}" = '.'           ]] && continue
   [[ "${ffbase}" = '..'          ]] && continue
   [[ "${ffbase}" = '.git'        ]] && continue
