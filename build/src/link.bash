@@ -16,7 +16,7 @@ for ff in "${link_tohome[@]}"; do
   [[ "${ffbase}" = '.gitmodules' ]] && continue
   [[ "${ffbase}" = '.DS_Store'   ]] && continue
   [[ "${ffbase}" = '.travis.yml' ]] && continue
-  ${lncmd[@]} "$ff" "${HOME}/$(basename $ff)"
+  ${lncmd[@]} "$ff" "${HOME}/${ffbase}"
 done
 
 # link to any
