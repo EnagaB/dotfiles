@@ -125,7 +125,6 @@ alias cb='head -c -1 | xsel --clipboard --input'
 ### alias/function for cd/ls/mkdir/link
 alias j='builtin cd'
 alias jb='builtin cd ..'
-alias J='__enhancd::cd'
 alias l='ls --color=auto' ls='ls --color=auto' sl='ls --color=auto'
 alias la='ls -A --color=auto'
 alias lb='ls -d --color=auto .*'
