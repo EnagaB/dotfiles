@@ -87,8 +87,13 @@ if [[ "$__os" = 'cygwin' ]]; then
   alias vi='vim -X'
   alias vir='vim -X -M'
 else
-  alias vi='nvim'
-  alias vir='nvim -M'
+  if $(which nvim &> /dev/null); then
+    alias vi='nvim'
+    alias vir='nvim -M'
+  else
+    alias vi='vim'
+    alias vir='vim -M'
+  fi
 fi
 alias emacs='__guiapp_background emacs'
 alias gvim='__guiapp_background gvim'
