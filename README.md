@@ -6,7 +6,7 @@ git clone https://github.com/EnagaB/df.git ~
 ```
 Build my environment.
 ```
-~/df/build/buildenv.bash [--no-admin] [--no-install]
+bash ~/df/build/buildenv.bash [--no-admin] [--no-install]
 ```
 
 ## Notes
@@ -27,7 +27,7 @@ In vim/neovim, install packages.
 **Create Cygwin without administrative privileges.**<br>
 Download `setup-x86_64.exe` from Cygwin homepage. In powershell,
 ```
-> setup-x86_64.exe --no-admin
+setup-x86_64.exe --no-admin
 ```
 This command is also used when install packages.
 
