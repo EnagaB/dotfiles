@@ -75,7 +75,7 @@ if [[ ! -z "${WSLENV:-}" ]] ; then
 fi
 
 # Cygwin
-if [[ "__os" = 'cygwin' ]]; then
+if [[ "$__os" = 'cygwin' ]]; then
   alias wf='/cygdrive/c/Windows/explorer.exe .'
 fi
 
@@ -83,7 +83,7 @@ fi
 function __df_emacs_readonly() { emacs -nw "$@" --eval '(setq buffer-read-only t)' ; }
 alias em='emacs -nw'
 alias emr='__df_emacs_readonly'
-if [[ "__os" = 'cygwin' ]]; then
+if [[ "$__os" = 'cygwin' ]]; then
   alias vi='vim -X'
   alias vir='vim -X -M'
 else
