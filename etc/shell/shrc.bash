@@ -141,6 +141,9 @@ function __df_jumpfunc() {
 }
 alias jj='__df_jumpfunc'
 
+# package manager
+alias apt='__apt_wrapper'
+
 ### programming
 # parameters
 declare -r __pg_cout_file='cout.txt'
