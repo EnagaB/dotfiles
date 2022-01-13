@@ -19,6 +19,12 @@ const string REPLACE_CMD = "rep";
 const string JUMP_CMD = "jump";
 const string SHOW_CMD = "show";
 const string HELP_CMD = "help";
+const vector<string> CMD_LIST = {ADD_CMD,
+                                 REMOVE_CMD,
+                                 REPLACE_CMD,
+                                 JUMP_CMD,
+                                 SHOW_CMD,
+                                 HELP_CMD};
 
 // help file path
 const char *DOTFILES = getenv("DOTFILES");
@@ -133,7 +139,35 @@ bool replace_key(map<string, path> &keypath, string key) {
   return remove_key(keypath, key) && add_key(keypath, key);
 }
 
+void get_args(int argc, char* argv[], path &keypath_path, string &cmd, string &key) {
+  if (argc == 1 || argc > 4) {
+    output_errmsg("Num of arguments is wrong.");
+    output_help();
+    return 1;
+  }
+  keypath_path = argv[1];
+  vector<string> cmd_list = {ADD_CMD, REMOVE_CMD, REPLACE_CMD, JUMP_CMD, SHOW_CMD, HELP_CMD};
+  if (argc == 2) {
+    cmd = "show";
+  }
+  else if (argc == 3) {
+    cmd = argv[2];
+    if (find(cmd_list.begin(), cmd_list.end(), cmd) == cmd_list.end()) {
+      cmd = "jump";
+      key = argv[2];
+    }
+  }
+  else { // argc = 4
+    cmd = argv[2];
+    key = argv[3];
+  }
+}
+
 int main(int argc, char* argv[]) {
+  path keypath_path;
+  string cmd, key;
+  get_args(argc, argv, keypath_path, cmd, key);
+
   // get arguments
   if (argc == 1 || argc > 4) {
     output_errmsg("Num of arguments is wrong.");
