@@ -1,229 +1,212 @@
 // Compile command:
-//   > g++ -std=c++17 <this> -o <output_path>
+//   > g++ -std=c++17 -Wall <this> -o <output_path>
 
 #include <iostream>
 #include <fstream>
-#include <vector>
-#include <algorithm>
-#include <string>
+#include <cstdlib>
 #include <map>
+#include <string>
+#include <set>
+#include <algorithm>
 #include <filesystem>
+#include <stdexcept>
 
 using namespace std;
 using namespace std::filesystem;
+using cmdfunc = void (*)(map<string, path> &pathmap, string key);
+using cmdfunc_nokey = void (*)(map<string, path> &pathmap);
 
-// parameter
-const string ADD_CMD = "add";
-const string REMOVE_CMD = "rm";
-const string REPLACE_CMD = "rep";
-const string JUMP_CMD = "jump";
-const string SHOW_CMD = "show";
-const string HELP_CMD = "help";
-const vector<string> CMD_LIST = {ADD_CMD,
-                                 REMOVE_CMD,
-                                 REPLACE_CMD,
-                                 JUMP_CMD,
-                                 SHOW_CMD,
-                                 HELP_CMD};
+// command function prototypes
+void add_key(map<string, path> &pathmap, string key);
+void remove_key(map<string, path> &pathmap, string key);
+void show_path(map<string, path> &pathmap, string key);
+void show_file(map<string, path> &pathmap);
+void output_help();
 
-// help file path
+// parameters
+map<string, pair<cmdfunc, set<string>>> CMDS = {
+  {"add", make_pair(add_key, set<string>{"update"})},
+  {"rm", make_pair(remove_key, set<string>{"update"})},
+  {"jump", make_pair(show_path, set<string>{})}
+};
+map<string, pair<cmdfunc_nokey, set<string>>> PATHMAP_CMDS = {
+  {"show", make_pair(show_file, set<string>{})}
+};
+map<string, pair<void (*)(), set<string>>> OTHER_CMDS = {
+  {"help", make_pair(output_help, set<string>{})}
+};
 const char *DOTFILES = getenv("DOTFILES");
 static path HELP_PATH = path(DOTFILES).append("src/jump/help.txt");
 
-// outputs
-void output_errmsg(string msg) { cerr << "Error: " << msg; }
+// command functions
+void add_key(map<string, path> &pathmap, string key) {
+  if (pathmap.count(key)) {
+    string msg("Input key exists in pathmap file.");
+    throw runtime_error(msg);
+  }
+  pathmap.emplace(key, current_path());
+  cout << "Add input key and current path to pathmap file." << endl;
+}
 
-bool output_help() {
+void remove_key(map<string, path> &pathmap, string key) {
+  if (! pathmap.count(key)) {
+    string msg("Input key does not exist in pathmap file.");
+    throw runtime_error(msg);
+  }
+  pathmap.erase(key);
+  cout << "Remove input key and its path in file." << endl;
+}
+
+void show_path(map<string, path> &pathmap, string key) {
+  if (! pathmap.count(key)) {
+    string msg("Input key does not exist in pathmap file.");
+    throw runtime_error(msg);
+  }
+  if (! is_directory(pathmap[key])) {
+    string msg("Path of input key does not exist.");
+    throw runtime_error(msg);
+  }
+  cout << pathmap[key].string() << endl;
+}
+
+void show_file(map<string, path> &pathmap) {
+  int maxlen_keys=0;
+  for (const auto& [kk, pp]: pathmap) {
+    maxlen_keys=max(maxlen_keys, (int)kk.length());
+  }
+  for (const auto& [kk, pp]: pathmap) {
+    cout << setw(maxlen_keys) << left << kk << ": " << pp.string() << endl;
+  }
+}
+
+void output_help() {
   ifstream help_file(HELP_PATH);
   if (! help_file) {
-    output_errmsg("Cannot open help file.");
-    cerr << "Help file path: " << HELP_PATH.string() << endl;
-    return false;
+    string msg("Cannot open help file.");
+    msg += " Help filepath: " + HELP_PATH.string();
+    throw runtime_error(msg);
   }
   string help_line;
   while (getline(help_file, help_line)) {
     cout << help_line << endl;
   }
-  return true;
 }
 
-// load keypath file
-map<string, path> get_keypath(path keypath_path) {
-  map<string, path> keypath;
-  // if file does not exist, create.
-  if (! exists(keypath_path)) {
-    ofstream tmp(keypath_path);
+// is exist
+bool is_cmd_exist(string cmd) {
+  if (CMDS.find(cmd) != CMDS.end() || 
+      PATHMAP_CMDS.find(cmd) != PATHMAP_CMDS.end() ||
+      OTHER_CMDS.find(cmd) != OTHER_CMDS.end()) {
+    return true;
+  }
+  return false;
+}
+
+bool is_cmd_exist_nokey(string cmd) {
+  if (PATHMAP_CMDS.find(cmd) != PATHMAP_CMDS.end() ||
+      OTHER_CMDS.find(cmd) != OTHER_CMDS.end()) {
+    return true;
+  }
+  return false;
+}
+
+// save and load file
+map<string, path> load_pathmap_file(path pathmap_filepath) {
+  map<string, path> pathmap;
+  // if pathmap_file does not exist, create.
+  if (! exists(pathmap_filepath)) {
+    ofstream tmp(pathmap_filepath);
     tmp.close();
-    return keypath;
+    return pathmap;
   }
-  ifstream keypath_file(keypath_path);
-  if (! keypath_file) {
-    output_errmsg("Cannot open keypath file.");
-    cerr << "Keypath file path: " << keypath_path.string() << endl;
-    exit(1);
+  ifstream pathmap_file(pathmap_filepath);
+  if (! pathmap_file) {
+    string msg;
+    msg = "Cannot open file for loading pathmap.";
+    msg += " File path: " + pathmap_filepath.string();
+    throw runtime_error(msg);
   }
-  string wkey, line;
+  string wkey;
   path wpath;
   bool even = false;
-  while (getline(keypath_file, line)) {
-    if (! even) {
-      even = true;
-      wkey = line;
-    }
+  string fileline;
+  while (getline(pathmap_file, fileline)) {
+    if (! even) { wkey = fileline; }
     else {
-      even = false;
-      wpath = line;
-      keypath.emplace(wkey, wpath);
+      wpath = fileline;
+      pathmap.emplace(wkey, wpath);
     }
+    even = ! even;
   }
-  return keypath;
+  return pathmap;
 }
 
-// write keypath file
-void write_file(path keypath_path, map<string, path> &keypath) {
-  ofstream keypath_file(keypath_path);
-  if (! keypath_file) {
-    output_errmsg("Cannot open keypath file.");
+void save_pathmap_file(path pathmap_filepath, map<string, path> &pathmap) {
+  ofstream pathmap_file(pathmap_filepath);
+  if (! pathmap_file) {
+    string msg;
+    msg = "Cannot open file for saving pathmap.";
+    msg += " File path: " + pathmap_filepath.string();
+    throw runtime_error(msg);
   }
-  for (const auto& [kk, pp]: keypath) {
-    keypath_file << kk << endl;
-    keypath_file << pp.string() << endl;
-  }
-}
-
-// jump commands
-void show_file(map<string, path> &keypath) {
-  int maxlen_keys=0;
-  for (const auto& [kk, pp]: keypath) {
-    maxlen_keys=max(maxlen_keys, (int)kk.length());
-  }
-  for (const auto& [kk, pp]: keypath) {
-    cout << setw(maxlen_keys) << left << kk << ": " << pp.string() << endl;
+  for (const auto& [kk, pp]: pathmap) {
+    pathmap_file << kk << endl;
+    pathmap_file << pp.string() << endl;
   }
 }
 
-bool show_path(map<string, path> &keypath, string key) {
-  if (! keypath.count(key)) {
-    output_errmsg("Input key does not exist in file.");
-    return false;
-  }
-  if (! is_directory(keypath[key])) {
-    output_errmsg("Path of input key does not exist.");
-    return false;
-  }
-  cout << keypath[key].string() << endl;
-  return true;
-}
-
-bool add_key(map<string, path> &keypath, string key) {
-  if (keypath.count(key)) {
-    output_errmsg("Input key exists in file.");
-    return false;
-  }
-  keypath.emplace(key, current_path());
-  cout << "Add input key to file." << endl;
-  return true;
-}
-
-bool remove_key(map<string, path> &keypath, string key) {
-  if (! keypath.count(key)) {
-    output_errmsg("Input key does not exist in file.");
-    return false;
-  }
-  keypath.erase(key);
-  cout << "Remove input key in file." << endl;
-  return true;
-}
-
-bool replace_key(map<string, path> &keypath, string key) {
-  return remove_key(keypath, key) && add_key(keypath, key);
-}
-
-void get_args(int argc, char* argv[], path &keypath_path, string &cmd, string &key) {
+// get arguments
+tuple<path, string, string> get_args(int argc, char* argv[]) {
   if (argc == 1 || argc > 4) {
-    output_errmsg("Num of arguments is wrong.");
-    output_help();
-    return 1;
+    throw invalid_argument("Num of arguments is wrong. See help.");
   }
-  keypath_path = argv[1];
-  vector<string> cmd_list = {ADD_CMD, REMOVE_CMD, REPLACE_CMD, JUMP_CMD, SHOW_CMD, HELP_CMD};
+  path pathmap_filepath(argv[1]);
+  string cmd, key;
   if (argc == 2) {
     cmd = "show";
   }
-  else if (argc == 3) {
+  else if (argc == 3 && is_cmd_exist_nokey(argv[2])) {
     cmd = argv[2];
-    if (find(cmd_list.begin(), cmd_list.end(), cmd) == cmd_list.end()) {
-      cmd = "jump";
-      key = argv[2];
-    }
+  }
+  else if (argc == 3) {
+    cmd = "jump";
+    key = argv[2];
   }
   else { // argc = 4
     cmd = argv[2];
     key = argv[3];
   }
+  if (! is_cmd_exist(cmd)) {
+    string msg;
+    msg = "Given command '" + cmd + "' does not implemented.";
+    throw invalid_argument(msg);
+  }
+  if (is_cmd_exist_nokey(key)) {
+    string msg;
+    msg = "Given key '" + key + "' cannot be used.";
+    msg += " The key is same name as one of nokey_commands";
+    throw invalid_argument(msg);
+  }
+  return {pathmap_filepath, cmd, key};
 }
 
 int main(int argc, char* argv[]) {
-  path keypath_path;
-  string cmd, key;
-  get_args(argc, argv, keypath_path, cmd, key);
-
-  // get arguments
-  if (argc == 1 || argc > 4) {
-    output_errmsg("Num of arguments is wrong.");
-    output_help();
-    return 1;
+  auto [pathmap_filepath, cmd, key] = get_args(argc, argv);
+  map<string, path> pathmap = load_pathmap_file(pathmap_filepath);
+  set<string> attr;
+  if (CMDS.find(cmd) != CMDS.end()) {
+    (*CMDS[cmd].first)(pathmap, key);
+    attr = CMDS[cmd].second;
   }
-  path keypath_path = argv[1];
-  string cmd;
-  string key;
-  vector<string> cmd_list = {ADD_CMD, REMOVE_CMD, REPLACE_CMD, JUMP_CMD, SHOW_CMD, HELP_CMD};
-  if (argc == 2) {
-    cmd = "show";
+  else if (PATHMAP_CMDS.find(cmd) != PATHMAP_CMDS.end()) {
+    (*PATHMAP_CMDS[cmd].first)(pathmap);
+    attr = PATHMAP_CMDS[cmd].second;
   }
-  else if (argc == 3) {
-    cmd = argv[2];
-    if (find(cmd_list.begin(), cmd_list.end(), cmd) == cmd_list.end()) {
-      cmd = "jump";
-      key = argv[2];
-    }
+  else if (OTHER_CMDS.find(cmd) != OTHER_CMDS.end()) {
+    (*OTHER_CMDS[cmd].first)();
+    attr = OTHER_CMDS[cmd].second;
   }
-  else { // argc = 4
-    cmd = argv[2];
-    key = argv[3];
-  }
-  // read file
-  map<string, path> keypath;
-  keypath = get_keypath(keypath_path);
-  // exe
-  bool update_file = false;
-  bool success = false;
-  if (cmd == ADD_CMD) {
-    success = add_key(keypath, key);
-    update_file = true;
-  }
-  else if (cmd == REMOVE_CMD) {
-    success = remove_key(keypath, key);
-    update_file = true;
-  }
-  else if (cmd == REPLACE_CMD) {
-    success = replace_key(keypath, key);
-    update_file = true;
-  }
-  else if (cmd == JUMP_CMD) {
-    success = show_path(keypath, key);
-  }
-  else if (cmd == SHOW_CMD) {
-    show_file(keypath);
-    success = true;
-  }
-  else if (cmd == HELP_CMD) {
-    success = output_help();
-  }
-  // write file
-  if (update_file) { write_file(keypath_path, keypath); }
-  // return
-  if (! success) { return 1; }
+  if (attr.find("update") != attr.end()) { save_pathmap_file(pathmap_filepath, pathmap); }
   return 0;
 }
 
