@@ -6,9 +6,17 @@ Usage: jump <keypaths_filepath> <command> <key>
 <command>:
   add        : Add key and path of current directory to file.
   rm         : Remove key and its path in file.
-  rep        : rm + add.
   jump       : output path corresponding to key.
   show       : Display files.
   help       : Display help text.
-  <otherwise>: <command> = jump and given <command> (second argument) is key.
   <not_given>: <command> = show.
+
+nokey_commands = 'show', 'help'
+The nokey_commands do not require key.
+
+When <command> and <key> are not given, command = 'show'.
+When <key> is not given and <command> is not same name as nokey_command,
+command = 'jump' and key = <command>.
+
+Note:
+  - Cannot use keys with the same name as nokey_commands.
