@@ -1,4 +1,8 @@
 # Dotfiles in Ubuntu and Cygwin
+## TO DO
+- [ ] Create Windows powershell config file for winget, alias, path, etc.
+
+## Usage
 
 Download this repository. and build my environment.
 ```
