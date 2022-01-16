@@ -215,6 +215,7 @@ function __extract() {
 alias cpu='htop'
 alias gpu='intel_gpu_top'
 # alias gpu='nvidia-smi'
+alias disk='df -hP'
 
 ### alias e-cmd
 # bash/zsh alias
@@ -237,7 +238,6 @@ alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias ngrep='grep -v --color=auto'
-alias df='df -hP'
 alias utf8unix='nkf -w -Lu --overwrite'
 alias utf8dos='nkf -w -Lw --overwrite'
 alias sjisdos='nkf -s -Lw --overwrite'
