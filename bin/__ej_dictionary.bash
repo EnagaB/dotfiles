@@ -3,8 +3,8 @@ set -u
 
 # parameters
 declare -ar ejdicts=(
-${LOCAL}/lib/ejdic-eijiro1448-utf8unix.dat
-${DOTFILES}/lib/ejdic-hand-utf8unix.dat
+  "${LOCAL}/lib/ejdic-eijiro1448-utf8unix.dat.gz"
+  "${DOTFILES}/lib/ejdic-hand-utf8unix.dat.gz"
 )
 declare -r stype="$1"
 shift 1
@@ -24,9 +24,9 @@ fi
 # search
 declare -r dfile="$di"
 if [[ "$stype" = 'chars' ]];then
-  grep "$sword" "$dfile" -E -i --color=always | less -R -FX
+  zgrep "$sword" "$dfile" -E -i --color=always | less -R -FX
 elif [[ "$stype" = 'word' ]];then
-  grep "$sword" "$dfile" -E -iw --color=always | less -R -FX
+  zgrep "$sword" "$dfile" -E -iw --color=always | less -R -FX
 fi
 
 # end
