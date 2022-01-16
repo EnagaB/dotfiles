@@ -243,6 +243,9 @@ alias utf8dos='nkf -w -Lw --overwrite'
 alias sjisdos='nkf -s -Lw --overwrite'
 
 # local config
-__shrc_local_last
+declare -r __shrc_loc="${HOME}/.shrc_local.bash"
+[[ ! -f "$__shrc_loc" ]] && cp "${DOTSH}/shrc_local.bash" "$__shrc_loc"
+[[ "$__shell" = 'zsh' ]] && __autozcomp "$__shrc_loc"
+. "$__shrc_loc"
 
 # end

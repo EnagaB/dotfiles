@@ -121,8 +121,6 @@ fi
 ulimit -c 0 # not output core files
 
 # rc
-[[ ! -f "${HOME}/.shrc_local.bash" ]] && cp "${DOTSH}/shrc_local.bash" "${HOME}/.shrc_local.bash"
-. "${HOME}/.shrc_local.bash"
 [[ -f "${DOTSH}/shrc.bash" ]] && source "${DOTSH}/shrc.bash"
 
 # EOF
