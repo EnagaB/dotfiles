@@ -2,8 +2,6 @@
 # source in (bash|zsh)rc
 
 ### Prompt
-# true/false. Color of bash prompt.
-declare __color_prompt=true
 # 'normal'/'simple'/'adam'. Prompt style.
 declare __prompt_style='simple'
 # true/false. In zsh, vcs_info check_for_change.

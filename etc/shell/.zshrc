@@ -37,7 +37,8 @@ else
     declare -r __prompt_date=$'[%F{cyan}%D{%F(%a)%T}%f]'
     declare -r __prompt_last=$'\n %# '
   elif [ "$__prompt_style_fc" = 'simple' ];then
-    declare -r __prompt_std=$'%F{cyan}%~%f'
+    [[ ! -z "$SSH_CONNECTION" ]] && declare -r __prompt_std=$'%F{cyan}%n@%m %~%f'
+    [[ ! -v __prompt_std ]] && declare -r __prompt_std=$'%F{cyan}%~%f'
     declare -r __prompt_date=$''
     declare -r __prompt_last=$'\n%F{cyan}>%f '
   fi
