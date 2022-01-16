@@ -1,11 +1,8 @@
-# .gitignore
-
 # compiler exefile
 a.out
-# python
+*.zwc
 __pycache__/
 
-### allowlist
 # safety
 !.gitignore
 !.gitkeep
