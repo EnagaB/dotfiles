@@ -242,7 +242,7 @@ alias sjisdos='nkf -s -Lw --overwrite'
 
 # local config
 declare -r __shrc_loc="${HOME}/.shrc_local.bash"
-[[ ! -f "$__shrc_loc" ]] && cp "${DOTSH}/shrc_local.bash" "$__shrc_loc"
+[[ ! -f "$__shrc_loc" ]] && touch "$__shrc_loc"
 [[ "$__shell" = 'zsh' ]] && __autozcomp "$__shrc_loc"
 . "$__shrc_loc"
 
