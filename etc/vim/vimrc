@@ -33,7 +33,6 @@ if has('vim_starting')
         \ ]
   " opt: anytime (in-vimrc/lazy) load packages
   let g:params['pack']['opt'] = [
-        "\ 'lervag/vimtex',
         \ 'junegunn/goyo.vim'
         \ ]
   " colorscheme: [package, colorscheme, background [,background2 ,...]]
