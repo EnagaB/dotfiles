@@ -35,6 +35,9 @@ def output_help():
 
 # save load file
 def load_file(pathmap_path):
+    if not pathmap_path.is_file():
+        with pathmap_path.open(mode='w') as ifile:
+            pass
     pathmap = {}
     with open(pathmap_path, 'r') as ifile:
         lnum = 0
@@ -51,7 +54,7 @@ def save_file(pathmap_path, pathmap):
     with open(pathmap_path, 'w') as ofile:
         for key in keys:
             ofile.write(key + "\n")
-            ofile.write(pathmap[key] + "\n")
+            ofile.write(str(pathmap[key]) + "\n")
 
 # is exist
 def is_cmd_exist(incmd):
@@ -76,13 +79,13 @@ def get_cmd_key(cmd_key_list):
     elif len(cmd_key_list) == 1:
         cmd = "jump"
         key = cmd_key_list[0]
-    else # len(cmd_key_list) == 2
+    else: # len(cmd_key_list) == 2
         cmd = cmd_key_list[0]
         key = cmd_key_list[1]
     if not is_cmd_exist(cmd):
         msg = "Given command does not implemented."
         raise ValueError(msg)
-    if not is_cmd_exist_nokey(key):
+    if is_cmd_exist_nokey(key):
         msg = "Givn key cannot be used."
         raise ValueError(msg)
     return cmd, key
