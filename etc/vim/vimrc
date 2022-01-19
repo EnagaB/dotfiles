@@ -40,7 +40,9 @@ if has('vim_starting')
         \ ['morhetz/gruvbox'            , 'gruvbox'       , 'dark' , 'light'],
         \ ['gosukiwi/vim-atom-dark'     , 'atom-dark'     , ''              ],
         \ ['jacoborus/tender.vim'       , 'tender'        , ''              ],
-        \ ['raphamorim/lucario'         , 'lucario'       , ''              ]
+        \ ['raphamorim/lucario'         , 'lucario'       , ''              ],
+        \ ['dracula/vim'                , 'dracula'       , ''              ],
+        \ ['arcticicestudio/nord-vim'   , 'nord'          , ''              ]
         \ ]
   """ register
   let g:params['register'] = {}
