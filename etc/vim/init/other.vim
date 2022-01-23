@@ -1,4 +1,20 @@
 """ other.vim
+" clear e augroup
+augroup eau
+  autocmd!
+  " clear mark
+  autocmd eau BufReadPost * delmarks!
+augroup end
+" clear registers
+if has('vim_starting')
+  for s:reg in Lowerlist()
+    call setreg(s:reg,'')
+  endfor
+endif
+" filetype
+filetype plugin indent on
+" syntax
+if !exists("g:syntax_on") | syntax enable | endif
 
 """ tab/indent
 set tabstop=2 shiftwidth=0 expandtab softtabstop=-1 smarttab

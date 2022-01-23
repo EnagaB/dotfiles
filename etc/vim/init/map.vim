@@ -134,7 +134,7 @@ noremap <Plug>e(mark)<S-x> :<C-u>delmarks!<CR>
 " cmd prefix
 noremap <Plug>e(cmd)c     :ShowColorscheme<CR>:SetColorscheme<Space>
 noremap <Plug>e(cmd)e     :messages<CR>
-noremap <Plug>e(cmd)g     :<C-u>packadd<Space>goyo.vim<CR>:<C-u>Goyo<CR>
+noremap <Plug>e(cmd)g     :<C-u>Goyo<CR>
 noremap <Plug>e(cmd)m     :verbose map<CR>
 noremap <Plug>e(cmd)<S-m> :verbose map<Space>
 noremap <Plug>e(cmd)<C-e> :execute '! '.expand('%:p')<CR>
@@ -189,8 +189,8 @@ nnoremap <S-e> <<
 " yank(copy) from cursor to end-of-line (crsp D)
 noremap Y y$
 " toggle start/end record keyboard macro and call the keyboard macro
-execute 'noremap <S-q> :normal! q' . g:params['register']['kbd_macro'] . '<CR>'
-execute 'noremap <C-q> @' . g:params['register']['kbd_macro']
+execute 'noremap <S-q> :normal! q' . Params('kbd_macro_register') . '<CR>'
+execute 'noremap <C-q> @' . Params('kbd_macro_register')
 " undo/redo
 noremap u     u
 noremap <S-u> r
@@ -203,9 +203,9 @@ noremap -     <C-x>
 " non-use nameless register and use underscore register
 noremap x "_x
 " zt/zb insert margin
-let s:line_margin_x3 = g:params['line_margin'] * 3
-execute 'nnoremap zt zt' . g:params['line_margin'] . '<C-y>'
-execute 'nnoremap zb zb' . g:params['line_margin'] . '<C-e>'
+let s:line_margin_x3 = Params('line_margin') * 3
+execute 'nnoremap zt zt' . Params('line_margin') . '<C-y>'
+execute 'nnoremap zb zb' . Params('line_margin') . '<C-e>'
 execute 'nnoremap z<S-t> zt' . s:line_margin_x3 . '<C-y>'
 execute 'nnoremap z<S-b> zb' . s:line_margin_x3 . '<C-e>'
 
@@ -213,7 +213,7 @@ execute 'nnoremap z<S-b> zb' . s:line_margin_x3 . '<C-e>'
 nmap c     <Plug>e(func)toggleCommentline
 nmap <S-c> <Plug>e(func)toggleCommentline
 """ tyru/caw.vim: toggle comment out
-if match(g:params['pack']['start'], 'caw.vim')
+if match(Params('install_packs'), 'caw.vim')
   nmap c     <Plug>(caw:hatpos:toggle)
   vmap c     <Plug>(caw:hatpos:toggle)
   nmap <S-c> <Plug>(caw:hatpos:toggle)
@@ -277,9 +277,9 @@ function! s:grepQuickfix(sch)
 endfunction
 
 """ highlight word commands
-command! RegisterWord          execute 'let @' . g:params['register']['hilight_word'] . '=expand("<cword>")'
-command! HighlightRegister     set nohlsearch | let @/=eval('@' . g:params['register']['hilight_word']) | set hlsearch
-command! HighlightRegisterWord set nohlsearch | let @/='\<' . eval('@' . g:params['register']['hilight_word']) . '\>' | set hlsearch
+command! RegisterWord          execute 'let @' . Params('hilight_word_register') . '=expand("<cword>")'
+command! HighlightRegister     set nohlsearch | let @/=eval('@' . Params('hilight_word_register')) | set hlsearch
+command! HighlightRegisterWord set nohlsearch | let @/='\<' . eval('@' . Params('hilight_word_register')) . '\>' | set hlsearch
 
 """ toggle pane size maximized/balanced
 noremap <Plug>e(func)toggleResizePane :call <SID>toggleResizePane()<CR>

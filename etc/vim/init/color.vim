@@ -8,67 +8,80 @@ if s:term !~ '^xterm' && !has('gui_running')
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
 
-""" colorscheme
-command! -nargs=1 SetColorscheme  call <SID>SetColorscheme(0,<f-args>)
-command!          ShowColorscheme call <SID>SetColorscheme(1,100)
-function! s:SetColorscheme(show,lind)
-  if a:show == 1 | echo printf('%2s. %s',0,'default vim colorscheme') | endif
-  " non-package colorscheme
-  if a:lind == 0
-    let l:cs='desert'
-    let l:fn='colors/'.l:cs.'.vim'
-    if !empty(globpath(&runtimepath,l:fn))
-      execute 'colorscheme '.l:cs
-    else
-      colorscheme default
-    endif
-    let g:package_colorscheme=0
-    return
-  endif
-  " package colorscheme
-  let l:csnum=0
-  let l:i1=0 | let l:i1max=len(g:params['pack']['colorscheme'])-1
-  while l:i1 <= l:i1max
-    let l:pac=g:params['pack']['colorscheme'][l:i1][0]
-    let l:cs =g:params['pack']['colorscheme'][l:i1][1]
-    let l:i2=2 | let l:i2max=len(g:params['pack']['colorscheme'][l:i1])-1
-    while l:i2 <= l:i2max
-      let l:bg=g:params['pack']['colorscheme'][l:i1][l:i2]
-      let l:csnum+=1
-      if a:show == 1 | echo printf('%2s. %5s %s',l:csnum,l:bg,l:cs) | endif
-      if l:csnum == a:lind | break | endif
-      let l:i2+=1
-    endwhile
-    if l:csnum == a:lind | break | endif
-    let l:i1+=1
-  endwhile
-  if a:show == 1 | return | endif
-  " check colorscheme exist
-  let l:fn='colors/'.l:cs.'.vim'
-  let l:sppac=split(l:pac,'/')
-  if empty(globpath(&runtimepath,l:fn))
-        \ && empty(globpath(&packpath,'pack/*/start/'.l:sppac[1].'/'.l:fn))
-        \ && empty(globpath(&packpath,'pack/*/opt/'.l:sppac[1].'/'.l:fn))
-    return
-  endif
-  if l:cs == 'gruvbox'
-    let g:gruvbox_contrast_light='soft'
-    let g:gruvbox_contrast_dark='medium'
-  endif
-  execute 'colorscheme '.l:cs
-  if l:bg == ''
-    set background&
+
+function! Set_default_colorscheme()
+  let l:colorscheme_rel_path = 'colors/' . Params('colorscheme') . '.vim'
+  if ! empty(globpath(&runtimepath, l:colorscheme_rel_path))
+    execute 'colorscheme ' . Params('colorscheme')
   else
-    execute 'set background='.l:bg
+    execute 'colorscheme ' . Params('colorscheme_without_packs')
   endif
-  let g:package_colorscheme=1
+  execute 'set background =' . Params('background')
 endfunction
+call Set_default_colorscheme()
+command! SetDefaultColorscheme call Set_default_colorscheme()
+
+""" colorscheme
+" command! -nargs=1 SetColorscheme  call <SID>SetColorscheme(0,<f-args>)
+" command!          ShowColorscheme call <SID>SetColorscheme(1,100)
+" function! s:SetColorscheme(show,lind)
+"   if a:show == 1 | echo printf('%2s. %s',0,'default vim colorscheme') | endif
+"   " non-package colorscheme
+"   if a:lind == 0
+"     let l:cs='desert'
+"     let l:fn='colors/'.l:cs.'.vim'
+"     if !empty(globpath(&runtimepath,l:fn))
+"       execute 'colorscheme '.l:cs
+"     else
+"       colorscheme default
+"     endif
+"     let g:package_colorscheme=0
+"     return
+"   endif
+"   " package colorscheme
+"   let l:csnum=0
+"   let l:i1=0 | let l:i1max=len(Params('colorscheme_packs'))-1
+"   while l:i1 <= l:i1max
+"     let l:pac = Params('colorscheme_packs')[l:i1][0]
+"     let l:cs  = Params('colorscheme_packs')[l:i1][1]
+"     let l:i2=2 | let l:i2max=len(Params('colorscheme_packs')[l:i1])-1
+"     while l:i2 <= l:i2max
+"       let l:bg=Params('colorscheme_packs')[l:i1][l:i2]
+"       let l:csnum+=1
+"       if a:show == 1 | echo printf('%2s. %5s %s',l:csnum,l:bg,l:cs) | endif
+"       if l:csnum == a:lind | break | endif
+"       let l:i2+=1
+"     endwhile
+"     if l:csnum == a:lind | break | endif
+"     let l:i1+=1
+"   endwhile
+"   if a:show == 1 | return | endif
+"   " check colorscheme exist
+"   let l:fn='colors/'.l:cs.'.vim'
+"   let l:sppac=split(l:pac,'/')
+"   if empty(globpath(&runtimepath,l:fn))
+"        \ && empty(globpath(&packpath,'pack/*/start/'.l:sppac[1].'/'.l:fn))
+"        \ && empty(globpath(&packpath,'pack/*/opt/'.l:sppac[1].'/'.l:fn))
+"     return
+"   endif
+"   if l:cs == 'gruvbox'
+"     let g:gruvbox_contrast_light='soft'
+"     let g:gruvbox_contrast_dark='medium'
+"   endif
+"   execute 'colorscheme '.l:cs
+"   if l:bg == ''
+"     set background&
+"   else
+"     execute 'set background='.l:bg
+"   endif
+"   let g:package_colorscheme=1
+" endfunction
 
 """ default colorscheme
-call <SID>SetColorscheme(0,1)
-if !exists("g:package_colorscheme") || g:package_colorscheme == 0
-  call <SID>SetColorscheme(0,0)
-endif
+" call <SID>SetColorscheme(0,1)
+" if !exists("g:package_colorscheme") || g:package_colorscheme == 0
+"   call <SID>SetColorscheme(0,0)
+" endif
 
 """ map check color commands
 noremap <Plug>e(func)colortest :<C-u>source $VIMRUNTIME/syntax/colortest.vim<CR>

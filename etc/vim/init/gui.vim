@@ -1,5 +1,3 @@
-""" gui
-
 if has('gui_running')
   set guifont=HackGenNerd\ Console\ 12,Myrica\ M\ 13.5
   set guifontwide=HackGenNerd\ Console\ 12,Myrica\ M\ 13.5
@@ -14,4 +12,4 @@ if has('gui_running')
   set guioptions-=b
 endif
 
-" end
+" EOF

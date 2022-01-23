@@ -93,6 +93,7 @@ else
     alias vir='vim -M'
   fi
 fi
+alias vim-def='vim -u NONE -N'
 alias emacs='__guiapp_background emacs'
 alias gvim='__guiapp_background gvim'
 

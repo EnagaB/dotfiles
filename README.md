@@ -21,10 +21,11 @@ Set zsh as login shell.
 ```
 chsh -s $(which zsh)
 ```
-In vim/neovim, install packages.
+In vim and neovim, install the packages and apply thats.
 ```
 :PackUpdate
 :PackLoad
+:SetDefaultColorscheme
 ```
 
 ### Cygwin
