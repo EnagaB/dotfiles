@@ -18,6 +18,7 @@ endif
 if match(&runtimepath, g:after_path) == -1
   execute 'set runtimepath +=' . g:after_path
 endif
+set packpath&
 
 " load parameters
 runtime! init/settings/*.vim
