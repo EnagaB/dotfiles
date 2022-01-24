@@ -1,6 +1,5 @@
 " .vimrc, init.vim
-if !1 | finish | endif
-if v:version < 800
+if !1
   finish
 endif
 
@@ -9,6 +8,14 @@ let g:base_path = expand('$HOME/.vim')
 let g:after_path = g:base_path . '/after'
 let g:use_packmgr_minpac = 0
 let g:use_packmgr_vim_plug = 1
+
+" load basic
+execute 'source ' . g:base_path . '/init/keybindings_basic.vim'
+
+" vim8
+if v:version < 800
+  finish
+endif
 
 " set path
 set runtimepath&
@@ -20,17 +27,17 @@ if match(&runtimepath, g:after_path) == -1
 endif
 set packpath&
 
-" load parameters
-runtime! init/settings/*.vim
-
-" load util
-runtime! init/util/*.vim
-
-" load packages from package manager
-runtime! init/packconf/*.vim
-runtime! init/packmgr/*.vim
-
-" load other settings
-runtime! init/*.vim
+" load inits
+execute 'source ' . g:base_path . '/init/settings.vim'
+execute 'source ' . g:base_path . '/init/tools.vim'
+execute 'source ' . g:base_path . '/init/packconf/vim-easymotion.vim'
+execute 'source ' . g:base_path . '/init/packconf/vim-surround.vim'
+execute 'source ' . g:base_path . '/init/packmgr/minpac.vim'
+execute 'source ' . g:base_path . '/init/packmgr/vim-plug.vim'
+execute 'source ' . g:base_path . '/init/keybindings.vim'
+execute 'source ' . g:base_path . '/init/other.vim'
+execute 'source ' . g:base_path . '/init/filetypes.vim'
+execute 'source ' . g:base_path . '/init/lines.vim'
+execute 'source ' . g:base_path . '/init/gui.vim'
 
 " EOF

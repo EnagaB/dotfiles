@@ -17,7 +17,6 @@ let s:install_packs = [
       \ ['gosukiwi/vim-atom-dark', []],
       \ ['jacoborus/tender.vim', []],
       \ ['raphamorim/lucario', []],
-      \ ['dracula/vim', []],
       \ ['arcticicestudio/nord-vim', []],
       \ ['junegunn/goyo.vim', ['on', 'Goyo']]
       \ ]

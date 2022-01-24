@@ -1,9 +1,29 @@
-""" insert/command mode mappings like emacs/UNIX
+" basic keybindings
 
-""" prefix
+" prefix
+" <C-x> prefix like emacs
 map! <C-x> <Plug>e(ctrl-x)
+" for TMUX
+noremap <C-z> <Nop>
 
-""" move
+" move in normal mode
+"                   char:k,paragraph:S-k,page:C-k
+"                              ^
+" char:h,word:S-h,line:C-h < cursor > char:l,word:S-l,line:C-l
+"                              v
+"                   char:j,paragraph:S-j,page:C-j
+noremap j gj
+noremap k gk
+noremap <S-h> b
+noremap <S-j> }
+noremap <S-k> {
+noremap <S-l> e
+noremap <C-h> 0
+noremap <C-j> <C-f>
+noremap <C-k> <C-b>
+noremap <C-l> $
+
+" move in insert and command mode
 "                   char:C-p,paragraph:M-p,page:M-v
 "                                ^
 " char:C-b,word:M-b,line:C-a < cursor > char:C-f,word:M-f,line:C-e
@@ -28,48 +48,25 @@ inoremap <C-e> <C-o>$
 cnoremap <C-a> <C-b>
 cnoremap <C-e> <C-e>
 
-""" edit
-" backspace:C-h
-" delete: char:C-d,word:M-d
+" backspace char and delete char, word, line
 noremap! <C-h> <bs>
 noremap! <C-d> <del>
 inoremap <M-d> <C-o>diw
+" inoremap <C-k> <C-o>:<C-u>call<Space><SID>emacs_ctrl_k()<CR>
+inoremap <C-k> <C-o>:EmacsCtrlk<CR>
 
-""" delete/copy/paste
-" inoremap <C-k> <C-o><S-d>
-inoremap <C-k> <C-o>:<C-u>call<Space><SID>emacs_ctrl_k()<CR>
+" paste
 inoremap <C-y> <C-o>p
 cnoremap <C-y> <C-r>"
+
 " save
 inoremap <Plug>e(ctrl-x)<C-s> <C-o>:<C-u>w<CR>
 
-""" search
+" forward and backward search
 inoremap <C-s> <C-o>/
 inoremap <C-r> <C-o>?
 
-""" adv. insert/command mode
 " insert original key
 noremap! <C-q> <C-v>
 
-""" search/i-search function
-" function! s:emacs_search(bang)
-"   if !exists('b:emacsSearchStr')
-"     let b:emacsSearchStr=''
-"   endif
-"   if b:emacsSearchStr == ''
-"     let b:qf_gpword=input('Enter search pattern: ')
-"   endif
-" endfunction
-
-""" emacs C-k
-function! s:emacs_ctrl_k()
-  let l:cpos=getpos('.')
-  if len(getline(l:cpos[1])) == 0
-    normal! dd
-  else
-    normal! D
-    call setpos('.',l:cpos)
-  endif
-endfunction
-
-" end
+" EOF

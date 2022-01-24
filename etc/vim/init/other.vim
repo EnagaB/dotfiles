@@ -1,4 +1,3 @@
-""" other.vim
 " clear e augroup
 augroup eau
   autocmd!
@@ -11,10 +10,19 @@ if has('vim_starting')
     call setreg(s:reg,'')
   endfor
 endif
-" filetype
+" filetype, plugin, indent
 filetype plugin indent on
 " syntax
 if !exists("g:syntax_on") | syntax enable | endif
+
+" color
+if has('termguicolors') | set termguicolors | endif " use guifg,guibg on CUI
+let s:term = system('echo $TERM')
+if s:term !~ '^xterm' && ! has('gui_running')
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+endif
+SetDefaultColorscheme
 
 """ tab/indent
 set tabstop=2 shiftwidth=0 expandtab softtabstop=-1 smarttab
