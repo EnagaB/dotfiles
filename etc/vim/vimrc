@@ -9,7 +9,7 @@ let g:after_path = g:base_path . '/after'
 let g:use_packmgr_minpac = 0
 let g:use_packmgr_vim_plug = 1
 
-" load basic
+" load basic keybindings
 execute 'source ' . g:base_path . '/init/keybindings_basic.vim'
 
 " vim8
@@ -26,6 +26,20 @@ if match(&runtimepath, g:after_path) == -1
   execute 'set runtimepath +=' . g:after_path
 endif
 set packpath&
+
+" set basic settings
+filetype plugin indent on
+if ! exists("g:syntax_on")
+  syntax enable
+endif
+if has('termguicolors')
+  set termguicolors
+endif
+let s:term = getenv('TERM')
+if s:term !~ '^xterm' && ! has('gui_running')
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+endif
 
 " load inits
 execute 'source ' . g:base_path . '/init/settings.vim'

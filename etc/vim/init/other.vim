@@ -1,7 +1,6 @@
 " clear e augroup
 augroup eau
   autocmd!
-  " clear mark
   autocmd eau BufReadPost * delmarks!
 augroup end
 " clear registers
@@ -10,23 +9,11 @@ if has('vim_starting')
     call setreg(s:reg,'')
   endfor
 endif
-" filetype, plugin, indent
-filetype plugin indent on
-" syntax
-if !exists("g:syntax_on") | syntax enable | endif
 
 " color
-if has('termguicolors') | set termguicolors | endif " use guifg,guibg on CUI
-let s:term = system('echo $TERM')
-if s:term !~ '^xterm' && ! has('gui_running')
-  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-endif
 SetDefaultColorscheme
 
 """ tab/indent
-set tabstop=2 shiftwidth=0 expandtab softtabstop=-1 smarttab
-set autoindent smartindent
 """ textwidth
 set textwidth=100
 set colorcolumn=+1
@@ -72,16 +59,12 @@ set listchars+=extends:>
 set listchars+=precedes:<
 " hi NonText    ctermbg=None ctermfg=59 guibg=NONE guifg=None
 " hi SpecialKey ctermbg=None ctermfg=59 guibg=NONE guifg=None
-" showmatch/matchparen
 set noshowmatch matchtime=1
-" let g:loaded_matchparen = 1         " matchparen plugin off
-" let g:matchparen_timeout        = 2 " matchparen search timeout (ms)
-" let g:matchparen_insert_timeout = 2 " In insert mode
-let g:matchparen_timeout        = 10 " matchparen search timeout (ms)
-let g:matchparen_insert_timeout = 10 " In insert mode
+let g:matchparen_timeout        = 10
+let g:matchparen_insert_timeout = 10
 " search
 set ignorecase smartcase incsearch hlsearch
-""" indentkeys : add C-t , C-i
+" indentkeys : add C-t , C-i
 set indentkeys&
 set indentkeys+=!^T
 set indentkeys+=!^I

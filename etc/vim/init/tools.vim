@@ -19,6 +19,8 @@ command! ShowColors source $VIMRUNTIME/syntax/colortest.vim
 command! ShowHilightgroup verbose highlight
 " edit
 command! -nargs=1 InsertTemplateFile call <SID>insert_template_file(<f-args>)
+" show
+command! ShowFilepath echo expand("%:p")
 
 " noremap <Plug>e(func)syntexInfo :<C-u>call <SID>show_syntax_info()<CR>
 

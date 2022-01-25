@@ -1,3 +1,6 @@
+set tabstop=2 shiftwidth=0 expandtab softtabstop=-1 smarttab
+set autoindent smartindent
+
 " insert template
 augroup eau:instpl
   autocmd!
@@ -16,28 +19,6 @@ augroup eau:instpl
   autocmd BufNewFile *.ps1     InsertTemplateFile tpl.ps1
 augroup end
 
-" filetype
-augroup eau:ft
-  autocmd!
-  autocmd BufRead,BufNewFile *.tex setlocal filetype=tex
-  autocmd BufRead,BufNewFile *.f90 setlocal filetype=efortran
-augroup end
-
-" tab and indent
-augroup eau:tab
-  autocmd!
-  autocmd BufRead,BufNewFile *.f90 setlocal tabstop=2
-  autocmd BufRead,BufNewFile *.cpp setlocal tabstop=2
-augroup end
-
-" textwidth
-augroup eau:textwidth
-  autocmd!
-  autocmd BufRead,BufNewFile *.vim setlocal textwidth=100
-  autocmd BufRead,BufNewFile *.f   setlocal textwidth=72
-  autocmd BufRead,BufNewFile *.f90 setlocal textwidth=132
-  autocmd BufRead,BufNewFile *.cpp setlocal textwidth=100
-  autocmd BufRead,BufNewFile *.py  setlocal textwidth=100
-augroup end
+let g:tex_flavor='latex'
 
 " EOF
