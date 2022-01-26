@@ -1,14 +1,29 @@
-" clear e augroup
-augroup eau
-  autocmd!
-  autocmd eau BufReadPost * delmarks!
-augroup end
 " clear registers
 if has('vim_starting')
   for s:reg in Lowerlist()
     call setreg(s:reg,'')
   endfor
 endif
+
+set tabstop=2 shiftwidth=0 expandtab softtabstop=-1 smarttab
+set autoindent smartindent
+
+augroup delete_marks
+  autocmd!
+  autocmd BufReadPost * delmarks!
+augroup end
+
+augroup insert_template
+  autocmd!
+  let s:tplfile_list = split(glob(Params('tplfile_without_ext') . '.*'), "\n")
+  let s:len_tplfile_without_ext = strlen(Params('tplfile_without_ext'))
+  call sort(s:tplfile_list, "Comp_strlen")
+  call reverse(s:tplfile_list)
+  for ff in s:tplfile_list
+    let s:ext = ff[s:len_tplfile_without_ext:]
+    execute 'autocmd BufNewFile *' . s:ext . ' InsertFileOnlyOnce ' . ff
+  endfor
+augroup end
 
 " color
 SetDefaultColorscheme

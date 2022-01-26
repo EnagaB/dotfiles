@@ -12,11 +12,11 @@
 " in non-normal mode, not available keys =
 " <C-i>=<Tab>,<C-m><CR>,<C-j>=<NL>,<C-[>=<Esc>,<C-h>=<BS>
 
-""" setting
+" setting
 set notimeout
 set ttimeoutlen=10
 
-""" meta-keybindings <M-[a-z]> are available
+" meta-keybindings <M-[a-z]> are available
 " <M-[a-z]> = <Esc>[a-z] : the meta keys use <Esc> as prefix key
 " if editor is nvim, the meta keys work by default and do not use <Esc> prefix
 if has('unix') && !has('nvim')
@@ -205,9 +205,4 @@ noremap  zm         <Nop>
 vnoremap u          <Nop>
 vnoremap <S-u>      <Nop>
 
-""" highlight word commands
-command! RegisterWord          execute 'let @' . Params('hilight_word_register') . '=expand("<cword>")'
-command! HighlightRegister     set nohlsearch | let @/=eval('@' . Params('hilight_word_register')) | set hlsearch
-command! HighlightRegisterWord set nohlsearch | let @/='\<' . eval('@' . Params('hilight_word_register')) . '\>' | set hlsearch
-
-" end
+" EOF

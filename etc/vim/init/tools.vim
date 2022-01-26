@@ -1,9 +1,3 @@
-" commands and functions
-command! EmacsCtrlk call <SID>emacs_ctrl_k()
-command! -bang OneCharSearchCL call <SID>one_char_search_current_line(<q-bang>)
-" command! -bang GrepQuickfix call <SID>grep_quickfix(<q-bang>)
-command! ToggleCommentout call <SID>toggle_comment_out_v2()
-command! ToggleResizePanes call <SID>toggle_resize_panes()
 " buffer
 command! -bang -complete=buffer -nargs=* Bclose call <SID>Bclose(<q-bang>, <q-args>)
 command! Buffers call <SID>Buffers()
@@ -13,12 +7,26 @@ command! -bang SetMarkAuto call <SID>set_mark_auto(<q-bang>)
 command! DeleteMark call <SID>delete_mark()
 command! MoveToMark call <SID>move_to_mark()
 " syntax
-command! ShowSyntaxInfo call <SID>show_syntax_info()
 command! SetDefaultColorscheme call <SID>Set_default_colorscheme()
+command! ShowSyntaxInfo call <SID>show_syntax_info()
 command! ShowColors source $VIMRUNTIME/syntax/colortest.vim
 command! ShowHilightgroup verbose highlight
 " edit
-command! -nargs=1 InsertTemplateFile call <SID>insert_template_file(<f-args>)
+command! EmacsCtrlk call <SID>emacs_ctrl_k()
+command! -nargs=1 InsertFileOnlyOnce call <SID>insert_file_only_once(<f-args>)
+command! RegisterWord
+      \ execute 'let @' . Params('hilight_word_register') . '=expand("<cword>")'
+command! HighlightRegisterWord
+      \ set nohlsearch |
+      \ let @/='\<' . eval('@' . Params('hilight_word_register')) . '\>' | set hlsearch
+command! HighlightRegister
+      \ set nohlsearch |
+      \ let @/=eval('@' . Params('hilight_word_register')) | set hlsearch
+" search
+command! -bang OneCharSearchCL call <SID>one_char_search_current_line(<q-bang>)
+" command! -bang GrepQuickfix call <SID>grep_quickfix(<q-bang>)
+command! ToggleCommentout call <SID>toggle_comment_out_v2()
+command! ToggleResizePanes call <SID>toggle_resize_panes()
 " show
 command! ShowFilepath echo expand("%:p")
 
@@ -49,14 +57,14 @@ function! Numlist()
   return s:lists['num']
 endfunction
 
-" insert template file
-function! s:insert_template_file(tplfile)
-  if exists('b:did_insert_template_file')
+" init insert file
+function! s:insert_file_only_once(file)
+  if exists('b:did_insert_file_only_once')
     return
   endif
-  execute ':1r ' . Params('tpl_path') . '/' . a:tplfile
+  let b:did_insert_file_only_once = 1
+  execute ':1r ' . a:file
   execute ':1s/\n//'
-  let b:did_insert_template_file=1
 endfunction
 
 " one char search in current line
@@ -553,6 +561,13 @@ function! s:show_syntax_info()
         \ " ctermbg: " . linkedSyn.ctermbg .
         \ " guifg: " . linkedSyn.guifg .
         \ " guibg: " . linkedSyn.guibg
+endfunction
+
+" for sort function, sort in shorter order
+function! Comp_strlen(str1, str2)
+  let l:l1 = strlen(a:str1)
+  let l:l2 = strlen(a:str2)
+  return l:l1 == l:l2 ? 0 : l:l1 > l:l2 ? 1 : -1
 endfunction
 
 " EOF

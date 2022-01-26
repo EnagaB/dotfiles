@@ -6,8 +6,6 @@ endif
 " settings
 let g:base_path = expand('$HOME/.vim')
 let g:after_path = g:base_path . '/after'
-let g:use_packmgr_minpac = 0
-let g:use_packmgr_vim_plug = 1
 
 " load basic keybindings
 execute 'source ' . g:base_path . '/init/keybindings_basic.vim'
@@ -19,13 +17,17 @@ endif
 
 " set path
 set runtimepath&
+set packpath&
 if match(&runtimepath, g:base_path) == -1
   execute 'set runtimepath ^=' . g:base_path
 endif
 if match(&runtimepath, g:after_path) == -1
   execute 'set runtimepath +=' . g:after_path
 endif
-set packpath&
+
+" load init settings
+execute 'source ' . g:base_path . '/init/settings.vim'
+execute 'source ' . g:base_path . '/init/tools.vim'
 
 " set basic settings
 filetype plugin indent on
@@ -35,22 +37,20 @@ endif
 if has('termguicolors')
   set termguicolors
 endif
-let s:term = getenv('TERM')
-if s:term !~ '^xterm' && ! has('gui_running')
+if Params('term') !~ '^xterm' && ! has('gui_running')
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
 
-" load inits
-execute 'source ' . g:base_path . '/init/settings.vim'
-execute 'source ' . g:base_path . '/init/tools.vim'
-execute 'source ' . g:base_path . '/init/packconf/vim-easymotion.vim'
-execute 'source ' . g:base_path . '/init/packconf/vim-surround.vim'
+" load package settingss
+execute 'source ' . g:base_path . '/init/packset/vim-easymotion.vim'
+execute 'source ' . g:base_path . '/init/packset/vim-surround.vim'
+" load package manager
 execute 'source ' . g:base_path . '/init/packmgr/minpac.vim'
 execute 'source ' . g:base_path . '/init/packmgr/vim-plug.vim'
+" load other settings
 execute 'source ' . g:base_path . '/init/keybindings.vim'
 execute 'source ' . g:base_path . '/init/other.vim'
-execute 'source ' . g:base_path . '/init/filetypes.vim'
 execute 'source ' . g:base_path . '/init/lines.vim'
 execute 'source ' . g:base_path . '/init/gui.vim'
 
