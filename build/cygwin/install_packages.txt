@@ -15,5 +15,8 @@ python3
 # other
 tmux
 git
+curl
+wget
+wget2
 
 # EOF
