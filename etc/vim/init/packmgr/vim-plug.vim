@@ -28,9 +28,8 @@ endfor
 call plug#end()
 
 " command
-command! PackUpdate source $MYVIMRC | PlugUpdate
-command! PackClean  source $MYVIMRC | PlugClean
-command! PackLoad echo 'In using vim-plug, '
-      \ . 'the command :PackUpdate apply the installed packages.'
+command! PackUpdate PlugUpdate! --sync
+      \ | SetDefaultColorscheme
+command! PackClean PlugClean
 
 " EOF

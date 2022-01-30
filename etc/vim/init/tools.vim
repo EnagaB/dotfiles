@@ -22,29 +22,15 @@ command! HighlightRegisterWord
 command! HighlightRegister
       \ set nohlsearch |
       \ let @/=eval('@' . Params('hilight_word_register')) | set hlsearch
+" noremap <Plug>e(func)toggle_comment_out :<C-u>call <SID>toggle_comment_out()<CR>
 " search
 command! -bang OneCharSearchCL call <SID>one_char_search_current_line(<q-bang>)
 " command! -bang GrepQuickfix call <SID>grep_quickfix(<q-bang>)
 command! ToggleCommentout call <SID>toggle_comment_out_v2()
 command! ToggleResizePanes call <SID>toggle_resize_panes()
-" show
+" other
 command! ShowFilepath echo expand("%:p")
-
-" noremap <Plug>e(func)syntexInfo :<C-u>call <SID>show_syntax_info()<CR>
-
-" noremap <Plug>e(func)delmark :<C-u>call <SID>deleteMark()<CR>
-" noremap <Plug>e(func)moveToMark :<C-u>call <SID>moveToMark()<CR>
-
-" noremap <Plug>e(func)colortest :<C-u>source $VIMRUNTIME/syntax/colortest.vim<CR>
-" noremap <Plug>e(func)hitest    :<C-u>source $VIMRUNTIME/syntax/hitest.vim<CR>
-
-" noremap <Plug>e(func)colortest :<C-u>source $VIMRUNTIME/syntax/colortest.vim<CR>
-" noremap <Plug>e(func)hitest    :<C-u>source $VIMRUNTIME/syntax/hitest.vim<CR>
-" command! ColorTest source $VIMRUNTIME/syntax/colortest.vim
-" command! HiTest source $VIMRUNTIME/syntax/hitest.vim
-" command! HiTest highlight
-
-" noremap <Plug>e(func)toggle_comment_out :<C-u>call <SID>toggle_comment_out()<CR>
+command! ReloadVimrc source $MYVIMRC
 
 " lower-case alphabet and num list
 let s:lists = {}
@@ -564,7 +550,7 @@ function! s:show_syntax_info()
 endfunction
 
 " for sort function, sort in shorter order
-function! Comp_strlen(str1, str2)
+function! Sort_comp_strlen(str1, str2)
   let l:l1 = strlen(a:str1)
   let l:l2 = strlen(a:str2)
   return l:l1 == l:l2 ? 0 : l:l1 > l:l2 ? 1 : -1

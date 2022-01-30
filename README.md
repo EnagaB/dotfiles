@@ -24,8 +24,6 @@ chsh -s $(which zsh)
 In vim and neovim, install the packages and apply thats.
 ```
 :PackUpdate
-:PackLoad
-:SetDefaultColorscheme
 ```
 
 ### Cygwin

@@ -7,7 +7,10 @@ endif
 let g:base_path = expand('$HOME/.vim')
 let g:after_path = g:base_path . '/after'
 
-" load basic keybindings
+" basic settings
+if has('vim_starting')
+  set encoding=utf-8
+endif
 execute 'source ' . g:base_path . '/init/keybindings_basic.vim'
 
 " vim8

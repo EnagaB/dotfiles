@@ -1,24 +1,8 @@
-  """ mapping / keybindings
-" :(|nore)map(|!)      : map/noremap for normal,visual(insert,command) mode
-" :(n|v|i|c)(|nore)map : map/noremap for normal/visual/insert/command  mode
-" mode change by default (esc:normal end, C-c:forced end)
-" normal <-[esc,C-c] [i,a,o,...]-> insert
-"        <-[esc,C-c] [v,S-v,C-v]-> visual
-"        <-[esc,C-c] [:        ]-> command
-"        <-[:visual] [Q        ]-> Ex
-" <S-a>=A,<C-a>=ctrl-a,<M-a>=alt-a
-" not use <C-S-[a-z]>,<M-S-[a-z]>=crtl-[A-Z],meta-[A-Z]
-" in     normal mode, not available keys = <C-[>=<Esc>
-" in non-normal mode, not available keys =
-" <C-i>=<Tab>,<C-m><CR>,<C-j>=<NL>,<C-[>=<Esc>,<C-h>=<BS>
-
 " setting
 set notimeout
 set ttimeoutlen=10
 
 " meta-keybindings <M-[a-z]> are available
-" <M-[a-z]> = <Esc>[a-z] : the meta keys use <Esc> as prefix key
-" if editor is nvim, the meta keys work by default and do not use <Esc> prefix
 if has('unix') && !has('nvim')
   for s:ii in Lowerlist()
     execute 'map  <Esc>'.s:ii.' <M-'.s:ii.'>'
@@ -64,7 +48,8 @@ noremap <Plug>e(spc)<C-p> :<C-u>HighlightRegister<CR>
 noremap <Plug>e(spc)r     <C-o>
 noremap <Plug>e(spc)o     :<C-u>e<Space>
 noremap <Plug>e(spc)<S-o> :<C-u>e<Space>~/
-noremap <Plug>e(spc)f     :<C-u>echo expand("%:p")<CR>
+" noremap <Plug>e(spc)f     :<C-u>echo expand("%:p")<CR>
+noremap <Plug>e(spc)f     :<C-u>ShowFilepath<CR>
 
 " pane prefix
 noremap <Plug>e(pane)h     :<C-u>split<CR>
@@ -111,20 +96,15 @@ noremap <Plug>e(mark)l     :<C-u>marks<CR>
 noremap <Plug>e(mark)<S-x> :<C-u>delmarks!<CR>
 
 " cmd prefix
-noremap <Plug>e(cmd)c     :ShowColorscheme<CR>:SetColorscheme<Space>
 noremap <Plug>e(cmd)e     :messages<CR>
 noremap <Plug>e(cmd)g     :<C-u>Goyo<CR>
 noremap <Plug>e(cmd)m     :verbose map<CR>
 noremap <Plug>e(cmd)<S-m> :verbose map<Space>
 noremap <Plug>e(cmd)<C-e> :execute '! '.expand('%:p')<CR>
-noremap <Plug>e(cmd)p     :PackUpdate<CR>
-noremap <Plug>e(cmd)<S-p> :PackClean<CR>
-noremap <Plug>e(cmd)<C-p> :PackLoad<CR>
-noremap <Plug>e(cmd)<C-r> :<C-u>source $MYVIMRC<CR>:<C-u>echo 'resource ~/.vimrc'<CR>
+noremap <Plug>e(cmd)p     :<C-u>PackUpdate<CR>
+noremap <Plug>e(cmd)<S-p> :<C-u>PackClean<CR>
+noremap <Plug>e(cmd)r     :<C-u>ReloadVimrc<CR>:<C-u>echo 'Reload vimrc.'<CR>
 map     <Plug>e(cmd)s     <Plug>e(func)syntexInfo
-map     <Plug>e(cmd)t     <Plug>e(func)TEST
-map     <Plug>e(cmd)<S-t> <Plug>e(func)TEST
-map     <Plug>e(cmd)<C-t> <Plug>e(func)TEST
 noremap <Plug>e(cmd)v     :verbose<Space>
 noremap <Plug>e(cmd)E     g<S-q>
 

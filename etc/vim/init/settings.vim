@@ -3,10 +3,8 @@ function! Params(name)
 endfunction
 
 " path
-" let s:tpl_path = expand('$HOME/.template')
 let s:tmp_path = expand('$HOME/.local/tmp')
-
-let s:tplfile_without_ext = expand('$HOME/.template/tpl')
+let s:tplfile_path_without_ext = expand('$HOME/.template/tpl')
 
 " env
 let s:term = getenv('TERM')

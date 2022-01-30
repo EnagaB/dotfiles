@@ -15,39 +15,31 @@ if match(&packpath, s:minpac_packpath) == -1
 endif
 let s:packmgr_path = s:minpac_packpath . '/pack/minpac/opt/minpac'
 if ! isdirectory(s:packmgr_path)
-  call system('git clone --depth 1 https://github.com/k-takata/minpac.git '.shellescape(s:packmgr_path))
+  call system('git clone --depth 1 https://github.com/k-takata/minpac.git '
+        \ . shellescape(s:packmgr_path))
 endif
 
-" init function
-function! s:PackInit() abort
-  packadd minpac
-  call minpac#init()
-  call minpac#add('k-takata/minpac', {'type': 'opt'})
-  for s:pack in Params('install_packs')
-    call minpac#add(s:pack[0])
-  endfor
-endfunction
+packadd minpac
+call minpac#init()
+call minpac#add('k-takata/minpac', {'type': 'opt'})
+for s:pack in Params('install_packs')
+  call minpac#add(s:pack[0])
+endfor
+packloadall!
 
 " load function
-function! s:PackLoad() abort
-  let l:paclist=keys(minpac#getpluglist())
-  " start
+function! s:pack_load() abort
+  let l:paclist = keys(minpac#getpluglist())
   packloadall!
-  " opt
   for l:pac in l:paclist
     execute 'packadd '.l:pac
   endfor
+  SetDefaultColorscheme
 endfunction
+command! EMinpacPackLoad call <SID>pack_load()
 
 " command
-command! PackUpdate source $MYVIMRC
-      \ | call <SID>PackInit()
-      \ | call minpac#update()
-command! PackLoad source $MYVIMRC
-      \ | call <SID>PackInit()
-      \ | call <SID>PackLoad()
-command! PackClean  source $MYVIMRC
-      \ | call <SID>PackInit()
-      \ | call minpac#clean()
+command! PackUpdate call minpac#update('', {'do': 'EMinpacPackLoad'})
+command! PackClean call minpac#clean()
 
 " EOF
