@@ -77,6 +77,16 @@ if [[ "$__os" = 'cygwin' ]]; then
   alias wf='/cygdrive/c/Windows/explorer.exe .'
 fi
 
+# open
+if [[ ! -z "${WSLENV:-}" ]]; then
+  function __open() {
+    /mnt/c/Windows/System32/cmd.exe /c start $(wslpath -w $1)
+  }
+  alias open='__open'
+elif [[ "$__os" = 'cygwin' ]]; then
+  alias open='cygstart'
+fi
+
 # text editor
 function __df_emacs_readonly() { emacs -nw "$@" --eval '(setq buffer-read-only t)' ; }
 alias em='emacs -nw'
