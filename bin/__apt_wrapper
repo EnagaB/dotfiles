@@ -18,7 +18,7 @@ function __echo_helptext() {
   echo "If a command is not given, display help text."
   echo ""
   echo "apt help"
-  apt help
+  apt help "$@"
 }
 
 if [[ "$#" -eq 0 ]]; then
@@ -40,7 +40,8 @@ elif [[ "$cmd" = "einstall" ]]; then
   shift 1
   sudo apt update && sudo apt -y upgrade && sudo apt -y install "$@"
 elif [[ "$cmd" = "help" ]]; then
-  __echo_helptext
+  shift 1
+  __echo_helptext "$@"
 else
   sudo apt "$@"
 fi
