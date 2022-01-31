@@ -36,7 +36,7 @@ map<string, pair<void (*)(), set<string>>> OTHER_CMDS = {
   {"help", make_pair(output_help, set<string>{})}
 };
 const char *DOTFILES = getenv("DOTFILES");
-static path HELP_PATH = path(DOTFILES).append("src/jump/help.txt");
+static path HELP_PATH = path(DOTFILES) / "share" / "help" / "jump.txt";
 
 // command functions
 void add_key(map<string, path> &pathmap, string key) {
