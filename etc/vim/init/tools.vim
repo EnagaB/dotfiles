@@ -25,7 +25,6 @@ command! HighlightRegister
 " noremap <Plug>e(func)toggle_comment_out :<C-u>call <SID>toggle_comment_out()<CR>
 " search
 command! -bang OneCharSearchCL call <SID>one_char_search_current_line(<q-bang>)
-" command! -bang GrepQuickfix call <SID>grep_quickfix(<q-bang>)
 command! -bang GrepQuickfix call <SID>grep_quickfix(<q-bang>)
 command! ToggleCommentout call <SID>toggle_comment_out_v2()
 command! ToggleResizePanes call <SID>toggle_resize_panes()
