@@ -1,0 +1,7 @@
+usage: di [-h|-w] <chars>
+
+Translate <chars> into English or Japanese.
+
+option
+  -h: show help text.
+  -w: treat <chars> as a word.

@@ -233,9 +233,6 @@ elif [[ "$__shell" = 'zsh' ]] ; then
   alias zmv="noglob __zmv.bash"
   alias fin="noglob __fin.bash"
 fi
-# dictionary
-alias di='__ej_dictionary.bash chars'
-alias di.w='__ej_dictionary.bash word'
 
 ### others
 alias le='less'

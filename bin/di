@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+set -u
+# translate into Japanese or English
+
+# parameters
+declare -ar ejdicts=(
+  "${LOCAL}/share/dict/ejdic-eijiro1448-utf8unix.dat.gz"
+  "${DOTFILES}/share/dict/ejdic-hand-utf8unix.dat.gz"
+)
+declare -r default_search_type='chars'
+declare -r helpfile="${DOTFILES}/share/help/di.txt"
+
+# get option
+declare search_type="$default_search_type"
+declare help=false
+while getopts wh OPT; do
+  case $OPT in
+    w) search_type='word';;
+    h) help=true;;
+  esac
+done
+shift $((OPTIND - 1))
+
+if $help; then
+  cat "$helpfile"
+  exit 0
+fi
+
+# get argument
+if [[ "$#" -ne 1 ]]; then
+  echo "Num of arguments is wrong."
+  exit 1
+fi
+declare -r search_word="$1"
+shift 1
+
+# dictionary
+for di in ${ejdicts[@]}; do
+  if [[ -f "$di" ]]; then
+    declare -r ejdict="$di"
+    break
+  fi
+done
+if [[ ! -v ejdict ]];then
+  echo 'English-Japanese dictionary file does not exist.'
+  exit 1
+fi
+
+# search
+if [[ "$search_type" = 'chars' ]];then
+  zgrep "$search_word" "$ejdict" -E -i --color=always | less -R -FX
+elif [[ "$search_type" = 'word' ]];then
+  zgrep "$search_word" "$ejdict" -E -iw --color=always | less -R -FX
+fi
+
+# end
