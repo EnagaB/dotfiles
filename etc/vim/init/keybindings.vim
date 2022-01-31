@@ -100,13 +100,11 @@ noremap <Plug>e(cmd)e     :messages<CR>
 noremap <Plug>e(cmd)g     :<C-u>Goyo<CR>
 noremap <Plug>e(cmd)m     :verbose map<CR>
 noremap <Plug>e(cmd)<S-m> :verbose map<Space>
-noremap <Plug>e(cmd)<C-e> :execute '! '.expand('%:p')<CR>
 noremap <Plug>e(cmd)p     :<C-u>PackUpdate<CR>
 noremap <Plug>e(cmd)<S-p> :<C-u>PackClean<CR>
 noremap <Plug>e(cmd)r     :<C-u>ReloadVimrc<CR>:<C-u>echo 'Reload vimrc.'<CR>
-map     <Plug>e(cmd)s     <Plug>e(func)syntexInfo
-noremap <Plug>e(cmd)v     :verbose<Space>
-noremap <Plug>e(cmd)E     g<S-q>
+map     <Plug>e(cmd)s     :<C-u>ShowSyntaxInfo<CR>
+noremap <Plug>e(cmd)<S-e> g<S-q>
 
 """ other
 """ search

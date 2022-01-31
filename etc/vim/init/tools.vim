@@ -26,6 +26,7 @@ command! HighlightRegister
 " search
 command! -bang OneCharSearchCL call <SID>one_char_search_current_line(<q-bang>)
 " command! -bang GrepQuickfix call <SID>grep_quickfix(<q-bang>)
+command! -bang GrepQuickfix call <SID>grep_quickfix(<q-bang>)
 command! ToggleCommentout call <SID>toggle_comment_out_v2()
 command! ToggleResizePanes call <SID>toggle_resize_panes()
 " other
@@ -69,15 +70,10 @@ function! s:grep_quickfix(bang)
   if ! exists('b:grep_quickfix_search_word')
     let b:grep_quickfix_search_word = ''
   endif
-  if ! exists('b:grep_quickfix_save_maps')
-    let b:grep_quickfix_save_maps = {}
-  endif
   let l:current_window_num = winnr()
-  let l:quickfix_window_id = getqflist({'winid': 0})
-  let l:quickfix_change_keys = ['j', 'k', 'q']
-  if l:quickfix_window_id["winid"] == 0
-    " vimgrep and open cwindow
-    if empty(a:bang)
+  let l:normal_q_maparg = maparg("q", "n", 0, 1)
+  if len(l:normal_q_maparg) == 0 || l:normal_q_maparg["buffer"] == 0
+    if empty(a:bang) || strlen(b:grep_quickfix_search_word) == 0
       let b:grep_quickfix_search_word = input('Enter grep pattern: ')
     endif
     if empty(b:grep_quickfix_search_word)
@@ -87,22 +83,12 @@ function! s:grep_quickfix(bang)
     if len(getqflist()) == 0
       return
     endif
-    if empty(b:grep_quickfix_save_maps)
-      let b:grep_quickfix_save_maps = Save_mappings(l:quickfix_change_keys, 'n', v:false)
-      nnoremap <buffer>j :cnext<CR>zz
-      nnoremap <buffer>k :cprevious<CR>zz
-      nnoremap <buffer>q :GrepQuickfix<CR>
-    endif
+    nnoremap <buffer><nowait> j :cnext<CR>zz
+    nnoremap <buffer><nowait> k :cprevious<CR>zz
+    nnoremap <buffer><nowait> q :GrepQuickfix<CR>
   else
-    " close cwindow
+    nmapclear <buffer>
     call setqflist([], 'r')
-    if ! empty(b:grep_quickfix_save_maps)
-      for l:ii in l:quickfix_change_keys
-        execute 'nunmap <buffer>' . l:ii
-      endfor
-      call Restore_mappings(b:grep_quickfix_save_maps)
-      let b:grep_quickfix_save_maps={}
-    endif
   endif
   execute 'cwindow ' . min([max([len(getqflist()), 1]), 5])
   execute l:current_window_num . 'wincmd w'
