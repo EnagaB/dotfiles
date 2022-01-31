@@ -88,7 +88,10 @@ declare -ar apt_packs=(
   tk-dev
   python3-tk
   # other prg
-  # golang rustc nodejs npm
+  golang
+  rustc
+  nodejs
+  npm
   # graph
   gnuplot-x11
   # tex
@@ -115,6 +118,11 @@ declare -ar apt_packs=(
   bc
   xsel
   xclip
+)
+
+# npm
+declare -ar npm_packs=(
+  wsl-open
 )
 
 ### other packages

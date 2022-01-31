@@ -50,6 +50,7 @@ declare -r appconfig=${HOME}/.config
 declare -r sh_mkdir_init=${src}/mkdir_init.bash
 declare -r sh_link=${src}/link.bash
 declare -r sh_apt_install=${src}/apt_install.bash
+declare -r sh_npm_install=${src}/npm_install.bash
 declare -r sh_curl_install=${src}/curl_install.bash
 declare -r sh_git_install=${src}/git_install.bash
 declare -r sh_cpp_build=${src}/cpp_build.bash
@@ -66,10 +67,14 @@ cd "$df"
 ### install packages
 # apt
 [[ "$os" = 'ubuntu' ]] && \
-  "$install_packages" && \
-  "$use_admin" && \
+  "$install_packages" && "$use_admin" && \
   type apt &> /dev/null && \
   . "$sh_apt_install"
+# npm
+[[ "$os" = 'ubuntu' ]] && \
+  "$install_packages" && "$use_admin" && \
+  type npm &> /dev/null && \
+  . "$sh_npm_install"
 # curl
 "$install_packages" && \
   type curl &> /dev/null && \

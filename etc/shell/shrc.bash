@@ -79,12 +79,9 @@ fi
 
 # open
 if [[ ! -z "${WSLENV:-}" ]]; then
-  function __open() {
-    /mnt/c/Windows/System32/cmd.exe /c start $(wslpath -w $1)
-  }
-  alias open='__open'
+  alias op='wsl-open'
 elif [[ "$__os" = 'cygwin' ]]; then
-  alias open='cygstart'
+  alias op='cygstart'
 fi
 
 # text editor
