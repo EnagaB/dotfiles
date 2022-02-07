@@ -26,7 +26,11 @@ command! HighlightRegister
 " search
 command! -bang OneCharSearchCL call <SID>one_char_search_current_line(<q-bang>)
 command! -bang GrepQuickfix call <SID>grep_quickfix(<q-bang>)
-command! ToggleCommentout call <SID>toggle_comment_out_v2()
+" command! ToggleCommentout call <SID>toggle_comment_out()
+" command! ToggleOnelineCommentout call <SID>toggle_oneline_comment_out()
+" command! ToggleCommentout call <SID>toggle_oneline_comment_out()
+" command! ToggleCommentout call <SID>toggle_commentout()
+command! ToggleCommentout source $MYVIMRC | call <SID>toggle_commentout()
 command! ToggleResizePanes call <SID>toggle_resize_panes()
 " other
 command! ShowFilepath echo expand("%:p")
@@ -106,7 +110,7 @@ endfunction
 
 """ toggle comment out
 " not visual mode: mod in visual mode, getpos("'<") ~ getpos("'>")
-function! s:toggle_comment_out()
+function! s:_old_toggle_comment_out()
   """ parameters
   let l:comtypes=[ ',:' , ',b:' ]
   " get comment str
@@ -140,42 +144,220 @@ function! s:toggle_comment_out()
   endif
 endfunction
 
-let b:ecom=""
-function! s:toggle_comment_out_v2()
-  call Error_msg('ERR: now making')
-  return 1
-
-  if b:ecom == "XXX"
-    call Error_msg('err: comments')
-    return 1
-  endif
-  """ parameters
-  let l:comtypes=[ ',:' , ',b:' ]
-  " detect comment character
-  if b:ecom == ""
-    " get comment str
-    let l:com=',' . &comments . ','
-    for l:ct in l:comtypes
-      let l:comPos=matchend(l:com,l:ct)
-      if l:comPos != -1
+function! s:get_oneline_comments()
+  let l:oneline_comments = ''
+  let l:comments = split(&comments, ',')
+  let l:oneline_comments_flags = [':', 'b:']
+  for l:oneline_comments_flag in l:oneline_comments_flags
+    for l:comment in l:comments
+      if stridx(l:comment, l:oneline_comments_flag) == 0
+        let l:oneline_comments = l:comment[strlen(l:oneline_comments_flag):]
         break
       endif
     endfor
-    if l:comPos == -1
-      call Error_msg('err: comments')
-      let b:ecom="XXX"
+    if strlen(l:oneline_comments) != 0
+      break
+    endif
+  endfor
+  if strlen(l:oneline_comments) == 0
+    echo 'Getting one-line comments failed.'
+    return v:null
+  endif
+  return l:oneline_comments
+endfunction
+
+" function! s:toggle_oneline_commentout(linenum)
+function! s:toggle_commentout()
+  " Change a:linenum-th line to comment.
+  " b:toggle_comment is the list of comment sign.
+  " if len(b:toggle_comment) == 0 (oneline commentout sign):
+  "   get oneline comment prefix.
+  " if len(b:toggle_comment) == 1 (oneline commentout sign):
+  "   b:toggle_comment[0] is the oneline comment prefix.
+  " if len(b:toggle_comment) == 2 (multiline commentout sign):
+  "   b:toggle_comment[0] and [1] are the multiline comment prefix and suffix.
+  " otherwise: Error.
+
+  let b:toggle_comments = ['/*', '*/'  ]
+
+  if ! exists('b:toggle_comments')
+    let b:toggle_comments = []
+  endif
+  if len(b:toggle_comments) == 0
+    call add(b:toggle_comments, s:get_oneline_comments())
+    if b:toggle_comments[0] == v:null
+      let b:toggle_comments = []
       return 1
     endif
   endif
+  if len(b:toggle_comments) > 2 || len(b:toggle_comments) < 1
+    echo 'Num of b:toggle_comments items must be 1 or 2.'
+    return 1
+  endif
+  " get current line
+  let l:current_cursor_pos = getpos('.')
+  let l:current_line = getline(l:current_cursor_pos[1])
+  if strlen(l:current_line) == 0
+    return 1
+  endif
+
+  " let l:is_space = matchlist(l:current_line, '^\s*$')
+  " if len(l:is_space) != 0
+  "   return 1
+  " endif
+
+  " let l:current_indent = indent(l:current_cursor_pos[1])
+  " delete prefix/suffix blank
+  " let l:current_line_without_blank = l:current_line
+  " let l:start_blank_list = matchlist(l:current_line, '^[:blank:]\+')
+  " let l:start_blank_list = matchlist(l:current_line, '^\s\+')
+
+  " delete prefix and suffix spaces
+  let l:start_spaces = matchlist(l:current_line, '^\s\+')
+  let l:start_spaces_num = len(l:start_spaces) != 0 ? strlen(l:start_spaces[0]) : 0
+  let l:end_spaces_num = 0
+  if len(b:toggle_comments) == 2
+    let l:end_spaces = matchlist(l:current_line, '\s\+$')
+    let l:end_spaces_num = len(l:end_spaces) != 0 ? strlen(l:end_spaces[0]) : 0
+  endif
+  let l:current_line_wo_spaces =
+        \ l:current_line[l:start_spaces_num:strlen(current_line)-l:end_spaces_num-1]
+  " is current line comment
+  let l:is_current_line_comment = v:false
+  let l:start_comment_idx = stridx(l:current_line_wo_spaces, b:toggle_comments[0])
+  if l:start_comment_idx != -1
+    let l:is_current_line_comment = v:true
+  endif
+
+
+  if len(b:toggle_comments) == 2
+    let l:end_comment_idx = stridx(l:current_line_wo_spaces, b:toggle_comments[1])
+  endif
+
+  if len(l:start_comments) != 0
+    let l:is_current_line_comment = v:true
+    let l:start_comments = l:start_comments[0]
+  endif
+
+
+
+
+  " echo l:start_spaces_num
+  " echo l:end_spaces_num
+  " echo l:current_line
+  " echo l:current_line_wo_spaces
+  " echo 'ok'
+  " echo b:toggle_comments[0]
+  " echo b:toggle_comments[1]
+
+  " is current line comment
+  let l:start_comments = matchlist(l:current_line, '^\s*' . b:toggle_comments[0])
+  echo l:start_comments
+  if len(l:start_comments) != 0
+    let l:is_current_line_comment = v:true
+    let l:start_comments = l:start_comments[0]
+  endif
+  if len(b:toggle_comments) == 2
+    let l:end_comments = matchlist(l:current_line, b:toggle_comments[1] . '\s*$')
+    if len(l:end_comments) != 0
+      let l:is_current_line_comment = v:true
+      let l:end_comments = l:end_comments[0]
+    endif
+  endif
+
+  " if len(l:start_comments) != 0 | let l:start_comments
+
+
+
+  echo l:start_comments
+
+  " if len(b:toggle_comments[1])
+  " let l:end_comments = matchlist(l:current_line, '^\s\+' . b:toggle_comments[0])
+
+
+  " echo l:start_blank_list
+
+
+  " if len(l:start_blank_list) != 0
+  "   let l:current_line_without_blank =
+  "        \ l:current_line_without_blank[strlen(l:start_blank_list[0]):]
+  " endif
+  " let l:end_blank_list = matchlist(l:current_line, '[:blank:]*$')
+  " if len(l:end_blank_list) != 0
+  "   let l:current_line_without_blank =
+  "        \ l:current_line_without_blank[
+  "        \ :strlen(l:current_line_without_blank) - strlen(l:end_blank_list[0])]
+  " endif
+  " echo l:current_line_without_blank
+  return 1
+
+
+
+  " " is current line comment
+  " let l:is_current_line_comment = v:false
+  " let l:matched_list = matchlist(l:current_line, '^[:blank:]*')
+  " if len(l:matched_list) != 0
+  "   let l:current_line_without_comment = l:current_line_without_comment[l:matched_list[0]:]
+  " endif
+  " let l:matched_list = matchlist(l:current_line, '[:blank:]*$')
+  " if len(l:matched_list) != 0
+  "   let l:current_line_without_comment = l:current_line_without_comment[:l:matched_list[0]]
+  " endif
+  " 
+  " " print(l:matched_list)
+  " " echo l:matched_list
+  " " if match(l:current_line, '^\s*') != -1
+  " "   let l:current_line_matched = l:current_line[]
+  " " endif
+
+  " return 1
+
+
+
+
+  " set/remove comment prefix/suffix
+  if len(b:toggle_comments) == 1
+
+  elseif len(b:toggle_comments) == 2
+    " call Error_msg('ERR: now making')
+  else
+    " call Error_msg('ERR: now making')
+  endif
+
+  echo b:toggle_comments
+  return 1
+
+  " " if b:ecom == "XXX"
+  " "   call Error_msg('err: comments')
+  " "   return 1
+  " " endif
+  " """ parameters
+  " " let l:comtypes=[ ',:' , ',b:' ]
+  " " detect comment character
+  " if b:ecom == ""
+  "   " get comment str
+  "   let l:com=',' . &comments . ','
+  "   for l:ct in l:comtypes
+  "     let l:comPos=matchend(l:com,l:ct)
+  "     if l:comPos != -1
+  "       break
+  "     endif
+  "   endfor
+  "   if l:comPos == -1
+  "     call Error_msg('err: comments')
+  "     let b:ecom="XXX"
+  "     return 1
+  "   endif
+  " endif
 
   let l:com=strpart(l:com,l:comPos,1)
   " echo l:com
   " get line
-  let l:cpos=getpos('.')
-  let l:cline=getline(l:cpos[1])
-  if len(l:cline) == 0
-    return 1
-  endif
+  " let l:cpos=getpos('.')
+  " let l:cline=getline(l:cpos[1])
+  " if len(l:cline) == 0
+  "   return 1
+  " endif
   let l:start=matchend(l:cline,'^\s*')
   if match(l:cline,'^\s*\'.l:com) == -1
     " non comment line => insert comment string
