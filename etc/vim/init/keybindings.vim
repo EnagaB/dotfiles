@@ -4,7 +4,7 @@ set ttimeoutlen=10
 
 " meta-keybindings <M-[a-z]> are available
 if has('unix') && !has('nvim')
-  for s:ii in Lowerlist()
+  for s:ii in map(range(char2nr('a'),char2nr('z')),'nr2char(v:val)')
     execute 'map  <Esc>'.s:ii.' <M-'.s:ii.'>'
     execute 'map! <Esc>'.s:ii.' <M-'.s:ii.'>'
   endfor

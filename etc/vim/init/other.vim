@@ -1,6 +1,6 @@
 " reset registers
 if has('vim_starting')
-  for s:reg in Lowerlist()
+  for s:reg in map(range(char2nr('a'),char2nr('z')),'nr2char(v:val)')
     call setreg(s:reg, '')
   endfor
 endif
