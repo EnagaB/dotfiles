@@ -204,7 +204,7 @@ endfunction
 let s:bufcharlist = map(range(char2nr('0'),char2nr('9')),'nr2char(v:val)')
       \             + map(range(char2nr('a'),char2nr('z')),'nr2char(v:val)')
 " close buffer without closing pane
-function! s:clone_buffer_without_closing_pane(bang, buffer)
+function! s:close_buffer_without_closing_pane(bang, buffer)
   if empty(a:buffer)
     let btarget = bufnr('%')
   elseif a:buffer =~ '^\d\+$'

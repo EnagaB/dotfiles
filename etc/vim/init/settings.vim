@@ -7,7 +7,8 @@ let s:tmp_path = expand('$HOME/.local/tmp')
 let s:tplfile_path_without_ext = expand('$HOME/.template/tpl')
 
 " env
-let s:term = getenv('TERM')
+" let s:term = getenv('TERM')
+let s:term = expand("$TERM")
 
 " install packages
 let g:use_packmgr_minpac = 0
