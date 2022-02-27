@@ -228,10 +228,8 @@ alias disk='df -hP'
 if [[ "$__shell" = 'bash' ]] ; then
   function __reset_noglob() { local CMD="$1" ; shift ; $CMD "$@" ; set +f ; }
   alias zmv="set -f ; __reset_noglob __zmv.bash"
-  alias fin="set -f ; __reset_noglob __fin.bash"
 elif [[ "$__shell" = 'zsh' ]] ; then
   alias zmv="noglob __zmv.bash"
-  alias fin="noglob __fin.bash"
 fi
 
 ### others

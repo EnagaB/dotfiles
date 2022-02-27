@@ -1,0 +1,68 @@
+#!/bin/bash
+set -u
+# usage: fin [-n|-N|-c|-C] <search_word>
+#
+# > ls
+# a.txt b.txt c.dat dtxt.xyz atxt/
+# > fin -n txt
+# a.txt
+# b.txt
+# dtxt.xyz
+# atxt/
+#
+# options:
+#  -n: search files and directories in CWD
+#  -N: search files and directories in CWD and its subdirectories
+#  -c: search word in contents of files in CWD
+#  -C: search word in contents of files in CWD and its subdirectories
+
+declare find_cwd_only=true
+declare find_name=true
+
+while getopts nNcC OPT; do
+  case $OPT in
+    n) ;;
+    N)
+      find_cwd_only=false
+      ;;
+    c)
+      find_name=false
+      ;;
+    C)
+      find_cwd_only=false
+      find_name=false
+      ;;
+  esac
+done
+shift $((OPTIND - 1))
+
+[[ "$#" -ne 1 ]] && echo "Num of arguments is wrong." && exit 1
+declare -r search_word="$1"
+
+if $find_name; then
+  # file and directory name
+  if $find_cwd_only; then
+    searched_files=( $(find . -maxdepth 1 -name "*${search_word}*" -type f) )
+    searched_dirs=(  $(find . -maxdepth 1 -name "*${search_word}*" -type d) )
+  else
+    searched_files=( $(find . -name "*${search_word}*" -type f) )
+    searched_dirs=(  $(find . -name "*${search_word}*" -type d) )
+  fi
+  for ifs in "${searched_files[@]}"; do
+    echo "$ifs"
+  done
+  for ids in "${searched_dirs[@]}"; do
+    [[ "$ids" == "." ]] && continue
+    echo "${ids}/"
+  done
+else
+  # contents of file
+  if $find_cwd_only; then
+    find . -maxdepth 1 -type f -print0 | xargs -0 grep "$search_word"
+  else
+    find . -type f -print0 | xargs -0 grep "$search_word"
+  fi
+fi
+
+exit 0
+# end
