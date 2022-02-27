@@ -9,7 +9,7 @@ mkdir build \
   && cd build \
   && cmake .. \
   && make \
-  && mv __jump.out "$dfbin"
+  && ln -snfv "${dfsrc}/jump/build/__jump.out" "${dfbin}/__jump.out"
 popd
 
 # EOF
