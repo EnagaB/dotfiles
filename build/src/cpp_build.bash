@@ -2,9 +2,14 @@
 set -u
 
 echo "build jump.cpp"
-outfile="${dfbin}/__jump.out"
-[[ -f "$outfile" ]] && rm "$outfile"
-g++ -std=c++17 -Wall "${dfsrc}/jump/jump.cpp" -o "$outfile"
-[[ ! -f "$outfile" ]] && g++ -std=c++1z -Wall "${dfsrc}/jump/jump.cpp" -o "$outfile"
+pushd "${dfsrc}/jump"
+[[ -f "${dfbin}/__jump.out" ]] && rm "${dfbin}/__jump.out"
+[[ -d "${dfsrc}/jump/build" ]] && rm -r "${dfsrc}/jump/build"
+mkdir build \
+  && cd build \
+  && cmake .. \
+  && make \
+  && mv __jump.out "$dfbin"
+popd
 
 # EOF

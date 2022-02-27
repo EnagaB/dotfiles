@@ -20,6 +20,8 @@ export T="$TRASHBOX"
 [[ -f "${HOME}/.cargo/env" ]] && . "${HOME}/.cargo/env"
 # Go
 [[ -d "${LOCAL}/go/bin" ]] && export PATH=$PATH:"${LOCAL}/go/bin"
+# npm
+[[ -d "${HOME}/.npm-global" ]] && export PATH=$PATH:"${HOME}/.npm-global/bin"
 
 ### shell
 export DOTSH="${DOTFILES}/etc/shell"

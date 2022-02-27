@@ -2,6 +2,7 @@
 set -u
 
 ### make init dir
+declare npm_default_dir="${HOME}/.npm-global"
 declare -ar make_initdir=(
   # local
   "${loc}/bin"
@@ -19,6 +20,7 @@ declare -ar make_initdir=(
   # other
   "${HOME}/.fonts"
   "${HOME}/.w3m"
+  "$npm_default_dir"
 )
 
 ### apt
@@ -76,6 +78,8 @@ declare -ar apt_packs=(
   epstool
   # compiler
   build-essential
+  cmake
+  make
   gfortran
   gcc
   g++
