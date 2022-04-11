@@ -30,8 +30,8 @@ let s:install_packs = [
       \ ]
 
 " colorscheme
-" let s:colorscheme = 'gruvbox'
-let s:colorscheme = 'nord'
+let s:colorscheme = 'gruvbox'
+" let s:colorscheme = 'nord'
 let s:colorscheme_without_packs = 'desert'
 let s:background = 'dark'
 

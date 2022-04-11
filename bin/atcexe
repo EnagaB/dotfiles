@@ -7,6 +7,7 @@ declare -r ts_code=$(date +%s -r "$code")
 declare -r ts_exe=$(date +%s -r "$exe")
 
 if [[ "$ts_code" -gt "$ts_exe" ]]; then
+  echo "SH: Compiling..."
   g++ -D_DEBUG \
       -std=gnu++17 \
       -Wall \
@@ -16,9 +17,11 @@ if [[ "$ts_code" -gt "$ts_exe" ]]; then
       -I/opt/boost/gcc/include \
       -L/opt/boost/gcc/lib \
       -I/opt/ac-library \
+      -I"${HOME}/.local/include" \
       "$code"
 fi
 
+echo "SH: Begin program."
 ${exe}
 
 # EOF
