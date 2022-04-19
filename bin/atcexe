@@ -1,27 +1,58 @@
-#!/usr/bin/env bash
-set -u
+#!/usr/bin/env python3
 
-declare -r code="$1"
-declare -r exe="./a.out"
-declare -r ts_code=$(date +%s -r "$code")
-declare -r ts_exe=$(date +%s -r "$exe")
+import os
+import sys
+import argparse
+from pathlib import Path
+import subprocess as subp
 
-if [[ "$ts_code" -gt "$ts_exe" ]]; then
-  echo "SH: Compiling..."
-  g++ -D_DEBUG \
-      -std=gnu++17 \
-      -Wall \
-      -Wextra \
-      -O2 \
-      -DONLINE_JUDGE \
-      -I/opt/boost/gcc/include \
-      -L/opt/boost/gcc/lib \
-      -I/opt/ac-library \
-      -I"${HOME}/.local/include" \
-      "$code"
-fi
+ATCODER_CPP_CMD = ["g++",
+                   "-D_DEBUG",
+                   "-std=gnu++17",
+                   "-Wall",
+                   "-Wextra",
+                   "-O2",
+                   "-DONLINE_JUDGE",
+                   "-I/opt/boost/gcc/include",
+                   "-L/opt/boost/gcc/lib"
+                   "-I/opt/ac-library",
+                   "-I" + str(Path(os.getenv("HOME")) / ".local" / "include")]
 
-echo "SH: Begin program."
-${exe}
+def get_args():
+    parser = argparse.ArgumentParser(description="Compile and execute atcoder c++ code.")
+    parser.add_argument("code", type=Path,
+                        help="an atcoder c++ code file.")
+    parser.add_argument("-e", "--exe", type=Path, default="./a.out",
+                        help="execution file name. default='./a.out'")
+    return parser.parse_args()
+
+def main(**kwargs):
+    code_path = kwargs["code"].resolve()
+    exe_path = kwargs["exe"].resolve()
+    if not code_path.is_file():
+        print("error: Code file does not exist.")
+        return 1
+    compile_code = True
+    if exe_path.is_file():
+        exe_mtime = exe_path.stat().st_mtime
+        code_mtime = code_path.stat().st_mtime
+        if exe_mtime > code_mtime:
+            compile_code = False
+    if compile_code:
+        print("ATCEXE: COMPILING...")
+        cmd = [*ATCODER_CPP_CMD,
+               "-o", str(exe_path),
+               str(code_path)]
+        cp = subp.run(cmd)
+        if cp.returncode != 0:
+            print("ATCEXE: compiling failed.")
+            return 1
+    print("ATCEXE: run.")
+    print("============")
+    subp.run([str(exe_path)])
+    return 0
+
+if __name__ == "__main__":
+    sys.exit(main(**vars(get_args())))
 
 # EOF
