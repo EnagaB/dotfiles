@@ -4,7 +4,7 @@ import os
 import sys
 import argparse
 from pathlib import Path
-import subprocess as subp
+import subprocess
 
 ATCODER_CPP_CMD = ["g++",
                    "-D_DEBUG",
@@ -22,6 +22,8 @@ def get_args():
     parser = argparse.ArgumentParser(description="Compile and execute atcoder c++ code.")
     parser.add_argument("code", type=Path,
                         help="an atcoder c++ code file.")
+    parser.add_argument("-i", "--input", type=Path, default=None,
+                        help="input file for c++ code.")
     parser.add_argument("-e", "--exe", type=Path, default="./a.out",
                         help="execution file name. default='./a.out'")
     return parser.parse_args()
@@ -29,6 +31,10 @@ def get_args():
 def main(**kwargs):
     code_path = kwargs["code"].resolve()
     exe_path = kwargs["exe"].resolve()
+    if kwargs["input"] is None:
+        input_path = None
+    else:
+        input_path = kwargs["input"].resolve()
     if not code_path.is_file():
         print("error: Code file does not exist.")
         return 1
@@ -43,13 +49,16 @@ def main(**kwargs):
         cmd = [*ATCODER_CPP_CMD,
                "-o", str(exe_path),
                str(code_path)]
-        cp = subp.run(cmd)
+        cp = subprocess.run(cmd)
         if cp.returncode != 0:
             print("ATCEXE: compiling failed.")
             return 1
     print("ATCEXE: run.")
     print("============")
-    subp.run([str(exe_path)])
+    if input_path is None:
+        subprocess.run([str(exe_path)])
+    else:
+        subprocess.run([str(exe_path), "<", str(input_path)])
     return 0
 
 if __name__ == "__main__":
