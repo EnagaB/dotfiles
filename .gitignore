@@ -2,6 +2,7 @@
 a.out
 *.zwc
 __pycache__/
+build/
 
 # safety
 !.gitignore
