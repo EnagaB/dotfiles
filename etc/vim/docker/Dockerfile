@@ -1,0 +1,12 @@
+FROM ubuntu:22.04
+
+RUN apt-get update && apt-get upgrade -y \
+    && apt-get install -y software-properties-common \
+    && add-apt-repository -y ppa:jonathonf/vim \
+    && add-apt-repository -y ppa:neovim-ppa/stable
+
+RUN apt-get update && apt-get upgrade -y \
+    && apt-get install -y \
+    vim \
+    neovim
+
