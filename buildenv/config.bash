@@ -15,7 +15,7 @@ declare -ar make_initdir=(
   # trashbox
   "${tbox}"
   # ~/.config
-  "${appconfig}/nvim"
+  # "${appconfig}/nvim"
   "${appconfig}/zathura"
   # other
   "${HOME}/.fonts"
@@ -161,9 +161,10 @@ declare -ar link_toany=(
   # editor
   "${dfetc}/emacs"      "${HOME}/.emacs.d"
   "${dfetc}/vim"        "${HOME}/.vim"
-  "${HOME}/.vim/vimrc"  "${HOME}/.vimrc"
-  "${HOME}/.vim/gvimrc" "${HOME}/.gvimrc"
-  "${HOME}/.vim/vimrc"  "${appconfig}/nvim/init.vim"
+  "${dfetc}/vim"        "${appconfig}/nvim"
+  # "${HOME}/.vim/vimrc"  "${HOME}/.vimrc"
+  # "${HOME}/.vim/gvimrc" "${HOME}/.gvimrc"
+  # "${HOME}/.vim/vimrc"  "${appconfig}/nvim/init.vim"
 )
 
 # EOF
