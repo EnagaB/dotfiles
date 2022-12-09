@@ -4,8 +4,8 @@ endif
 let g:loaded_packmgr = 1
 
 " install package manager
-let s:packmgr_pack_path = g:base_path . '/autoload_vim-plug'
-let s:packmgr_path = g:base_path . '/autoload/plug.vim'
+let s:packmgr_pack_path = g:dotvim_dir . '/autoload_vim-plug'
+let s:packmgr_path = g:dotvim_dir . '/autoload/plug.vim'
 if ! filereadable(s:packmgr_path)
   call system('curl -fLo ' . s:packmgr_path
         \ . ' --create-dirs '

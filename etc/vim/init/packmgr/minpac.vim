@@ -9,7 +9,7 @@ endif
 let g:loaded_packmgr = 1
 
 " autoinstall by git
-let s:minpac_packpath = g:base_path . '/autoload_minpac'
+let s:minpac_packpath = g:dotvim_dir . '/autoload_minpac'
 if match(&packpath, s:minpac_packpath) == -1
   execute 'set packpath ^=' . s:minpac_packpath
 endif

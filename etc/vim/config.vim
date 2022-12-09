@@ -44,4 +44,14 @@ let s:line_margin = 2
 " preinstall filetype settings
 let g:tex_flavor='latex'
 
+""" easymotion/vim-easymotion
+let g:EasyMotion_do_mapping       = 0 " default mapping off
+let g:EasyMotion_smartcase        = 1 " smartcase for EM
+let g:EasyMotion_enter_jump_first = 1 " enter : move to first match
+let g:EasyMotion_space_jump_first = 1 " space : move to first match
+let g:EasyMotion_keys             = 'hjklyuiopnmgfdsatrewqbvcxz'
+
+""" tpope/vim-surround
+let g:surround_no_mappings = 1
+
 " EOF

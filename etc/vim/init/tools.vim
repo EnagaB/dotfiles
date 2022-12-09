@@ -39,12 +39,17 @@ command! ToggleCommentout source $MYVIMRC | call <SID>toggle_commentout()
 command! ToggleResizePanes call <SID>toggle_resize_panes()
 " other
 command! ShowFilepath echo expand("%:p")
+command! Pwf ShowFilepath
 command! ReloadVimrc source $MYVIMRC
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " util "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! Show_filepath()
+  echo expand("%:p")
+endfunction
+
 """ echo highlight
 " error
 function! Error_msg(msg)

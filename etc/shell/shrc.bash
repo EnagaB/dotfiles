@@ -216,7 +216,8 @@ function __extract() {
 
 ### cpu/gpu
 # alias cpu='htop'
-alias cpu='vmstat 2 --unit M --timestamp'
+# alias cpu='vmstat 2 --unit M --timestamp'
+alias cpu='top -d 2 -c -i'
 alias gpu='intel_gpu_top'
 # alias gpu='nvidia-smi'
 alias disk='df -hP'

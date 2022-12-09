@@ -1,17 +1,22 @@
-" .vimrc, init.vim
+" vimrc
+
 if !1
   finish
 endif
 
-" settings
-let g:base_path = expand('$HOME/.vim')
-let g:after_path = g:base_path . '/after'
+" directory path
+let g:dotvim_dir = expand("<sfile>:p:h")
+let g:after_dir = g:dotvim_dir . '/after'
+let s:init_dir = g:dotvim_dir . "/init"
 
 " basic settings
 if has('vim_starting')
   set encoding=utf-8
 endif
-execute 'source ' . g:base_path . '/init/keybindings_basic.vim'
+
+" load basic
+execute "source " . g:dotvim_dir . "/config.vim"
+execute 'source ' . s:init_dir . '/keybindings.vim'
 
 " vim8
 if v:version < 800
@@ -21,16 +26,15 @@ endif
 " set path
 set runtimepath&
 set packpath&
-if match(&runtimepath, g:base_path) == -1
-  execute 'set runtimepath ^=' . g:base_path
+if match(&runtimepath, g:dotvim_dir) == -1
+  execute 'set runtimepath ^=' . g:dotvim_dir
 endif
-if match(&runtimepath, g:after_path) == -1
-  execute 'set runtimepath +=' . g:after_path
+if match(&runtimepath, g:after_dir) == -1
+  execute 'set runtimepath +=' . g:after_dir
 endif
 
-" load init settings
-execute 'source ' . g:base_path . '/init/settings.vim'
-execute 'source ' . g:base_path . '/init/tools.vim'
+" load
+execute 'source ' . s:init_dir . '/tools.vim'
 
 " set basic settings
 filetype plugin indent on
@@ -45,16 +49,13 @@ if Params('term') !~ '^xterm' && ! has('gui_running')
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
 
-" load package settingss
-execute 'source ' . g:base_path . '/init/packset/vim-easymotion.vim'
-execute 'source ' . g:base_path . '/init/packset/vim-surround.vim'
 " load package manager
-execute 'source ' . g:base_path . '/init/packmgr/minpac.vim'
-execute 'source ' . g:base_path . '/init/packmgr/vim-plug.vim'
+execute 'source ' . g:dotvim_dir . '/init/packmgr/minpac.vim'
+execute 'source ' . g:dotvim_dir . '/init/packmgr/vim-plug.vim'
+
 " load other settings
-execute 'source ' . g:base_path . '/init/keybindings.vim'
-execute 'source ' . g:base_path . '/init/other.vim'
-execute 'source ' . g:base_path . '/init/lines.vim'
-execute 'source ' . g:base_path . '/init/gui.vim'
+execute 'source ' . g:dotvim_dir . '/init/other.vim'
+execute 'source ' . g:dotvim_dir . '/init/lines.vim'
+execute 'source ' . g:dotvim_dir . '/init/gui.vim'
 
 " EOF
