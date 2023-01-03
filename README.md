@@ -1,4 +1,4 @@
-# Dotfiles in Ubuntu and Cygwin
+# Dotfiles
 ## TO DO
 - [ ] Create Windows powershell config file for winget, alias, path, etc.
 
