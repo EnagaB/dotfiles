@@ -19,13 +19,13 @@ command! ShowHilightgroup verbose highlight
 command! EmacsCtrlk call <SID>emacs_ctrl_k()
 command! -nargs=1 InsertFileOnlyOnce call <SID>insert_file_only_once(<f-args>)
 command! RegisterWord
-      \ execute 'let @' . Params('hilight_word_register') . '=expand("<cword>")'
+      \ execute 'let @' . g:CONFIG['hilight_word_register'] . '=expand("<cword>")'
 command! HighlightRegisterWord
       \ set nohlsearch |
-      \ let @/='\<' . eval('@' . Params('hilight_word_register')) . '\>' | set hlsearch
+      \ let @/='\<' . eval('@' . g:CONFIG['hilight_word_register']) . '\>' | set hlsearch
 command! HighlightRegister
       \ set nohlsearch |
-      \ let @/=eval('@' . Params('hilight_word_register')) | set hlsearch
+      \ let @/=eval('@' . g:CONFIG['hilight_word_register']) | set hlsearch
 " noremap <Plug>e(func)toggle_comment_out :<C-u>call <SID>toggle_comment_out()<CR>
 " search
 command! -bang OneCharSearchCL call <SID>one_char_search_current_line(<q-bang>)
@@ -326,13 +326,13 @@ endfunction
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " set colorscheme from settings
 function! s:Set_default_colorscheme()
-  let l:colorscheme_rel_path = 'colors/' . Params('colorscheme') . '.vim'
+  let l:colorscheme_rel_path = 'colors/' . g:CONFIG['colorscheme'] . '.vim'
   if ! empty(globpath(&runtimepath, l:colorscheme_rel_path))
-    execute 'colorscheme ' . Params('colorscheme')
+    execute 'colorscheme ' . g:CONFIG['colorscheme']
   else
-    execute 'colorscheme ' . Params('colorscheme_without_packs')
+    execute 'colorscheme ' . g:CONFIG['colorscheme_without_packs']
   endif
-  execute 'set background =' . Params('background')
+  execute 'set background =' . g:CONFIG['background']
 endfunction
 " show syntax information under cursor
 " cohama, http://cohama.hateblo.jp/entry/2013/08/11/020849

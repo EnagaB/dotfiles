@@ -116,9 +116,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-alias j="cd"
-alias jb="cd .."
-
 alias vi="nvim"
 
 # EOF

@@ -1,4 +1,4 @@
-if ! g:use_packmgr_vim_plug || exists('g:loaded_packmgr')
+if exists('g:loaded_packmgr')
   finish
 endif
 let g:loaded_packmgr = 1
@@ -15,14 +15,15 @@ endif
 
 " set packages
 call plug#begin(s:packmgr_pack_path)
-for _p in Params('install_packs')
-  let _pack = _p[0]
-  let _attr = _p[1]
-  let _on_idx = index(_attr, 'on')
-  if len(_attr) == 0
-    Plug _pack
-  elseif _on_idx != -1
-    Plug _pack, {'on': _attr[_on_idx+1]}
+for _p in g:CONFIG['install_packages']
+  let _n = _p['name']
+  if has_key(_p, 'on_demand')
+    let _od = _p['on_demand']
+    if has_key(_od, 'command')
+      Plug _p['name'], {'on': _od['command']}
+    endif
+  else
+    Plug _p['name']
   endif
 endfor
 call plug#end()

@@ -44,14 +44,15 @@ endif
 if has('termguicolors')
   set termguicolors
 endif
-if Params('term') !~ '^xterm' && ! has('gui_running')
+if g:CONFIG['term'] !~ '^xterm' && ! has('gui_running')
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
 
-" load package manager
-execute 'source ' . g:dotvim_dir . '/init/packmgr/minpac.vim'
-execute 'source ' . g:dotvim_dir . '/init/packmgr/vim-plug.vim'
+" " load package manager
+" execute 'source ' . g:dotvim_dir . '/init/packmgr/minpac.vim'
+" execute 'source ' . g:dotvim_dir . '/init/packmgr/vim-plug.vim'
+execute 'source ' . g:dotvim_dir . '/init/packmgr.vim'
 
 " load other settings
 execute 'source ' . g:dotvim_dir . '/init/other.vim'

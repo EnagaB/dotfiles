@@ -212,8 +212,8 @@ nnoremap <C-e> ==
 " yank(copy) from cursor to end-of-line (crsp D)
 noremap Y y$
 " toggle start/end record keyboard macro and call the keyboard macro
-execute 'noremap <S-q> :normal! q' . Params('kbd_macro_register') . '<CR>'
-execute 'noremap <C-q> @' . Params('kbd_macro_register')
+execute 'noremap <S-q> :normal! q' . g:CONFIG['kbd_macro_register'] . '<CR>'
+execute 'noremap <C-q> @' . g:CONFIG['kbd_macro_register']
 " undo/redo
 noremap u     u
 noremap <S-u> r
@@ -226,9 +226,9 @@ noremap -     <C-x>
 " non-use nameless register and use underscore register
 noremap x "_x
 " zt/zb insert margin
-let s:line_margin_x3 = Params('line_margin') * 3
-execute 'nnoremap zt zt' . Params('line_margin') . '<C-y>'
-execute 'nnoremap zb zb' . Params('line_margin') . '<C-e>'
+let s:line_margin_x3 = g:CONFIG['line_margin'] * 3
+execute 'nnoremap zt zt' . g:CONFIG['line_margin'] . '<C-y>'
+execute 'nnoremap zb zb' . g:CONFIG['line_margin'] . '<C-e>'
 execute 'nnoremap z<S-t> zt' . s:line_margin_x3 . '<C-y>'
 execute 'nnoremap z<S-b> zb' . s:line_margin_x3 . '<C-e>'
 
@@ -236,7 +236,7 @@ execute 'nnoremap z<S-b> zb' . s:line_margin_x3 . '<C-e>'
 nmap c     :<C-u>ToggleCommentout<CR>
 nmap <S-c> :<C-u>ToggleCommentout<CR>
 """ tyru/caw.vim: toggle comment out
-if match(Params('install_packs'), 'caw.vim')
+if match(g:CONFIG['install_package_names'], 'tyru/caw.vim')
   nmap c     <Plug>(caw:hatpos:toggle)
   vmap c     <Plug>(caw:hatpos:toggle)
   nmap <S-c> <Plug>(caw:hatpos:toggle)

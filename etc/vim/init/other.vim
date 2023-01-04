@@ -14,8 +14,8 @@ augroup end
 " insert template file
 augroup insert_template
   autocmd!
-  let s:tplfile_list = split(glob(Params('tplfile_path_without_ext') . '.*'), "\n")
-  let s:len_tplfile_path_without_ext = strlen(Params('tplfile_path_without_ext'))
+  let s:tplfile_list = split(glob(g:CONFIG['tplfile_path_without_ext'] . '.*'), "\n")
+  let s:len_tplfile_path_without_ext = strlen(g:CONFIG['tplfile_path_without_ext'])
   call sort(s:tplfile_list, "Sort_comp_strlen")
   call reverse(s:tplfile_list)
   for ff in s:tplfile_list
@@ -45,10 +45,10 @@ set noswapfile
 set noundofile
 set viewoptions=
 set viminfo=
-execute 'set directory=' . Params('tmp_path')
-execute 'set viewdir=' . Params('tmp_path')
-execute 'set backupdir=' . Params('tmp_path')
-execute 'set undodir=' . Params('tmp_path')
+execute 'set directory=' . g:CONFIG['tmp_path']
+execute 'set viewdir=' . g:CONFIG['tmp_path']
+execute 'set backupdir=' . g:CONFIG['tmp_path']
+execute 'set undodir=' . g:CONFIG['tmp_path']
 
 " clipboard
 set clipboard&
