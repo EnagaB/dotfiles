@@ -38,7 +38,7 @@ declare -r src=${spt}/src
 # config
 declare -r config=${spt}/config.bash
 # path
-declare -r df=${DOTFILES:-${HOME}/df}
+declare -r df=${DOTFILES:-${HOME}/dotfiles}
 declare -r loc=${LOCAL:-${HOME}/.local}
 declare -r tbox=${TRASHBOX:-${HOME}/.t}
 declare -r dfbin=${df}/bin

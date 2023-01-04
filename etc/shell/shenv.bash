@@ -2,7 +2,7 @@
 
 ### usr local env variables
 # dotfiles
-export DOTFILES="${HOME}/df"
+export DOTFILES="${HOME}/dotfiles"
 # local directories
 export LOCAL="${HOME}/.local"
 export TRASHBOX="${HOME}/.t"

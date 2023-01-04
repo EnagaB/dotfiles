@@ -7,7 +7,7 @@ case $- in
 esac
 
 # rc/env dir
-export DOTFILES=${HOME}/df
+export DOTFILES=${HOME}/dotfiles
 export DOTSH=${DOTFILES}/etc/shell
 
 # .bashenv
