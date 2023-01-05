@@ -128,7 +128,8 @@ noremap <Plug>e(spc)r     <C-o>
 noremap <Plug>e(spc)o     :<C-u>e<Space>
 noremap <Plug>e(spc)<S-o> :<C-u>e<Space>~/
 " noremap <Plug>e(spc)f     :<C-u>echo expand("%:p")<CR>
-noremap <Plug>e(spc)f     :<C-u>ShowFilepath<CR>
+" noremap <Plug>e(spc)f     :<C-u>ShowFilepath<CR>
+noremap <Plug>e(spc)f     :<C-u>Fern .<CR>
 
 " pane prefix
 noremap <Plug>e(pane)h     :<C-u>split<CR>
