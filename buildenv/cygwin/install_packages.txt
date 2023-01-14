@@ -1,22 +1,12 @@
 # Install packages in this list and derived packages which version is same.
-
-# shell
 zsh
-
-# editor
 nano
 vim
-
-# programing
 cygport
 python (latest)
 python3
-
-# other
 tmux
 git
 curl
 wget
 wget2
-
-# EOF
