@@ -60,5 +60,6 @@ let g:fern_disable_startup_warnings = 1
 
 " sheerun/vim-polyglot
 let g:polyglot_disabled = ['csv']
+let g:vim_markdown_new_list_item_indent = 2
 
 " EOF
