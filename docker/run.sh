@@ -12,6 +12,7 @@ declare -r docker_work_dir=/work
 declare -r docker_home=/dkrhome
 # other
 declare -r rand8=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)
+declare -r detachkeys="ctrl-\\,ctrl-\\"
 
 IMAGE=${IMAGE:-"$image_name"}
 CONTAINER_NAME=${CONTAINER_NAME:-"${image_name}_${rand8}"}
@@ -27,6 +28,7 @@ docker run -it --rm \
     --mount type=bind,src="${script_dir}/.bashrc",dst="${docker_home}/.bashrc" \
     --mount type=bind,src="${HOME}/.bash_history",dst="${docker_home}/.bash_history" \
     --mount type=bind,src="$WORK_DIR",dst="$docker_work_dir" \
+    --detach-keys="$detachkeys" \
     -w "$docker_work_dir" \
     "$IMAGE" \
     /bin/bash
