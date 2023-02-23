@@ -32,5 +32,3 @@ ARG share_dir="${HOME}/.local/share"
 RUN mkdir -p "$config_dir" && chmod 777 "$config_dir" \
     && mkdir -p "$tmp_dir" && chmod 777 "$tmp_dir" \
     && mkdir -p "$share_dir" && chmod 777 "$share_dir"
-
-# EOF
