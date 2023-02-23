@@ -141,8 +141,7 @@ alias unlinknull='find . -maxdepth 1 -xtype l | xargs rm'
 
 ### jump: record path (add/rm) and cd record-path
 declare -r __jumpfile="${HOME}/.jumplist"
-[[ -f "${DOTFILES}/bin/__jump.out" ]] && declare -r __jumpout="${DOTFILES}/bin/__jump.out"
-[[ ! -v __jumpout ]] && declare -r __jumpout="${DOTFILES}/bin/__jump.py"
+declare -r __jumpout="${DOTFILES}/bin/__jump.py"
 function __df_jumpfunc() {
   local tmp=$("$__jumpout" "$__jumpfile" "$@")
   [[ -d "$tmp" ]] && cd "$tmp" || echo "$tmp"
