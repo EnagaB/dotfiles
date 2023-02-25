@@ -111,5 +111,3 @@ ulimit -c 0 # not output core files
 
 # rc
 [[ -f "${DOTSH}/shrc.bash" ]] && source "${DOTSH}/shrc.bash"
-
-# EOF

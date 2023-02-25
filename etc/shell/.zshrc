@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-### zcompile function
+# zcompile function
 function __autozcomp() {
   local file="$1"
   if [[ -f "${file}.zwc" ]] ; then
@@ -16,68 +16,46 @@ function __autozcomp() {
   fi
 }
 
-### zcompile .zshenv/.zshrc
+# zcompile .zshenv/.zshrc
 __autozcomp "${HOME}/.zshenv"
 __autozcomp "${ZDOTDIR}/.zshrc"
 
-### init
+# init
 autoload -Uz colors && colors
 autoload -Uz is-at-least
 autoload -Uz add-zsh-hook
 
-### prompt
-declare -r __prompt_style_fc=${__prompt_style:-'simple'}
-if [ "$__prompt_style_fc" = 'adam' ];then
-  autoload -Uz promptinit && promptinit
-  prompt adam1 blue write green
-else
-  setopt prompt_subst
-  if [ "$__prompt_style_fc" = 'normal' ];then
-    declare -r __prompt_std=$'[%F{yellow}%n%f@%F{yellow}%m%f:%F{cyan}%~%f]'
-    declare -r __prompt_date=$'[%F{cyan}%D{%F(%a)%T}%f]'
-    declare -r __prompt_last=$'\n %# '
-  elif [ "$__prompt_style_fc" = 'simple' ];then
-    [[ ! -z "$SSH_CONNECTION" ]] && declare -r __prompt_std=$'%F{cyan}%n@%m %~%f'
-    [[ ! -v __prompt_std ]] && declare -r __prompt_std=$'%F{cyan}%~%f'
-    declare -r __prompt_date=$''
-    declare -r __prompt_last=$'\n%F{cyan}>%f '
-  fi
-  PROMPT=${__prompt_std}${__prompt_date}${__prompt_last}
-  # vcs_info
-  if is-at-least 4.3.11 ;then
-    autoload -Uz vcs_info
-    zstyle ':vcs_info:*' enable git hg
-    if ${__vcs_check_for_change:-false}; then
-      zstyle ':vcs_info:git:*' check-for-changes true
-      zstyle ':vcs_info:git:*' unstagedstr "%F{red}+"
-      zstyle ':vcs_info:git:*' stagedstr "%F{yellow}!"
-    else
-      zstyle ':vcs_info:git:*' check-for-changes false
+# prompt
+setopt prompt_subst
+[[ ! -z "$SSH_CONNECTION" ]] && declare -r __prompt_std=$'%F{cyan}%n@%m %~%f'
+[[ ! -v __prompt_std ]] && declare -r __prompt_std=$'%F{cyan}%~%f'
+declare -r __prompt_date=$''
+declare -r __prompt_last=$'\n%F{cyan}>%f '
+PROMPT=${__prompt_std}${__prompt_date}${__prompt_last}
+if is-at-least 4.3.11 ;then
+  autoload -Uz vcs_info
+  zstyle ':vcs_info:*' enable git hg
+  zstyle ':vcs_info:git:*' check-for-changes false
+  zstyle ':vcs_info:git:*' unstagedstr "%F{red}+"
+  zstyle ':vcs_info:git:*' stagedstr "%F{yellow}!"
+  zstyle ':vcs_info:*' formats " %F{green}%u%c%b%f"
+  zstyle ':vcs_info:*' actionformats " %b|%a"
+  function __update_prompt() {
+    PROMPT=${__prompt_std}
+    local -a messages
+    LANG=C vcs_info
+    if [[ ! -z ${vcs_info_msg_0_} ]];then
+      [[ -n "$vcs_info_msg_0_" ]] && messages+=( "%F{green}${vcs_info_msg_0_}%f" )
+      [[ -n "$vcs_info_msg_1_" ]] && messages+=( "%F{yellow}${vcs_info_msg_1_}%f" )
+      [[ -n "$vcs_info_msg_2_" ]] && messages+=( "%F{red}${vcs_info_msg_2_}%f" )
+      PROMPT=${PROMPT}${(j: :)messages}
     fi
-    if [ "$__prompt_style_fc" = 'normal' ];then
-      zstyle ':vcs_info:*' formats "%F{green}%u%c[%b]%f"
-      zstyle ':vcs_info:*' actionformats "[%b|%a]"
-    elif [ "$__prompt_style_fc" = 'simple' ];then
-      zstyle ':vcs_info:*' formats " %F{green}%u%c%b%f"
-      zstyle ':vcs_info:*' actionformats " %b|%a"
-    fi
-    function __update_prompt() {
-      PROMPT=${__prompt_std}
-      local -a messages
-      LANG=C vcs_info
-      if [[ ! -z ${vcs_info_msg_0_} ]];then
-        [[ -n "$vcs_info_msg_0_" ]] && messages+=( "%F{green}${vcs_info_msg_0_}%f" )
-        [[ -n "$vcs_info_msg_1_" ]] && messages+=( "%F{yellow}${vcs_info_msg_1_}%f" )
-        [[ -n "$vcs_info_msg_2_" ]] && messages+=( "%F{red}${vcs_info_msg_2_}%f" )
-        PROMPT=${PROMPT}${(j: :)messages}
-      fi
-      PROMPT=${PROMPT}${__prompt_date}${__prompt_last}
-    }
-    add-zsh-hook precmd __update_prompt
-  fi
+    PROMPT=${PROMPT}${__prompt_date}${__prompt_last}
+  }
+  add-zsh-hook precmd __update_prompt
 fi
 
-### history
+# history
 HISTSIZE=1000
 SAVEHIST=1000
 HISTFILE=~/.zsh_history
@@ -88,7 +66,7 @@ setopt hist_verify
 setopt hist_no_store
 setopt hist_ignore_space
 
-### complement
+# complement
 autoload -Uz compinit && compinit
 zstyle ':completion:*' auto-description 'specify: %d'
 zstyle ':completion:*' completer _expand _complete _correct _approximate _prefix
@@ -107,13 +85,13 @@ zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 zstyle ':completion:*' insert-tab false
 
-### keybindings
+# keybindings
 bindkey -d # reset keybindings
 bindkey -e # set keybindings as emacs-mode
 bindkey '^[[1;5D' backward-word # C-left
 bindkey '^[[1;5C' forward-word  # C-right
 
-### other
+# other
 KEYTIMEOUT=1
 setopt auto_cd
 function chpwd() {
@@ -125,13 +103,6 @@ function chpwd() {
     echo "There are over ${maxfn} files."
   fi
 }
-# function precmd() {
-#   if [ -z "$__NEW_LINE_BEFORE_PROMPT" ];then
-#     __NEW_LINE_BEFORE_PROMPT=1
-#   elif [ "$__NEW_LINE_BEFORE_PROMPT" -eq 1 ];then
-#     echo ''
-#   fi
-# }
 setopt auto_pushd
 setopt pushd_ignore_dups
 setopt no_beep
@@ -154,27 +125,21 @@ setopt list_packed
 setopt numeric_glob_sort
 setopt no_tify
 
-### select-word-style
+# select-word-style
 autoload -Uz select-word-style
 select-word-style default
 zstyle ':zle:*' word-chars " _-./;@"
 zstyle ':zle:*' word-style unspecified
 
-### source rc
+# source rc
 __autozcomp "${DOTSH}/shrc.bash"
 [[ -f "${DOTSH}/shrc.bash" ]] && . "${DOTSH}/shrc.bash"
 
-### alias
-### suffix alias
-alias -s {gz,tgz,zip,lzh,bz2,tbz,Z,tar,arj,xz}=__extract
-### global alias
+# zsh alias
 alias -g L='| less'
 alias -g GI='| grep -i'
 alias -g GIV='| grep -i -v'
 alias -g G='| grep '
 alias -g GV='| grep -v'
 alias -g C='| xsel --input --clipboard' # copy standard output to the clipboard
-# C compile option
 alias -g LOPENCV='-lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_ml -lopencv_video -lopencv_videoio -lopencv_videostab -lopencv_objdetect -lopencv_calib3d -lopencv_flann -lopencv_imgcodecs'
-
-# EOF

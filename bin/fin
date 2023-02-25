@@ -2,6 +2,12 @@
 set -u
 # usage: fin [-n|-N|-c|-C] <search_word>
 #
+# options:
+#  -n: search files and directories in CWD
+#  -N: search files and directories in CWD and its sub-directories
+#  -c: search word in contents of files in CWD
+#  -C: search word in contents of files in CWD and its sub-directories
+#
 # > ls
 # a.txt b.txt c.dat dtxt.xyz atxt/
 # > fin -n txt
@@ -10,11 +16,6 @@ set -u
 # dtxt.xyz
 # atxt/
 #
-# options:
-#  -n: search files and directories in CWD
-#  -N: search files and directories in CWD and its subdirectories
-#  -c: search word in contents of files in CWD
-#  -C: search word in contents of files in CWD and its subdirectories
 
 declare find_cwd_only=true
 declare find_name=true
@@ -63,6 +64,3 @@ else
     find . -type f -print0 | xargs -0 grep "$search_word"
   fi
 fi
-
-exit 0
-# end

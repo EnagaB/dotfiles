@@ -1,0 +1,22 @@
+#!/bin/bash
+# usage: extract ARCHIVE_FILES
+
+function __extract() {
+  for ff in "$@"; do
+    case $ff in
+      *.tar.gz|*.tgz)  tar xzvf   "$ff" ;;
+      *.tar.xz)        tar Jxvf   "$ff" ;;
+      *.zip)           unzip      "$ff" ;;
+      *.lzh)           lha e      "$ff" ;;
+      *.tar.bz2|*.tbz) tar xjvf   "$ff" ;;
+      *.tar.Z)         tar zxvf   "$ff" ;;
+      *.gz)            gzip -d    "$ff" ;;
+      *.bz2)           bzip2 -dc  "$ff" ;;
+      *.Z)             uncompress "$ff" ;;
+      *.tar)           tar xvf    "$ff" ;;
+      *.arj)           unarj      "$ff" ;;
+    esac
+  done
+}
+
+__extract "$@"

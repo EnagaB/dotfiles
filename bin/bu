@@ -44,5 +44,3 @@ for fd in "$@"; do
     cp "${fd}" "${fd3}"
   fi
 done
-
-# end

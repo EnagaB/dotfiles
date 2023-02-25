@@ -20,5 +20,3 @@ else
   PATH=${_p%:*:}
   unset -v _p
 fi
-
-# EOF
