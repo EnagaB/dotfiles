@@ -57,6 +57,7 @@ let g:surround_no_mappings = 1
 
 " lambdalisue/fern.vim
 let g:fern_disable_startup_warnings = 1
+let g:fern#default_hidden = 1
 
 " sheerun/vim-polyglot
 let g:polyglot_disabled = ['csv']
