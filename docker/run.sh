@@ -1,5 +1,15 @@
 #!/bin/bash
 
+mount_host=false
+while getopts M option; do
+  case $option in
+    M)
+      echo "Mount / -> /mnt/host"
+      mount_host=true
+      ;;
+  esac
+done
+
 declare -r script_dir=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd)
 . "${script_dir}/src.sh"
 
@@ -21,6 +31,11 @@ WORK_DIR=${WORK_DIR:-$(pwd)}
 VIM=${VIM:-"$dotvim"}
 TMUX=${TMUX:-"$tmuxconf"}
 
+mount_host_opt=()
+if $mount_host; then
+  mount_host_opt=(--mount type=bind,src=/,dst=/mnt/host,readonly)
+fi
+
 docker run -it --rm \
     --name "$CONTAINER_NAME" \
     -u=$(id -u):$(id -g) -v /etc/group:/etc/group:ro -v /etc/passwd:/etc/passwd:ro \
@@ -31,6 +46,7 @@ docker run -it --rm \
     --mount type=bind,src="${script_dir}/.bashrc",dst="${docker_home}/.bashrc" \
     --mount type=bind,src="${HOME}/.bash_history",dst="${docker_home}/.bash_history" \
     --mount type=bind,src="$WORK_DIR",dst="$docker_work_dir" \
+    "${mount_host_opt[@]}" \
     -e "TERM=$TERM"
     --detach-keys="$detachkeys" \
     -w "$docker_work_dir" \
