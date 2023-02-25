@@ -27,7 +27,6 @@ declare -ar init_directories=("${local_dir}/bin"
                               "${HOME}/.w3m"
                               "$npm_default_dir"
                               "$fonts_dir")
-declare -r build_jump=("${dotfiles_src_dir}/jump" "${dotfiles_bin_dir}/__jump.out")
 
 # packages
 declare -ar apt_repository_tools=(software-properties-common ppa-purge)
@@ -131,9 +130,6 @@ done
 rm *.md *.txt
 fc-cache -fv "$fonts_dir"
 popd
-
-# build
-build_cmake "${build_jump[@]}"
 
 # link
 echo "[link]"
