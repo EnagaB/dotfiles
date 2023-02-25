@@ -192,12 +192,6 @@ noremap <C-s> /
 noremap <C-r> ?
 noremap <expr>n     v:searchforward ? "n"      : "\<S-n>"
 noremap <expr><S-n> v:searchforward ? "\<S-n>" : "n"
-" vim-easymotion
-map  <S-s> <Plug>(easymotion-bd-f)
-nmap <S-s> <Plug>(easymotion-overwin-f)
-" nmap <C-s> <Plug>(easymotion-overwin-f2)
-map  <C-f> <Plug>(easymotion-bd-w)
-nmap <C-f> <Plug>(easymotion-overwin-w) 
 " one-char one-line search in normal and visual mode
 " imiaru?
 nnoremap    f       :OneCharSearchCL<CR>
