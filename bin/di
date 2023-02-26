@@ -1,54 +1,64 @@
 #!/usr/bin/env bash
 set -u
-# translate into Japanese or English
+# Translate <chars> into Japanese or English
+# usage: di [-h|-w] <chars>
+# option
+#   -h: show help text
+#   -w: match whole word only
 
 # parameters
-declare -ar ejdicts=(
-  "${LOCAL}/share/dict/ejdic-eijiro1448-utf8unix.dat.gz"
-  "${DOTFILES}/share/dict/ejdic-hand-utf8unix.dat.gz"
-)
-declare -r default_search_type='chars'
-declare -r helpfile="${DOTFILES}/share/help/di.txt"
+declare -ar EJ_DICTS=("${LOCAL}/share/dict/ejdic-eijiro1448-utf8unix.dat.gz"
+                     "${DOTFILES}/share/dict/ejdic-hand-utf8unix.dat.gz"
+                   )
+declare -ar HELPLINES=(3 7)
 
 # get option
-declare search_type="$default_search_type"
-declare help=false
-while getopts wh OPT; do
-  case $OPT in
-    w) search_type='word';;
-    h) help=true;;
+declare word_search=false
+declare showhelp=false
+while getopts hw option; do
+  case $option in
+    w)
+      word_search=true
+      ;;
+    h)
+      showhelp=true
+      ;;
   esac
 done
 shift $((OPTIND - 1))
 
-if $help; then
-  cat "$helpfile"
+# show help text
+if $showhelp; then
+  declare -r script="${BASE_SOURCE:-$0}"
+  head "$script" -n "${HELPLINES[1]}" \
+    | tail -n $((${HELPLINES[1]} - ${HELPLINES[0]} + 1))
   exit 0
 fi
+
+declare -r search_word="$1"
 
 # get argument
 if [[ "$#" -ne 1 ]]; then
   echo "Num of arguments is wrong."
   exit 1
 fi
-declare -r search_word="$1"
 shift 1
 
-# dictionary
-for di in ${ejdicts[@]}; do
+# get dictionary
+for di in "${EJ_DICTS[@]}"; do
   if [[ -f "$di" ]]; then
-    declare -r ejdict="$di"
+    declare -r ej_dict="$di"
     break
   fi
 done
-if [[ ! -v ejdict ]];then
-  echo 'English-Japanese dictionary file does not exist.'
+if [[ ! -v ej_dict ]];then
+  echo 'All the dictionaries do not exist.'
   exit 1
 fi
 
 # search
-if [[ "$search_type" = 'chars' ]];then
-  zgrep "$search_word" "$ejdict" -E -i --color=always | less -R -FX
-elif [[ "$search_type" = 'word' ]];then
-  zgrep "$search_word" "$ejdict" -E -iw --color=always | less -R -FX
+if $word_search; then
+  zgrep "$search_word" "$ej_dict" -E -iw --color=always | less -R -FX
+else
+  zgrep "$search_word" "$ej_dict" -E -i --color=always | less -R -FX
 fi

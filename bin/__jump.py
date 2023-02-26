@@ -123,5 +123,3 @@ if __name__ == '__main__':
     args = get_args()
     cmd, key = get_cmd_key(args.cmd_key_list)
     main(args.pathmap_path, cmd, key)
-
-# EOF

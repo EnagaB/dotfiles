@@ -72,5 +72,3 @@ for ff in "$@"; do
     echo 'succeed'
   fi
 done
-
-# end
