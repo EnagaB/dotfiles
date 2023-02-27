@@ -120,6 +120,7 @@ if "$install_packages" && "$use_admin" ; then
 fi
 
 # download fonts
+echo "Download fonts"
 pushd "$fonts_dir"
 for font_url in "${font_urls[@]}"; do
   clone_file=$(basename ${font_url})
@@ -131,8 +132,13 @@ rm *.md *.txt
 fc-cache -fv "$fonts_dir"
 popd
 
+# git config
+echo "Add git alias"
+git config --global alias.s "status -s"
+git config --global alias.d "diff"
+
 # link
-echo "[link]"
+echo "Make links"
 for link_file in "${link2home[@]}"; do
   link_filename=$(basename "$link_file")
   ln -snfv "$link_file" "${HOME}/${link_filename}"
@@ -144,5 +150,3 @@ ln -snfv "${link_w3mkeymap[@]}"
 ln -snfv "${link_emacs[@]}"
 ln -snfv "${link_vim[@]}"
 ln -snfv "${link_neovim[@]}"
-
-# EOF
