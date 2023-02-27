@@ -117,5 +117,4 @@ if ! shopt -oq posix; then
 fi
 
 alias vi="nvim"
-
-# EOF
+alias vir="nvim -M"
