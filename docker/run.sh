@@ -47,7 +47,7 @@ docker run -it --rm \
     --mount type=bind,src="${HOME}/.bash_history",dst="${docker_home}/.bash_history" \
     --mount type=bind,src="$WORK_DIR",dst="$docker_work_dir" \
     "${mount_host_opt[@]}" \
-    -e "TERM=$TERM"
+    -e "TERM=$TERM" \
     --detach-keys="$detachkeys" \
     -w "$docker_work_dir" \
     "$IMAGE" \
