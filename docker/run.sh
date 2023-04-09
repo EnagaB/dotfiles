@@ -1,14 +1,19 @@
 #!/bin/bash
 
-mount_host=false
-while getopts M option; do
+while getopts ms option; do
   case $option in
-    M)
+    m)
       echo "Mount / -> /mnt/host"
       mount_host=true
       ;;
+    s)
+      echo "run as root"
+      run_root=true
+      ;;
   esac
 done
+[[ ! -v mount_host ]] && declare -r mount_host=false
+[[ ! -v run_root ]] && declare -r run_root=false
 
 declare -r script_dir=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd)
 . "${script_dir}/src.sh"
@@ -32,14 +37,22 @@ VIM=${VIM:-"$dotvim"}
 TMUX=${TMUX:-"$tmuxconf"}
 
 mount_host_opt=()
+mount_user=(-u=$(id -u):$(id -g)
+            -v /etc/group:/etc/group:ro
+            -v /etc/passwd:/etc/passwd:ro
+            $(for i in $(id -G "$USER"); do echo --group-add "$i"; done))
 if $mount_host; then
   mount_host_opt=(--mount type=bind,src=/,dst=/mnt/host,readonly)
 fi
+if $run_root; then
+    mount_user=()
+fi
+
+cmds=(/bin/bash)
 
 docker run -it --rm \
     --name "$CONTAINER_NAME" \
-    -u=$(id -u):$(id -g) -v /etc/group:/etc/group:ro -v /etc/passwd:/etc/passwd:ro \
-    $(for i in $(id -G "$USER"); do echo --group-add "$i"; done) \
+    "${mount_user[@]}" \
     --mount type=bind,src="$VIM",dst="${docker_home}/.vim" \
     --mount type=bind,src="$VIM",dst="${docker_home}/.config/nvim" \
     --mount type=bind,src="$TMUX",dst="${docker_home}/.tmux.conf" \
@@ -50,5 +63,4 @@ docker run -it --rm \
     -e "TERM=$TERM" \
     --detach-keys="$detachkeys" \
     -w "$docker_work_dir" \
-    "$IMAGE" \
-    /bin/bash
+    "$IMAGE" "${cmds[@]}"
