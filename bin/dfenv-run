@@ -1,0 +1,6 @@
+#!/bin/bash
+
+run_dir="$(cd "$(dirname "${BASH_SOURCE[0]}" )" > /dev/null 2>&1 && pwd)"
+dkrrun_sh=$(readlink -f "${run_dir}/../docker/run.sh")
+
+"$dkrrun_sh"
