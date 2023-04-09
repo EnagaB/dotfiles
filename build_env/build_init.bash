@@ -88,6 +88,7 @@ for opt in "$@"; do
   case "$opt" in
     --no-admin) declare -r use_admin=false ;;
     --no-install) declare -r install_packages=false ;;
+    --no-fonts) declare -r install_fonts=false ;;
     *)
       echo "Error: Option ${opt} is not implemented."
       exit 1
@@ -96,6 +97,7 @@ for opt in "$@"; do
 done
 [[ ! -v use_admin ]] && declare -r use_admin=true
 [[ ! -v install_packages ]] && declare -r install_packages=true
+[[ ! -v install_fonts ]] && declare -r install_fonts=true
 
 cd "$dotfiles_dir"
 . "$utils_bash"
@@ -120,17 +122,19 @@ if "$install_packages" && "$use_admin" ; then
 fi
 
 # download fonts
-echo "Download fonts"
-pushd "$fonts_dir"
-for font_url in "${font_urls[@]}"; do
-  clone_file=$(basename ${font_url})
-  curl -L "$font_url" -o "$clone_file"
-  unzip -o "$clone_file"
-  rm "$clone_file"
-done
-rm *.md *.txt
-fc-cache -fv "$fonts_dir"
-popd
+if "$install_fonts" ; then
+  echo "Download fonts"
+  pushd "$fonts_dir"
+  for font_url in "${font_urls[@]}"; do
+    clone_file=$(basename ${font_url})
+    curl -L "$font_url" -o "$clone_file"
+    unzip -o "$clone_file"
+    rm "$clone_file"
+  done
+  rm *.md *.txt
+  fc-cache -fv "$fonts_dir"
+  popd
+fi
 
 # git config
 echo "Add git alias"
