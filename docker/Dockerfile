@@ -2,11 +2,12 @@ FROM ubuntu:20.04
 
 # install packages
 RUN apt-get -o Acquire::Retries=10 update \
-    && apt-get -o Acquire::Retries=10 install -y software-properties-common \
+    && DEBIAN_FRONTEND=noninteractive apt-get -o Acquire::Retries=10 install -y --no-install-recommends \
+    software-properties-common \
     && add-apt-repository ppa:jonathonf/vim \
     && add-apt-repository ppa:neovim-ppa/stable \
     && apt-get -o Acquire::Retries=10 update \
-    && apt-get -o Acquire::Retries=10 install -y \
+    && DEBIAN_FRONTEND=noninteractive apt-get -o Acquire::Retries=10 install -y --no-install-recommends \
     tzdata \
     tmux \
     vim \
@@ -15,7 +16,9 @@ RUN apt-get -o Acquire::Retries=10 update \
     wget \
     git \
     unzip \
-    && ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+    && ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime \
+    && apt-get -y clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # create docker home and neovim config directory
 ARG docker_home=/dkrhome
