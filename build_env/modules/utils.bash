@@ -7,9 +7,9 @@ function get_os() {
 }
 
 function install_packages() {
-  sudo apt update \
-    && sudo apt upgrade -y \
-    && sudo apt install -y \
+  sudo apt -o Acquire::Retries=10 update \
+    && sudo apt -o Acquire::Retries=10 upgrade -y \
+    && sudo apt -o Acquire::Retries=10 install -y \
     "$@"
 }
 

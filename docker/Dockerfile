@@ -1,10 +1,12 @@
 FROM ubuntu:20.04
 
 # install packages
-RUN apt-get update && apt-get install -y software-properties-common \
+RUN apt-get -o Acquire::Retries=10 update \
+    && apt-get -o Acquire::Retries=10 install -y software-properties-common \
     && add-apt-repository ppa:jonathonf/vim \
     && add-apt-repository ppa:neovim-ppa/stable \
-    && apt-get update && apt-get install -y \
+    && apt-get -o Acquire::Retries=10 update \
+    && apt-get -o Acquire::Retries=10 install -y \
     tzdata \
     tmux \
     vim \
