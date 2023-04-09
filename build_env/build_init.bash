@@ -74,7 +74,7 @@ declare -ar link_w3mbookmark=("${dotfiles_etc_dir}/w3m/bookmark.html"
                               "${HOME}/.w3m/bookmark.html")
 declare -ar link_w3mkeymap=("${dotfiles_etc_dir}/w3m/keymap" "${HOME}/.w3m/keymap")
 declare -ar link_emacs=("${dotfiles_etc_dir}/emacs" "${HOME}/.emacs.d")
-declare -ar link_vim=("${dotfiles_etc_dir}/template" "${HOME}/.template")
+declare -ar link_vim=("${dotfiles_etc_dir}/vim" "${HOME}/.vim")
 declare -ar link_neovim=("${dotfiles_etc_dir}/vim" "${app_config_dir}/nvim")
 
 # non su
