@@ -138,7 +138,7 @@ fi
 
 # git config
 echo "Add git alias"
-git config --global alias.s "status -s"
+git config --global alias.s "status -sb"
 git config --global alias.d "diff"
 
 # link
