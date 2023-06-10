@@ -1,12 +1,8 @@
 " keybindings
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" basic
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""" basic
 
 " prefix
-" <C-x> prefix like emacs
-map! <C-x> <Plug>e(ctrl-x)
 " for TMUX
 noremap <C-z> <Nop>
 
@@ -18,41 +14,23 @@ noremap k gk
 " char
 noremap! <C-f> <right>
 noremap! <C-b> <left>
-inoremap <C-n> <C-o>gj
-inoremap <C-p> <C-o>gk
-cnoremap <C-n> <down>
-cnoremap <C-p> <up>
-" word
-inoremap <M-f> <C-o>e
-inoremap <M-b> <C-o>b
-cnoremap <M-f> <S-right>
-cnoremap <M-b> <S-left>
+
 " line
 inoremap <C-a> <C-o>0
 inoremap <C-e> <C-o>$
 cnoremap <C-a> <C-b>
 cnoremap <C-e> <C-e>
-" paragraph
-inoremap <M-n> <C-o>}
-inoremap <M-p> <C-o>{
-" page
-inoremap <C-v> <C-o><C-b>
-inoremap <M-v> <C-o><C-f>
+
 " backspace, delete
 noremap! <C-h> <bs>
 noremap! <C-d> <del>
-" delete after cursor in line
-inoremap <C-k> <C-o>D
+
 " paste
 inoremap <C-y> <C-o>p
 cnoremap <C-y> <C-r>"
-" search
-inoremap <C-s> <C-o>/
-inoremap <C-r> <C-o>?
+
 " insert original key
 noremap! <C-q> <C-v>
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 if v:version < 800
   finish
@@ -86,10 +64,10 @@ map <Leader> <Plug>e(spc)
 map <Space>  <Plug>e(spc)
 map <Space> <Leader>
 
-map s        <Plug>e(pane)
-map t        <Plug>e(tab)
-map <S-t>    <Plug>e(buffer)
-map m        <Plug>e(mark)
+map s <Plug>e(pane)
+map S <Plug>e(buffer)
+map t <Plug>e(tab)
+map m <Plug>e(mark)
 
 " Leader/spc prefix
 noremap <Plug>e(spc)q     :<C-u>.,$s///gc<Left><Left><Left><Left>
@@ -124,14 +102,14 @@ for s:ii in range(1,9)
 endfor
 
 " buffer prefix
-noremap <Plug>e(buffer)n     :<C-u>bnext<CR>
-noremap <Plug>e(buffer)p     :<C-u>bprev<CR>
-noremap <Plug>e(buffer)b     :<C-u>bnext<CR>
-noremap <Plug>e(buffer)<S-n> :<C-u>Buffers<CR>:<C-u>Buffer<Space>
-noremap <Plug>e(buffer)l     :<C-u>Buffers<CR>
-noremap <Plug>e(buffer)x     :<C-u>Bclose<CR>
-noremap <Plug>e(buffer)o     :<C-u>e<Space>
-noremap <Plug>e(buffer)<S-o> :<C-u>e<Space>~/
+noremap <Plug>e(buffer)S :<C-u>bnext<CR>
+noremap <Plug>e(buffer)n :<C-u>bnext<CR>
+noremap <Plug>e(buffer)p :<C-u>bprev<CR>
+noremap <Plug>e(buffer)N :<C-u>Buffers<CR>:<C-u>Buffer<Space>
+noremap <Plug>e(buffer)l :<C-u>Buffers<CR>
+noremap <Plug>e(buffer)x :<C-u>Bclose<CR>
+noremap <Plug>e(buffer)o :<C-u>e<Space>
+noremap <Plug>e(buffer)O :<C-u>e<Space>~/
 for s:ii in range(1,9)
   execute 'noremap <Plug>e(buffer)'.s:ii.' :<C-u>Buffer '.s:ii.'<CR>'
 endfor
