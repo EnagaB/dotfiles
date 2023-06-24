@@ -136,11 +136,6 @@ if "$install_fonts" ; then
   popd
 fi
 
-# git config
-echo "Add git alias"
-git config --global alias.s "status -sb"
-git config --global alias.d "diff"
-
 # link
 echo "Make links"
 for link_file in "${link2home[@]}"; do
