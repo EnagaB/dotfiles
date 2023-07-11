@@ -1,6 +1,6 @@
 " add ftplugin netrw.vim
 
-let g:netrw_home = Params('tmp_path')
+let g:netrw_home = g:CONFIG["tmp_path"]
 let g:netrw_liststyle = 1
 let g:netrw_banner = 0
 let g:netrw_sizestyle = "H"
