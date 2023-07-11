@@ -136,6 +136,8 @@ if "$install_fonts" ; then
   popd
 fi
 
+"${script_dir}/add_git_alias.bash"
+
 # link
 echo "Make links"
 for link_file in "${link2home[@]}"; do
