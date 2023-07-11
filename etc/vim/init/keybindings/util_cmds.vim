@@ -1,17 +1,9 @@
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" commands "
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " buffer
 command! -bang -complete=buffer -nargs=* Bclose
       \ call <SID>close_buffer_without_closing_pane(<q-bang>, <q-args>)
 command! Buffers call <SID>Buffers()
 command! -nargs=1 Buffer call <SID>Buffer(<f-args>)
-" mark
-command! -bang SetMarkAuto call <SID>set_mark_auto(<q-bang>)
-command! DeleteMark call <SID>delete_mark()
-command! MoveToMark call <SID>move_to_mark()
 " syntax
-command! SetDefaultColorscheme call <SID>Set_default_colorscheme()
 command! ShowSyntaxInfo call <SID>show_syntax_info()
 command! ShowColors source $VIMRUNTIME/syntax/colortest.vim
 command! ShowHilightgroup verbose highlight
@@ -36,12 +28,13 @@ command! -bang GrepQuickfix call <SID>grep_quickfix(<q-bang>)
 " command! ToggleCommentout call <SID>toggle_commentout()
 command! ToggleCommentout source $MYVIMRC | call <SID>toggle_commentout()
 " pane
+" toggle pane size maximized or balanced
 command! ToggleResizePanes call <SID>toggle_resize_panes()
-" other
+" others
+command! OpenFiler call <SID>OpenFiler()
 command! ShowFilepath echo expand("%:p")
 command! Pwf ShowFilepath
 command! ReloadVimrc source $MYVIMRC
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " util "
@@ -278,62 +271,8 @@ endfunction
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" mark "
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" mark functions
-let s:marklist = map(range(char2nr('a'),char2nr('z')),'nr2char(v:val)')
-" set mark whose symbol is selected automatically
-function! s:set_mark_auto(bang)
-  if !exists('b:markpos')
-    let b:markpos=-1
-  endif
-  if empty(a:bang)
-    let b:markpos=(b:markpos + 1) % len(s:marklist)
-  else
-    echon 'next mark: '
-    let l:mark=Getchar()
-    echon l:mark.', '
-    let l:ml=match(s:marklist,l:mark)
-    if l:ml == -1 | echon 'err: not match marklist' | return | endif
-    let b:markpos=l:ml
-  endif
-  execute 'mark '.s:marklist[b:markpos]
-  echon 'marked '.s:marklist[b:markpos]
-endfunction
-" delete mark
-function! s:delete_mark()
-  echon 'delete mark: '
-  let l:mark=Getchar()
-  echon l:mark
-  execute 'delmarks '.l:mark
-endfunction
-" move to given mark
-function! s:move_to_mark()
-  echon 'move to mark: '
-  let l:mark=Getchar()
-  echon l:mark
-  let l:line=execute("echon line(\"\'".l:mark."\")")
-  if l:line != 0
-    execute 'normal! `'.l:mark.'zz'
-  else
-    echon '; err: the mark does not exist.'
-  endif
-endfunction
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " syntax "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" set colorscheme from settings
-function! s:Set_default_colorscheme()
-  let l:colorscheme_rel_path = 'colors/' . g:CONFIG['colorscheme'] . '.vim'
-  if ! empty(globpath(&runtimepath, l:colorscheme_rel_path))
-    execute 'colorscheme ' . g:CONFIG['colorscheme']
-  else
-    execute 'colorscheme ' . g:CONFIG['colorscheme_without_packs']
-  endif
-  execute 'set background =' . g:CONFIG['background']
-endfunction
 " show syntax information under cursor
 " cohama, http://cohama.hateblo.jp/entry/2013/08/11/020849
 function! s:show_syntax_id(transparent)
@@ -650,30 +589,6 @@ endfunction
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " pane
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" toggle pane size maximized or balanced
-function! s:toggle_resize_panes()
-  if !exists('b:toggleMaxPane')
-    let b:toggleMaxPane=0
-  endif
-  if b:toggleMaxPane == 0
-    execute "normal! \<C-w>_\<C-w>\<Bar>"
-    let b:toggleMaxPane=1
-  else
-    execute "normal! \<C-w>="
-    let b:toggleMaxPane=0
-  endif
-endfunction
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" other
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" for vim builtin sort function, sort in shorter order
-function! Sort_comp_strlen(str1, str2)
-  let l:l1 = strlen(a:str1)
-  let l:l2 = strlen(a:str2)
-  return l:l1 == l:l2 ? 0 : l:l1 > l:l2 ? 1 : -1
-endfunction
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """ get visual selection
@@ -691,5 +606,28 @@ endfunction
 "   let lines[0] = lines[0][column_start - 1:]
 "   return join(lines, "\n")
 " endfunction
+"
+" mark functions
+let s:marklist = map(range(char2nr('a'),char2nr('z')),'nr2char(v:val)')
+" set mark whose symbol is selected automatically
 
-" EOF
+function! s:toggle_resize_panes()
+  if !exists('b:toggleMaxPane')
+    let b:toggleMaxPane=0
+  endif
+  if b:toggleMaxPane == 0
+    execute "normal! \<C-w>_\<C-w>\<Bar>"
+    let b:toggleMaxPane=1
+  else
+    execute "normal! \<C-w>="
+    let b:toggleMaxPane=0
+  endif
+endfunction
+
+function s:OpenFiler()
+  if exists(":Fern")
+    Fern .
+  else
+    edit .
+  endif
+endfunction

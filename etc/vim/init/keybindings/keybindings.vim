@@ -1,44 +1,42 @@
-" keybindings
-
 """ basic
-
-" prefix
-" for TMUX
-noremap <C-z> <Nop>
-
 " move in normal mode
 noremap j gj
 noremap k gk
-
 " insert and command modes like emacs
 " char
 noremap! <C-f> <right>
 noremap! <C-b> <left>
-
 " line
 inoremap <C-a> <C-o>0
 inoremap <C-e> <C-o>$
 cnoremap <C-a> <C-b>
 cnoremap <C-e> <C-e>
-
 " backspace, delete
 noremap! <C-h> <bs>
 noremap! <C-d> <del>
-
 " paste
 inoremap <C-y> <C-o>p
 cnoremap <C-y> <C-r>"
-
 " insert original key
 noremap! <C-q> <C-v>
+""" unavailable
+nnoremap <S-k>      <Nop>
+nnoremap <S-z><S-q> <Nop>
+nnoremap <S-z><S-z> <Nop>
+noremap  za         <Nop>
+noremap  z<S-a>     <Nop>
+noremap  zr         <Nop>
+noremap  zm         <Nop>
+vnoremap u          <Nop>
+vnoremap <S-u>      <Nop>
 
 if v:version < 800
   finish
 endif
 
-" source keybind functions
-" let s:src_dir = expand("<sfile>:p:h")
-" execute 'source ' . s:src_dir . '/keybindings_functions.vim'
+" load
+let s:script_dir = expand("<sfile>:p:h")
+call SourceGlobpattern(s:script_dir . "/*_cmds.vim")
 
 " setting
 set notimeout
@@ -80,7 +78,7 @@ noremap <Plug>e(spc)<S-p> :<C-u>HighlightRegisterWord<CR>
 noremap <Plug>e(spc)<C-p> :<C-u>HighlightRegister<CR>
 noremap <Plug>e(spc)o     :<C-u>e<Space>
 noremap <Plug>e(spc)<S-o> :<C-u>e<Space>~/
-noremap <Plug>e(spc)f     :<C-u>Fern .<CR>
+noremap <Plug>e(spc)f     :<C-u>OpenFiler<CR>
 
 " pane
 noremap <Plug>e(pane)h     :<C-u>split<CR>
@@ -150,14 +148,3 @@ if match(g:CONFIG['install_package_names'], 'tyru/caw.vim')
   nmap <C-k> <Plug>(caw:hatpos:toggle)
   vmap <C-k> <Plug>(caw:hatpos:toggle)
 endif
-
-""" unavailable
-nnoremap <S-k>      <Nop>
-nnoremap <S-z><S-q> <Nop>
-nnoremap <S-z><S-z> <Nop>
-noremap  za         <Nop>
-noremap  z<S-a>     <Nop>
-noremap  zr         <Nop>
-noremap  zm         <Nop>
-vnoremap u          <Nop>
-vnoremap <S-u>      <Nop>

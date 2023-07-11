@@ -57,7 +57,7 @@ if has('unnamedplus')
 endif
 
 " list
-set list
+set nolist
 set listchars=
 set listchars+=tab:>-
 set listchars+=trail:-

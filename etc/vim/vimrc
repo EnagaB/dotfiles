@@ -1,5 +1,3 @@
-" vimrc
-
 if !1
   finish
 endif
@@ -16,7 +14,8 @@ endif
 
 " load basic
 execute "source " . g:dotvim_dir . "/config.vim"
-execute 'source ' . s:init_dir . '/keybindings.vim'
+execute "source " . s:init_dir . "/utils.vim"
+execute 'source ' . s:init_dir . '/keybindings/keybindings.vim'
 
 " vim8
 if v:version < 800
@@ -33,9 +32,6 @@ if match(&runtimepath, g:after_dir) == -1
   execute 'set runtimepath +=' . g:after_dir
 endif
 
-" load
-execute 'source ' . s:init_dir . '/tools.vim'
-
 " set basic settings
 filetype plugin indent on
 if ! exists("g:syntax_on")
@@ -49,14 +45,10 @@ if g:CONFIG['term'] !~ '^xterm' && ! has('gui_running')
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
 
-" " load package manager
-" execute 'source ' . g:dotvim_dir . '/init/packmgr/minpac.vim'
-" execute 'source ' . g:dotvim_dir . '/init/packmgr/vim-plug.vim'
+" load package manager
 execute 'source ' . g:dotvim_dir . '/init/packmgr.vim'
 
 " load other settings
-execute 'source ' . g:dotvim_dir . '/init/other.vim'
+execute 'source ' . g:dotvim_dir . '/init/others.vim'
 execute 'source ' . g:dotvim_dir . '/init/lines.vim'
 execute 'source ' . g:dotvim_dir . '/init/gui.vim'
-
-" EOF

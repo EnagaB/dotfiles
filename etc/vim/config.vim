@@ -1,7 +1,3 @@
-" function! Params(name)
-"   execute 'return ' . 's:' . a:name
-" endfunction
-
 let g:CONFIG = {}
 
 " path
