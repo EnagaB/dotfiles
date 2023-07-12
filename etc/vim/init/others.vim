@@ -34,16 +34,20 @@ augroup end
 SetDefaultColorscheme
 
 " tab and indent
-set tabstop=4 shiftwidth=0 expandtab softtabstop=-1 smarttab
-set autoindent smartindent
+if has('vim_starting')
+    set tabstop=4 shiftwidth=0 expandtab softtabstop=-1 smarttab
+    set autoindent smartindent
+endif
 
 " character encode
 set fileencodings=utf-8,sjis,utf-16le,iso-2022-jp,euc-jp
 set fileformats=unix,dos,mac
 
 " show textwidth textwidth
-set textwidth=100
-set colorcolumn=+1
+if has('vim_starting')
+    set textwidth=100
+    set colorcolumn=+1
+endif
 
 " backups
 set nobackup
