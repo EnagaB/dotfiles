@@ -1,5 +1,5 @@
 if !1
-  finish
+    finish
 endif
 
 " directory path
@@ -9,7 +9,7 @@ let s:init_dir = g:dotvim_dir . "/init"
 
 " basic settings
 if has('vim_starting')
-  set encoding=utf-8
+    set encoding=utf-8
 endif
 
 " load basic
@@ -19,36 +19,36 @@ execute 'source ' . s:init_dir . '/keybindings/keybindings.vim'
 
 " vim8
 if v:version < 800
-  finish
+    finish
 endif
 
 " set path
 set runtimepath&
 set packpath&
 if match(&runtimepath, g:dotvim_dir) == -1
-  execute 'set runtimepath ^=' . g:dotvim_dir
+    execute 'set runtimepath ^=' . g:dotvim_dir
 endif
 if match(&runtimepath, g:after_dir) == -1
-  execute 'set runtimepath +=' . g:after_dir
+    execute 'set runtimepath +=' . g:after_dir
 endif
 
 " set basic settings
 filetype plugin indent on
 if ! exists("g:syntax_on")
-  syntax enable
+    syntax enable
 endif
 if has('termguicolors')
-  set termguicolors
+    set termguicolors
 endif
 if g:CONFIG['term'] !~ '^xterm' && ! has('gui_running')
-  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
 
-" load package manager
 execute 'source ' . g:dotvim_dir . '/init/packmgr.vim'
-
-" load other settings
 execute 'source ' . g:dotvim_dir . '/init/others.vim'
 execute 'source ' . g:dotvim_dir . '/init/lines.vim'
-execute 'source ' . g:dotvim_dir . '/init/gui.vim'
+
+if has('gui_running')
+    execute 'source ' . g:dotvim_dir . '/init/gui.vim'
+endif

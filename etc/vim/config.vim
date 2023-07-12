@@ -8,23 +8,25 @@ let g:CONFIG['tplfile_path_without_ext'] = expand('$HOME/.template/tpl')
 let g:CONFIG['term'] = expand("$TERM")
 
 " install packages
-let g:CONFIG['install_packages'] = [{'name': 'Shougo/denite.nvim'},
-                                  \ {'name': 'tpope/vim-surround'},
-                                  \ {'name': 'tyru/caw.vim'},
-                                  \ {'name': 'vim-jp/cpp-vim'},
-                                  \ {'name': 'octol/vim-cpp-enhanced-highlight'},
-                                  \ {'name': 'sheerun/vim-polyglot'},
-                                  \ {'name': 'morhetz/gruvbox'},
-                                  \ {'name': 'gosukiwi/vim-atom-dark'},
-                                  \ {'name': 'jacoborus/tender.vim'},
-                                  \ {'name': 'raphamorim/lucario'},
-                                  \ {'name': 'arcticicestudio/nord-vim'},
-                                  \ {'name': 'junegunn/goyo.vim',
-                                  \  'on_demand': {'command': 'Goyo'}},
-                                  \ {'name': 'lambdalisue/fern.vim'}]
+let g:CONFIG['install_packages'] = [
+            \ {'name': 'Shougo/denite.nvim'},
+            \ {'name': 'tpope/vim-surround'},
+            \ {'name': 'tyru/caw.vim'},
+            \ {'name': 'vim-jp/cpp-vim'},
+            \ {'name': 'octol/vim-cpp-enhanced-highlight'},
+            \ {'name': 'sheerun/vim-polyglot'},
+            \ {'name': 'morhetz/gruvbox'},
+            \ {'name': 'gosukiwi/vim-atom-dark'},
+            \ {'name': 'jacoborus/tender.vim'},
+            \ {'name': 'raphamorim/lucario'},
+            \ {'name': 'arcticicestudio/nord-vim'},
+            \ {'name': 'junegunn/goyo.vim',
+            \  'on_demand': {'command': 'Goyo'}},
+            \ {'name': 'lambdalisue/fern.vim'}
+            \ ]
 let g:CONFIG['install_package_names'] = []
 for s:i in g:CONFIG['install_packages']
-  call add(g:CONFIG['install_package_names'], s:i['name'])
+    call add(g:CONFIG['install_package_names'], s:i['name'])
 endfor
 
 " colorscheme
@@ -48,18 +50,18 @@ let g:fern_disable_startup_warnings = 1
 let g:fern#default_hidden = 1
 let g:fern#disable_default_mappings = 1
 function! s:init_fern() abort
-  nmap <buffer><nowait> C <Plug>(fern-action-copy)
-  nmap <buffer><nowait> M <Plug>(fern-action-move)
-  nmap <buffer><nowait> N <Plug>(fern-action-new-file)
-  nmap <buffer><nowait> <C-m> <Plug>(fern-action-open-or-enter)
-  nmap <buffer><nowait> <CR> <Plug>(fern-action-open-or-enter)
-  nmap <buffer><nowait> <C-h> <Plug>(fern-action-leave)
-  nmap <buffer><nowait> <BS> <Plug>(fern-action-leave)
-  nmap <buffer><nowait> ? <Plug>(fern-action-help:all)
+    nmap <buffer><nowait> C <Plug>(fern-action-copy)
+    nmap <buffer><nowait> M <Plug>(fern-action-move)
+    nmap <buffer><nowait> N <Plug>(fern-action-new-file)
+    nmap <buffer><nowait> <C-m> <Plug>(fern-action-open-or-enter)
+    nmap <buffer><nowait> <CR> <Plug>(fern-action-open-or-enter)
+    nmap <buffer><nowait> <C-h> <Plug>(fern-action-leave)
+    nmap <buffer><nowait> <BS> <Plug>(fern-action-leave)
+    nmap <buffer><nowait> ? <Plug>(fern-action-help:all)
 endfunction
 augroup fern_custom
-  autocmd! *
-  autocmd FileType fern call s:init_fern()
+    autocmd! *
+    autocmd FileType fern call s:init_fern()
 augroup end
 
 " sheerun/vim-polyglot

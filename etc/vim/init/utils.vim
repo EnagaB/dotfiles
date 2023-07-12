@@ -1,8 +1,10 @@
+" source vim scripts in given directory
 function! SourceDirectory(dir)
   let l:files = split(glob(a:dir . "/*.vim"), "\n")
   call <SID>source_files(l:files)
 endfunction
 
+" source vim scripts whose name is matched by given pattern
 function! SourceGlobpattern(globpat)
   let l:files = split(glob(a:globpat), "\n")
   call <SID>source_files(l:files)
