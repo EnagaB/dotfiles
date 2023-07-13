@@ -12,15 +12,12 @@
 eval $(dircolors -b "${HOME}/.dir_colors")
 
 # text editor
-function __emacs_readonly() { emacs -nw "$@" --eval '(setq buffer-read-only t)' ; }
-alias em='emacs -nw'
-alias emr='__emacs_readonly'
-if $(which nvim &> /dev/null); then
-  alias vi='nvim'
-  alias vir='nvim -M'
+if which nvim &> /dev/null ; then
+    alias vi='nvim'
+    alias vir='nvim -M'
 else
-  alias vi='vim'
-  alias vir='vim -M'
+    alias vi='vim'
+    alias vir='vim -M'
 fi
 
 # system
@@ -34,15 +31,6 @@ alias sl='ls --color=auto'
 alias la='ls -A --color=auto'
 alias lb='ls -d --color=auto .*'
 alias ll='ls -AlFh --color=auto'
-
-# jump: record and cd path
-declare -r __jumpfile="${HOME}/.jumplist"
-declare -r __jumpout="${DOTFILES}/bin/__jump.py"
-function __df_jumpfunc() {
-  local d=$("$__jumpout" "$__jumpfile" "$@")
-  [[ -d "$d" ]] && cd "$d" || echo "$d"
-}
-alias jj="__df_jumpfunc"
 
 # grep
 alias grep='grep --color=auto'
@@ -66,17 +54,50 @@ declare -r __kernel_name=$(uname -s)
 [[ ! -v __os ]] && declare -r __os='ubuntu'
 # settings by os
 if [[ "$__os" = "cygwin" ]]; then
-  alias winroot='cd /cygdrive/c'
-  alias op='cygstart'
-  alias vi='vim -X'
-  alias vir='vim -X -M'
+    alias winroot='cd /cygdrive/c'
+    alias op='cygstart'
+    alias vi='vim -X'
+    alias vir='vim -X -M'
 elif [[ "$__os" = "ubuntu" ]] && [[ ! -z "${WSLENV:-}" ]]; then
-  alias winroot='cd /mnt/c'
-  alias op='wsl-open'
+    alias winroot='cd /mnt/c'
+    alias op='wsl-open'
 fi
 
+# jump: record and cd path
+declare -r __jumpfile="${HOME}/.jumplist"
+declare -r __jumpout="${DOTFILES}/bin/__jump.py"
+function __df_jumpfunc() {
+    local d=$("$__jumpout" "$__jumpfile" "$@")
+    [[ -d "$d" ]] && cd "$d" || echo "$d"
+}
+alias jj="__df_jumpfunc"
+
 # local config
-declare -r __shrc_loc="${HOME}/.shrc_local.bash"
+declare -r __shrc_loc="${HOME}/.shrc_local.sh"
 [[ ! -f "$__shrc_loc" ]] && touch "$__shrc_loc"
 [[ "$__shell" = 'zsh' ]] && __autozcomp "$__shrc_loc"
 . "$__shrc_loc"
+
+# delete duplicated path
+function __delete_duplicated_paths() {
+    _path=""
+    for _p in $(echo $PATH | tr ':' ' '); do
+        case ":${_path}:" in
+            *:"${_p}":* )
+                ;;
+            * )
+                if [ "$_path" ]; then
+                    _path="$_path:$_p"
+                else
+                    _path=$_p
+                fi
+                ;;
+        esac
+    done
+    if [ ! -z "$_path" ]; then
+        export PATH=$_path
+    fi
+    unset _p
+    unset _path
+}
+__delete_duplicated_paths

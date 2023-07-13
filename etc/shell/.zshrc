@@ -132,8 +132,8 @@ zstyle ':zle:*' word-chars " _-./;@"
 zstyle ':zle:*' word-style unspecified
 
 # source rc
-__autozcomp "${DOTSH}/shrc.bash"
-[[ -f "${DOTSH}/shrc.bash" ]] && . "${DOTSH}/shrc.bash"
+__autozcomp "${DOTSH}/shrc.sh"
+[[ -f "${DOTSH}/shrc.sh" ]] && . "${DOTSH}/shrc.sh"
 
 # zsh alias
 alias -g L='| less'
