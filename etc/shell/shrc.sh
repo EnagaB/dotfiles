@@ -63,15 +63,6 @@ elif [[ "$__os" = "ubuntu" ]] && [[ ! -z "${WSLENV:-}" ]]; then
     alias op='wsl-open'
 fi
 
-# jump: record and cd path
-declare -r __jumpfile="${HOME}/.jumplist"
-declare -r __jumpout="${DOTFILES}/bin/__jump.py"
-function __df_jumpfunc() {
-    local d=$("$__jumpout" "$__jumpfile" "$@")
-    [[ -d "$d" ]] && cd "$d" || echo "$d"
-}
-alias jj="__df_jumpfunc"
-
 # local config
 declare -r __shrc_loc="${HOME}/.shrc_local.sh"
 [[ ! -f "$__shrc_loc" ]] && touch "$__shrc_loc"
