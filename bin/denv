@@ -1,6 +1,34 @@
 #!/bin/bash
+set -eu
 
-run_dir="$(cd "$(dirname "${BASH_SOURCE[0]}" )" > /dev/null 2>&1 && pwd)"
-dkrrun_sh=$(readlink -f "${run_dir}/../docker/run.sh")
+script_path="${BASH_SOURCE[0]:-$0}"
+script_name="$(basename "$script_path")"
+script_dir="$(readlink -m "$(dirname "$script_path")")"
 
-"$dkrrun_sh"
+usage="Usage:
+  > ${script_name} COMMAND
+  COMMAND
+    run      docker run
+    build    docker build"
+
+root_dir="$(readlink -m "${script_dir}/..")"
+
+dkr_dir="${root_dir}/docker"
+
+n_args="$#"
+if [ "$n_args" -ne 1 ]; then
+    echo "ERROR: Invalid arguments"
+    echo "$usage"
+    exit 1
+fi
+
+cmd="$1"
+
+case "$cmd" in
+    "build") "${dkr_dir}/build.sh" ;;
+    "run") "${dkr_dir}/run.sh" ;;
+    "-h" | "--help") echo "$usage" ;;
+    *) echo "ERROR: Invalid COMMAND."
+        echo "$usage"
+        ;;
+esac

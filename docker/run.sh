@@ -1,66 +1,82 @@
 #!/bin/bash
+set -u
 
-while getopts ms option; do
-  case $option in
-    m)
-      echo "Mount / -> /mnt/host"
-      mount_host=true
-      ;;
-    s)
-      echo "run as root"
-      run_root=true
-      ;;
-  esac
-done
-[[ ! -v mount_host ]] && declare -r mount_host=false
-[[ ! -v run_root ]] && declare -r run_root=false
+work_dir="$(pwd)"
 
-declare -r script_dir=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd)
-. "${script_dir}/src.sh"
+root_dir=$(cd "$(dirname ${BASH_SOURCE:-$0})/.."; pwd)
 
-declare -r df_dir=$(readlink -f "${script_dir}/..")
-
-# host
-declare -r dotvim="${df_dir}/etc/vim"
-declare -r tmuxconf="${df_dir}/etc/tmux/.tmux.conf"
-# docker
-declare -r docker_home=/dkrhome
-declare -r docker_work_dir="${docker_home}/work"
-# other
-declare -r rand8=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)
-declare -r detachkeys="ctrl-\\,ctrl-\\"
-
-IMAGE=${IMAGE:-"$image_name"}
-CONTAINER_NAME=${CONTAINER_NAME:-"${image_name}_${rand8}"}
-WORK_DIR=${WORK_DIR:-$(pwd)}
-VIM=${VIM:-"$dotvim"}
-TMUX=${TMUX:-"$tmuxconf"}
-
-mount_host_opt=()
-mount_user=(-u=$(id -u):$(id -g)
-            -v /etc/group:/etc/group:ro
-            -v /etc/passwd:/etc/passwd:ro
-            $(for i in $(id -G "$USER"); do echo --group-add "$i"; done))
-if $mount_host; then
-  mount_host_opt=(--mount type=bind,src=/,dst=/mnt/host,readonly)
+image=${IMAGE:-""}
+if [ -z "$image" ]; then
+    image="denv:latest"
 fi
-if $run_root; then
-    mount_user=()
-fi
+echo "image: $image"
 
-cmds=(/bin/bash)
+container_name=${CONTAINER_NAME:-""}
+if [ -z "$container_name" ]; then
+    container_name="${image//:/-}"
+    # suffix="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)"
+    suffix="$(date "+%Y%m%dT%H%M%S")"
+    container_name="${container_name}_${suffix}"
+fi
+echo "container name: $container_name"
+
+dkr_home=/dkrhome
+echo "docker home: $dkr_home"
+
+dkr_work_dir="${dkr_home}/work"
+mnt_work=(--mount type=bind,src="$work_dir",dst="$dkr_work_dir")
+echo "mount work: $work_dir -> $dkr_work_dir"
+
+dotvim_dir="${root_dir}/etc/vim"
+dkr_dotvim_dir="${dkr_home}/.vim"
+dkr_dotvim_nvim_dir="${dkr_home}/.config/nvim"
+mnt_vim=(
+    --mount type=bind,src="$dotvim_dir",dst="$dkr_dotvim_dir"
+    --mount type=bind,src="$dotvim_dir",dst="$dkr_dotvim_nvim_dir"
+)
+echo "mount vim: $dotvim_dir -> $dkr_dotvim_dir"
+
+tmuxconf="${root_dir}/etc/tmux/.tmux.conf"
+dkr_tmuxconf="${dkr_home}/.tmux.conf"
+mnt_tmuxconf=(--mount type=bind,src="$tmuxconf",dst="$dkr_tmuxconf")
+echo "mount tmux conf: $tmuxconf -> $dkr_tmuxconf"
+
+set_user=(
+    -u=$(id -u):$(id -g)
+    -v /etc/group:/etc/group:ro
+    -v /etc/passwd:/etc/passwd:ro
+    $(for i in $(id -G "$USER"); do echo --group-add "$i"; done)
+)
+
+shrc="${root_dir}/docker/.bashrc"
+dkr_shrc="${dkr_home}/.bashrc"
+sh_hist="${HOME}/.bash_history"
+dkr_sh_hist="${dkr_home}/.bash_history"
+mnt_bash=(
+    --mount type=bind,src="$shrc",dst="$dkr_shrc"
+    --mount type=bind,src="$sh_hist",dst="$dkr_sh_hist"
+)
+echo "mount bashrc: $shrc -> $dkr_shrc"
+echo "mount bash history: $sh_hist -> $dkr_sh_hist"
+
+dkr_root_dir="${dkr_home}/dotfiles"
+mnt_root=(--mount type=bind,src="$root_dir",dst="$dkr_root_dir",readonly)
+echo "mount root: $root_dir -> $dkr_root_dir"
+
+mnt_host=(--mount type=bind,src=/,dst=/mnt/host,readonly)
+echo "mount host: / -> /mnt/host"
+
+detachkeys="ctrl-\\,ctrl-\\"
 
 docker run -it --rm \
-    --name "$CONTAINER_NAME" \
-    "${mount_user[@]}" \
-    --mount type=bind,src="$VIM",dst="${docker_home}/.vim" \
-    --mount type=bind,src="$VIM",dst="${docker_home}/.config/nvim" \
-    --mount type=bind,src="$TMUX",dst="${docker_home}/.tmux.conf" \
-    --mount type=bind,src="${script_dir}/.bashrc",dst="${docker_home}/.bashrc" \
-    --mount type=bind,src="${HOME}/.bash_history",dst="${docker_home}/.bash_history" \
-    --mount type=bind,src="$WORK_DIR",dst="$docker_work_dir" \
-    "${mount_host_opt[@]}" \
+    --name "$container_name" \
+    "${set_user[@]}" \
+    "${mnt_work[@]}" \
+    "${mnt_vim[@]}" \
+    "${mnt_tmuxconf[@]}" \
+    "${mnt_bash[@]}" \
+    "${mnt_host[@]}" \
     -e "TERM=$TERM" \
     --detach-keys="$detachkeys" \
-    -w "$docker_work_dir" \
-    "$IMAGE" "${cmds[@]}"
+    -w "$dkr_work_dir" \
+    "$image" /bin/bash

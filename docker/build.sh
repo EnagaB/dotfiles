@@ -1,10 +1,15 @@
 #!/bin/bash
+set -u
 
-declare -r script_dir=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd)
-. "${script_dir}/src.sh"
+root_dir=$(cd "$(dirname ${BASH_SOURCE:-$0})/.."; pwd)
 
-IMAGE=${IMAGE:-"$image_name"}
-DOCKERFILE=${DOCKERFILE:-"${script_dir}/Dockerfile"}
+image=${IMAGE:-""}
+if [ -z "$image" ]; then
+    image="denv:latest"
+fi
+echo "image: $image"
 
-cd "$script_dir"
-docker build -f "$DOCKERFILE" -t "$IMAGE" .
+docker build \
+    -f "${root_dir}/docker/Dockerfile" \
+    -t "$image" \
+    "$root_dir"

@@ -118,3 +118,5 @@ fi
 
 alias vi="nvim"
 alias vir="nvim -M"
+
+export PATH=$PATH:"${HOME}/dotfiles/bin"
