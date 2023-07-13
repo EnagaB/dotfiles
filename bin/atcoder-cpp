@@ -18,7 +18,7 @@ ATCODER_CPP_CMD = ["g++",
                    "-I/opt/ac-library",
                    "-I" + str(Path(os.getenv("HOME")) / ".local" / "include")]
 
-def get_args():
+def _main(argv=None):
     parser = argparse.ArgumentParser(description="Compile and execute atcoder c++ code.")
     parser.add_argument("code", type=Path,
                         help="an atcoder c++ code file.")
@@ -26,15 +26,13 @@ def get_args():
                         help="input file for c++ code.")
     parser.add_argument("-e", "--exe", type=Path, default="./a.out",
                         help="execution file name. default='./a.out'")
-    return parser.parse_args()
-
-def main(**kwargs):
-    code_path = kwargs["code"].resolve()
-    exe_path = kwargs["exe"].resolve()
-    if kwargs["input"] is None:
+    args = parser.parse_args(argv)
+    code_path = args.code.resolve()
+    exe_path = args.exe.resolve()
+    if args.input is None:
         input_path = None
     else:
-        input_path = kwargs["input"].resolve()
+        input_path = args.input.resolve()
     if not code_path.is_file():
         print("error: Code file does not exist.")
         return 1
@@ -59,9 +57,7 @@ def main(**kwargs):
         subprocess.run([str(exe_path)])
     else:
         subprocess.run([str(exe_path), "<", str(input_path)])
-    return 0
+    return
 
 if __name__ == "__main__":
-    sys.exit(main(**vars(get_args())))
-
-# EOF
+    _main()

@@ -1,33 +1,37 @@
 #!/bin/bash
 set -eu
 
-# parameters
-declare -r maxcdt=10
-declare -r td="$TRASHBOX"
-declare -r esc="$(builtin printf '\033')"
-declare -r reset="${esc}[m"
-declare -r col_imp="${esc}[32m"
-declare -r col_dng="${esc}[31m"
+trashbox="${TRASHBOX:-""}"
+if [ -z "$trashbox" ]; then
+    echo "ERROR: trash box (TRASHBOX) is not defined"
+    echo "$usage"
+fi
 
-### clean
-echo ${col_imp}"clean trash box: $td"${reset}
+max_cnt_down=10
+
+echo "trash box: $trashbox"
+
 # show files/dirs
-tdfd=( $(find ${td} -maxdepth 1 -mindepth 1) )
-echo "clean files/dirs: "
-for fd in ${tdfd[@]}; do
-  base_fd=$(basename "$fd")
-  [[ "$base_fd" = '.'  ]] && continue
-  [[ "$base_fd" = '..' ]] && continue
-  echo -n "$(basename "${fd}") "
+echo "files and directories in trash box:"
+delete_filedirs=( $(find ${trashbox} -maxdepth 1) )
+for fd in "${delete_filedirs[@]}"; do
+    base_fd=$(basename "$fd")
+    [[ "$base_fd" = '.'  ]] && continue
+    [[ "$base_fd" = '..' ]] && continue
+    echo -n "$base_fd "
 done
 echo ''
+
 # countdown
-for cdt in $(seq ${maxcdt} -1 1) ; do
-  [[   "$cdt" -eq "${maxcdt}" ]] && echo -n ${col_imp}"countdown ${cdt} "
-  [[ ! "$cdt" -eq "${maxcdt}" ]] && echo -n "${cdt} "
-  sleep 1
+for cdt in $(seq ${max_cnt_down} -1 1) ; do
+    [[   "$cdt" -eq "${max_cnt_down}" ]] && echo -n "countdown ${cdt} "
+    [[ ! "$cdt" -eq "${max_cnt_down}" ]] && echo -n "${cdt} "
+    sleep 1
 done
-echo ''${reset}
-# clean
-rm -rf $td
-mkdir -p $td
+echo ''
+
+echo "delete trash box"
+rm -rf $trashbox
+
+echo "make new trash box"
+mkdir -p $trashbox

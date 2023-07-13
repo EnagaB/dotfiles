@@ -1,46 +1,38 @@
 #!/bin/bash
 set -u
-# $ mv <item> $TRASHBOX
-# or $ mv <item> ${TRASHBOX}/<item>.1 # 1 -> 2 -> 3 ...
-# TRASHBOX is defined in advance.
 
-# parameters
-declare -r td="$TRASHBOX"
+usage="
+Move files to trash box
 
-### err handling
-# arg num
-if [[ $# -eq 0 ]];then
-  echo 'err: num of args is 0.'
-  return 1
-fi
-# td
-if [[ -z "${td:+a}" ]];then
-  echo 'err: TRASHBOX is not defined.'
-  return 1
+Usage:
+  > trm [FILE]...
+
+The path of trash box is defined as environment variable TRASHBOX."
+
+n_args="$#"
+if [ "$n_args" -eq 0 ]; then
+    echo "ERROR: Number of arguments is 0."
+    echo "$usage"
 fi
 
-### make trashbox
-if [[ ! -d "$td" ]];then
-  mkdir -p "$td"
+trashbox="${TRASHBOX:-""}"
+if [ -z "$trashbox" ]; then
+    echo "ERROR: trash box (TRASHBOX) is not defined"
+    echo "$usage"
 fi
+[ ! -d "$trashbox" ] && mkdir -p "$trashbox"
 
-### mv to trashbox
-for ff in "$@" ; do
-  # trash filename
-  ff_file=$(basename "$ff")
-  tff=${td}/${ff_file}
-  if [[ -e "$tff" ]];then
-    vn=1
-    while :; do
-      tff=${td}/${ff_file}.${vn}
-      if [[ ! -e "$tff" ]];then
-        break
-      fi
-      vn=$(($vn+1))
-    done
-  fi
-  # mv to trashbox
-  mv "$ff" "$tff"
+for trash_file in "$@" ; do
+    trash_filename=$(basename "$trash_file")
+    trash_path="${trashbox}/${trash_filename}"
+    if [ -e "$trash_path" ]; then
+        n_ver=1
+        org_trash_path="$trash_path"
+        while true; do
+            trash_path="${org_trash_path}.${n_ver}"
+            [ ! -e "$trash_path" ] && break
+            n_ver=$(($n_ver+1))
+        done
+    fi
+    mv "$trash_file" "$trash_path"
 done
-
-# end
