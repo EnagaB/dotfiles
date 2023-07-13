@@ -38,15 +38,13 @@ echo "mount vim: $dotvim_dir -> $dkr_dotvim_dir"
 
 tmuxconf="${root_dir}/etc/tmux/.tmux.conf"
 dkr_tmuxconf="${dkr_home}/.tmux.conf"
-mnt_tmuxconf=(--mount type=bind,src="$tmuxconf",dst="$dkr_tmuxconf")
+mnt_tmuxconf=(--mount type=bind,src="$tmuxconf",dst="$dkr_tmuxconf",readonly)
 echo "mount tmux conf: $tmuxconf -> $dkr_tmuxconf"
 
-set_user=(
-    -u=$(id -u):$(id -g)
-    -v /etc/group:/etc/group:ro
-    -v /etc/passwd:/etc/passwd:ro
-    $(for i in $(id -G "$USER"); do echo --group-add "$i"; done)
-)
+gitconf="${HOME}/.gitconfig"
+dkr_gitconf="${dkr_home}/.gitconfig"
+mnt_gitconf=(--mount type=bind,src="$gitconf",dst="$dkr_gitconf",readonly)
+echo "mount gitconfig: $gitconf -> $dkr_gitconf"
 
 shrc="${root_dir}/docker/.bashrc"
 dkr_shrc="${dkr_home}/.bashrc"
@@ -66,6 +64,13 @@ echo "mount root: $root_dir -> $dkr_root_dir"
 mnt_host=(--mount type=bind,src=/,dst=/mnt/host,readonly)
 echo "mount host: / -> /mnt/host"
 
+set_user=(
+    -u=$(id -u):$(id -g)
+    -v /etc/group:/etc/group:ro
+    -v /etc/passwd:/etc/passwd:ro
+    $(for i in $(id -G "$USER"); do echo --group-add "$i"; done)
+)
+
 detachkeys="ctrl-\\,ctrl-\\"
 
 docker run -it --rm \
@@ -74,6 +79,7 @@ docker run -it --rm \
     "${mnt_work[@]}" \
     "${mnt_vim[@]}" \
     "${mnt_tmuxconf[@]}" \
+    "${mnt_gitconf[@]}" \
     "${mnt_bash[@]}" \
     "${mnt_host[@]}" \
     -e "TERM=$TERM" \
