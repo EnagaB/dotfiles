@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 set -eu
 
 # parameters
@@ -31,5 +31,3 @@ echo ''${reset}
 # clean
 rm -rf $td
 mkdir -p $td
-
-# EOF
