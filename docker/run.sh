@@ -75,7 +75,7 @@ done
 
 detachkeys="ctrl-\\,ctrl-\\"
 
-echo docker run -it --rm \
+docker run -it --rm \
     --name "$container_name" \
     "${set_user[@]}" \
     "${mnt_work[@]}" \
