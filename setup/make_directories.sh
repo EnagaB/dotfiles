@@ -3,7 +3,7 @@ set -u
 
 echo "Make directories."
 
-setup_dir="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")"; pwd)"
+setup_dir="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" || exit; pwd)"
 . "${setup_dir}/config.sh"
 
 resrc_sub_directories=(bin etc include lib share src tmp)

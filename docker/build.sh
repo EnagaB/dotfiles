@@ -1,7 +1,7 @@
 #!/bin/bash
 set -u
 
-root_dir=$(cd "$(dirname ${BASH_SOURCE:-$0})/.."; pwd)
+root_dir=$(cd "$(dirname "${BASH_SOURCE:-$0}")/.." || exit; pwd)
 
 image=${IMAGE:-""}
 if [ -z "$image" ]; then

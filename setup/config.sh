@@ -48,6 +48,24 @@ install_apt_packages=(
     file nkf bc
     busybox
 )
+install_apt_image_edit_packages=(
+    inkscape
+    # gimp
+    imagemagick
+    poppler-utils
+    pstoedit
+    epstool
+)
+install_apt_tex_packages=(
+    texlive-latex-base texlive-latex-extra texlive-latex-recommended
+    texlive-publishers texlive-extra-utils
+    texlive-lang-japanese # texlive-lang-cjk
+    xdvik-ja
+    texlive-plain-generic
+    texlive-fonts-recommended texlive-fonts-extra
+    texlive-luatex
+    latexmk
+)
 install_npm_packages=(wsl-open)
 
 # fonts

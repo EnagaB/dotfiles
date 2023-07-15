@@ -6,9 +6,9 @@ setup development environment.
 If 'all' is given, install packages and fonts. The package installation
 require administrative privilege."
 
-setup_dir="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")"; pwd)"
+setup_dir="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" || exit; pwd)"
 . "${setup_dir}/config.sh"
-. "${setup_dir}/_utils.sh"
+. "${setup_dir}/utils.sh"
 
 echo "Confirm running without administrative privilege."
 if [ "$EUID" -eq 0 ];then

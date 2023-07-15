@@ -3,7 +3,7 @@ set -u
 
 echo "Make links"
 
-setup_dir="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")"; pwd)"
+setup_dir="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" || exit; pwd)"
 . "${setup_dir}/config.sh"
 
 for link_df2home_dir in "${link_dotfiles2home_dir[@]}"; do

@@ -26,6 +26,13 @@ function get_os_name() {
     return 1
 }
 
+function install_apt_packages() {
+    sudo apt -o Acquire::Retries=10 update \
+        && sudo apt -o Acquire::Retries=10 upgrade -y \
+        && DEBIAN_FRONTEND=noninteractive sudo apt -o Acquire::Retries=10 install -y \
+        "$@"
+}
+
 function build_cmake() {
     local -r src_dir="$1"
     local -r dst_out="$2"

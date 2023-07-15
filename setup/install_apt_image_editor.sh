@@ -3,8 +3,6 @@ set -u
 
 setup_dir="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" || exit; pwd)"
 . "${setup_dir}/config.sh"
+. "${setup_dir}/utils.sh"
 
-npm config set prefix "$npm_dir"
-
-npm install -g npm
-npm install -g "${install_npm_packages[@]}"
+install_apt_packages "${install_apt_image_edit_packages[@]}"

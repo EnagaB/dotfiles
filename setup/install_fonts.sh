@@ -3,7 +3,7 @@ set -u
 
 echo "Install fonts"
 
-setup_dir="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")"; pwd)"
+setup_dir="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" || exit; pwd)"
 . "${setup_dir}/config.sh"
 
 cd "$fonts_dir"
