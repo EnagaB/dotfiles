@@ -1,6 +1,2 @@
-#!/usr/bin/env sh
+#!/bin/bash
 set -u
-
-
-
-# EOF
