@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu
+set -u
 
 git config --global core.ignorecase false
 git config --global core.quotepath false
