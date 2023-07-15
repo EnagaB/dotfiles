@@ -80,6 +80,7 @@ noremap <Plug>(e:spc)o     :<C-u>e<Space>
 noremap <Plug>(e:spc)<S-o> :<C-u>e<Space>~/
 noremap <Plug>(e:spc)f     :<C-u>OpenFiler<CR>
 noremap <Plug>(e:spc)t     :<C-u>term<CR>
+noremap <Plug>(e:spc)c     :<C-u>syntax off<CR>:<C-u>syntax on<CR>
 
 " pane
 noremap <Plug>(e:pane)h     :<C-u>split<CR>
