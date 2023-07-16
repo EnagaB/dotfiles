@@ -1,4 +1,5 @@
 let g:CONFIG = {}
+let g:CONFIG["min_required"] = 800
 
 " path
 let g:CONFIG['tmp_path'] = expand('$HOME/.local/tmp')

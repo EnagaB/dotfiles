@@ -17,8 +17,7 @@ execute "source " . g:dotvim_dir . "/config.vim"
 execute "source " . s:init_dir . "/utils.vim"
 execute 'source ' . s:init_dir . '/keybindings/keybindings.vim'
 
-" vim8
-if v:version < 800
+if v:version < g:CONFIG["min_required"]
     finish
 endif
 

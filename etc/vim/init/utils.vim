@@ -1,30 +1,35 @@
+" source vim script with error handling
+function! SourceFile(file)
+    try
+        execute "source " . a:file
+    catch
+        echo "Error occurred: " . v:exception
+        echo "Error sourcing file: " . a:file
+    endtry
+endfunction
+
 " source vim scripts in given directory
 function! SourceDirectory(dir)
   let l:files = split(glob(a:dir . "/*.vim"), "\n")
-  call <SID>source_files(l:files)
+  for l:file in l:files
+      call SourceFile(l:file)
+  endfor
 endfunction
 
 " source vim scripts whose name is matched by given pattern
 function! SourceGlobpattern(globpat)
   let l:files = split(glob(a:globpat), "\n")
-  call <SID>source_files(l:files)
-endfunction
-
-function! s:source_files(files)
-  for l:file in a:files
-    try
-      execute "source " . l:file
-    catch
-      echo "Error sourcing file: " . l:file
-    endtry
+  for l:file in l:files
+      call SourceFile(l:file)
   endfor
 endfunction
 
-" for vim builtin sort function, sort in shorter order
-function! Sort_comp_strlen(str1, str2)
-  let l:l1 = strlen(a:str1)
-  let l:l2 = strlen(a:str2)
-  return l:l1 == l:l2 ? 0 : l:l1 > l:l2 ? 1 : -1
+" comparison function for sorting in shorter order
+" usage: call sort(list, name_of_comparation_function)
+function! CompareStringLength(str1, str2)
+    let l:l1 = strlen(a:str1)
+    let l:l2 = strlen(a:str2)
+    return l:l1 == l:l2 ? 0 : l:l1 > l:l2 ? 1 : -1
 endfunction
 
 " set colorscheme from settings

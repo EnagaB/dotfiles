@@ -22,7 +22,7 @@ augroup insert_template
     autocmd!
     let s:tplfile_list = split(glob(g:CONFIG['tplfile_path_without_ext'] . '.*'), "\n")
     let s:len_tplfile_path_without_ext = strlen(g:CONFIG['tplfile_path_without_ext'])
-    call sort(s:tplfile_list, "Sort_comp_strlen")
+    call sort(s:tplfile_list, "CompareStringLength")
     call reverse(s:tplfile_list)
     for ff in s:tplfile_list
         let s:ext = ff[s:len_tplfile_path_without_ext:]
