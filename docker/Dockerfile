@@ -20,21 +20,29 @@ RUN apt-get -o Acquire::Retries=10 update \
     && apt-get -y clean \
     && rm -rf /var/lib/apt/lists/*
 
-# create docker home and neovim config directory
+# create docker home
 ARG docker_home=/dkrhome
 RUN mkdir -p "$docker_home" \
-    && chmod 777 "$docker_home"
-ENV HOME=$docker_home
+    && mkdir -p "${docker_home}/.config" \
+    && mkdir -p "${docker_home}/.local/tmp" \
+    && mkdir -p "${docker_home}/.local/share" \
+    && chmod -R 777 "$docker_home"
+ENV HOME="$docker_home"
+
+# python (miniconda)
+RUN mkdir /conda \
+    && cd /conda \
+    && wget https://repo.anaconda.com/miniconda/Miniconda3-py39_23.5.2-0-Linux-x86_64.sh \
+        -O miniconda.sh \
+    && bash miniconda.sh -b -u -p /conda \
+    && rm miniconda.sh \
+    && chmod -R 777 /conda
+ENV PATH="/conda/bin:${PATH}"
+COPY docker/requirements.txt /conda
+RUN pip install --upgrade pip \
+    && pip install -r /conda/requirements.txt
 
 # install deno
 RUN curl -fsSL https://deno.land/x/install/install.sh | sh
 ENV DENO_INSTALL="${HOME}/.deno"
 ENV PATH="${DENO_INSTALL}/bin:${PATH}"
-
-# make directory
-ARG config_dir="${HOME}/.config"
-ARG tmp_dir="${HOME}/.local/tmp"
-ARG share_dir="${HOME}/.local/share"
-RUN mkdir -p "$config_dir" && chmod 777 "$config_dir" \
-    && mkdir -p "$tmp_dir" && chmod 777 "$tmp_dir" \
-    && mkdir -p "$share_dir" && chmod 777 "$share_dir"

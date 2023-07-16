@@ -23,7 +23,7 @@ echo "container name: $container_name"
 dkr_home=/dkrhome
 echo "docker home: $dkr_home"
 
-dkr_work_dir="${dkr_home}/work"
+dkr_work_dir="/work"
 mnt_work=(--mount "type=bind,src=${work_dir},dst=${dkr_work_dir}")
 echo "mount work: $work_dir -> $dkr_work_dir"
 
@@ -36,7 +36,7 @@ mnt_vim=(
 )
 echo "mount vim: $dotvim_dir -> $dkr_dotvim_dir"
 
-tmuxconf="${root_dir}/etc/tmux/.tmux.conf"
+tmuxconf="${root_dir}/etc/.tmux.conf"
 dkr_tmuxconf="${dkr_home}/.tmux.conf"
 mnt_tmuxconf=(--mount "type=bind,src=${tmuxconf},dst=${dkr_tmuxconf},readonly")
 echo "mount tmux conf: $tmuxconf -> $dkr_tmuxconf (readonly)"

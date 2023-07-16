@@ -120,20 +120,20 @@ fi
 shopt -s autocd
 # auto cd -> ls
 function auto_cdls() {
-  if [ "$OLDPWD" != "$PWD" ]; then
-    local fn=$(ls -U1 --color=never | wc -l)
-    local -r maxfn=100
-    if [[ "$fn" -le "${maxfn}" ]] ; then
-      ls --color=auto
-    else
-      echo "There are over ${maxfn} files."
+    if [ "$OLDPWD" != "$PWD" ]; then
+        local fn=$(ls -U1 --color=never | wc -l)
+        local -r maxfn=100
+        if [[ "$fn" -le "${maxfn}" ]] ; then
+            ls --color=auto
+        else
+            echo "There are over ${maxfn} files."
+        fi
+        OLDPWD="$PWD"
     fi
-    OLDPWD="$PWD"
-  fi
 }
 PROMPT_COMMAND="$PROMPT_COMMAND"$'\n'auto_cdls
 
+export PATH="${PATH}:${HOME}/dotfiles/bin"
+
 alias vi="nvim"
 alias vir="nvim -M"
-
-export PATH=$PATH:"${HOME}/dotfiles/bin"
