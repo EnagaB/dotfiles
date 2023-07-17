@@ -48,8 +48,8 @@ export CPLUS_INCLUDE_PATH=${CPLUS_INCLUDE_PATH}:/usr/include/opencv4
 
 # WSL (Windows Subsystem for Linux)
 if [[ -d '/mnt/c/Windows' ]]; then
-  export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
-  export LIBGL_ALWAYS_INDIRECT=1
+    export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
+    export LIBGL_ALWAYS_INDIRECT=1
 fi
 
 # fcitx

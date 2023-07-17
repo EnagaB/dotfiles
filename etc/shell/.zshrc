@@ -2,18 +2,18 @@
 
 # zcompile function
 function __autozcomp() {
-  local file="$1"
-  if [[ -f "${file}.zwc" ]] ; then
-    local orifile="${file}"
-    local zwcfile="${file}.zwc"
-    [[ -L "$orifile" ]] && orifile=$(readlink $orifile)
-    [[ -L "$zwcfile" ]] && zwcfile=$(readlink $zwcfile)
-    if [[ "$zwcfile" -ot "$orifile" ]] ; then
-      zcompile "${file}"
+    local file="$1"
+    if [[ -f "${file}.zwc" ]] ; then
+        local orifile="${file}"
+        local zwcfile="${file}.zwc"
+        [[ -L "$orifile" ]] && orifile=$(readlink $orifile)
+        [[ -L "$zwcfile" ]] && zwcfile=$(readlink $zwcfile)
+        if [[ "$zwcfile" -ot "$orifile" ]] ; then
+            zcompile "${file}"
+        fi
+    else
+        zcompile "${file}"
     fi
-  else
-    zcompile "${file}"
-  fi
 }
 
 # zcompile .zshenv/.zshrc
