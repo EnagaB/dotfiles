@@ -2,6 +2,7 @@ let g:CONFIG = {}
 let g:CONFIG["min_required"] = 800
 
 " path
+let g:CONFIG["after_dir"] = g:dotvim_dir . '/after'
 let g:CONFIG['tmp_path'] = expand('$HOME/.local/tmp')
 let g:CONFIG['tplfile_path_without_ext'] = expand('$HOME/.template/tpl')
 
@@ -35,6 +36,14 @@ let g:CONFIG['colorscheme'] = 'lucario_noitalic'
 let g:CONFIG['colorscheme_without_packs'] = 'desert'
 let g:CONFIG['background'] = 'dark'
 
+" user highlight
+highlight link User1 Visual
+highlight link User2 PmenuSel
+highlight link User3 DiffText
+highlight link User4 DiffChange
+highlight link User5 IncSearch
+highlight link User6 StatusLineNC
+"
 " keybinding
 let g:CONFIG['kbd_macro_register'] = 'y'
 let g:CONFIG['hilight_word_register'] = 'z'

@@ -4,8 +4,6 @@ endif
 
 " directory path
 let g:dotvim_dir = expand("<sfile>:p:h")
-let g:after_dir = g:dotvim_dir . '/after'
-let s:init_dir = g:dotvim_dir . "/init"
 
 " basic settings
 if has('vim_starting')
@@ -14,8 +12,8 @@ endif
 
 " load basic
 execute "source " . g:dotvim_dir . "/config.vim"
-execute "source " . s:init_dir . "/utils.vim"
-execute 'source ' . s:init_dir . '/keybindings/keybindings.vim'
+execute "source " . g:dotvim_dir . "/utils.vim"
+execute 'source ' . g:dotvim_dir . '/keybindings/keybindings.vim'
 
 if v:version < g:CONFIG["min_required"]
     finish
@@ -27,8 +25,8 @@ set packpath&
 if match(&runtimepath, g:dotvim_dir) == -1
     execute 'set runtimepath ^=' . g:dotvim_dir
 endif
-if match(&runtimepath, g:after_dir) == -1
-    execute 'set runtimepath +=' . g:after_dir
+if match(&runtimepath, g:CONFIG["after_dir"]) == -1
+    execute 'set runtimepath +=' . g:CONFIG["after_dir"]
 endif
 
 " set basic settings
@@ -44,10 +42,11 @@ if g:CONFIG['term'] !~ '^xterm' && ! has('gui_running')
     let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
 
-execute 'source ' . g:dotvim_dir . '/init/packmgr.vim'
-execute 'source ' . g:dotvim_dir . '/init/others.vim'
-execute 'source ' . g:dotvim_dir . '/init/lines.vim'
+execute 'source ' . g:dotvim_dir . '/package_manager.vim'
+execute 'source ' . g:dotvim_dir . '/misc.vim'
+execute 'source ' . g:dotvim_dir . '/tab_line.vim'
+execute 'source ' . g:dotvim_dir . '/status_line.vim'
 
 if has('gui_running')
-    execute 'source ' . g:dotvim_dir . '/init/gui.vim'
+    execute 'source ' . g:dotvim_dir . '/gui.vim'
 endif

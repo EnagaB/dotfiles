@@ -592,10 +592,6 @@ endfunction
 "   let lines[0] = lines[0][column_start - 1:]
 "   return join(lines, "\n")
 " endfunction
-"
-" mark functions
-let s:marklist = map(range(char2nr('a'),char2nr('z')),'nr2char(v:val)')
-" set mark whose symbol is selected automatically
 
 function! s:toggle_resize_panes()
     if !exists('b:toggleMaxPane')
