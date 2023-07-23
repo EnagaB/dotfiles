@@ -22,31 +22,29 @@ fi
 
 # system
 alias shutdown-now='sudo shutdown -h now'
-alias relogin='exec $SHELL -l'
+alias relogin='exec "$SHELL" -l'
 
 # ls
 alias l='ls --color=auto'
 alias ls='ls --color=auto'
 alias sl='ls --color=auto'
 alias la='ls -A --color=auto'
-alias lb='ls -d --color=auto .*'
 alias ll='ls -AlFh --color=auto'
 
 # grep
 alias grep='grep --color=auto'
-alias egrep='egrep --color=auto'
-alias fgrep='fgrep --color=auto'
 alias ngrep='grep -v --color=auto'
-
-# character code
-alias utf8unix='nkf -w -Lu --overwrite'
-alias utf8dos='nkf -w -Lw --overwrite'
-alias sjisdos='nkf -s -Lw --overwrite'
 
 # tex
 alias texmk-pdf='latexmk -gg -pdf -pvc'
 alias texmk-lua='latexmk -gg -lualatex -pvc'
 alias texmk-up='latexmk -gg -pdfdvi -pvc'
+
+# symbolic link jump
+. "${DOTSH}/symbolic_link_jump.sh"
+alias mksj='__make_symbolic_link_jump'
+alias cdsj='__cd_symbolic_link_jump'
+alias lssj='echo "${__symlinks_dir}" && ll "${__symlinks_dir}"'
 
 # os
 declare -r __kernel_name=$(uname -s)

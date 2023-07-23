@@ -15,6 +15,7 @@ make_resrc_directories=(
 make_directories=(
     "${trashbox_dir}"
     "${HOME}/.config/zathura"
+    "${HOME}/.symlinks"
     "$npm_dir"
     "$fonts_dir"
 )
