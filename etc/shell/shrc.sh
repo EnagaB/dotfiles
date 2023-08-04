@@ -42,9 +42,9 @@ alias texmk-up='latexmk -gg -pdfdvi -pvc'
 
 # symbolic link jump
 . "${DOTSH}/symbolic_link_jump.sh"
-alias mksj='__make_symbolic_link_jump'
-alias cdsj='__cd_symbolic_link_jump'
-alias lssj='echo "${__symlinks_dir}" && ll "${__symlinks_dir}"'
+alias mkj='__make_symbolic_link_jump'
+alias cdj='__cd_symbolic_link_jump'
+alias lsj='echo "${__symlinks_dir}" && ll "${__symlinks_dir}"'
 
 # os
 declare -r __kernel_name=$(uname -s)

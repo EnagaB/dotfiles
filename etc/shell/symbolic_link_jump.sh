@@ -28,6 +28,9 @@ function __cd_symbolic_link_jump() {
     fi
     link_name="$1"
     link_path="${__symlinks_dir}/${link_name}"
-    [ ! -L "$link_path" ] && return
+    if [ ! -L "$link_path" ]; then
+        echo "ERROR: Given link doesn't exist."
+        return 1
+    fi
     cd -P "$link_path"
 }
