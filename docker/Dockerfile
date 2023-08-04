@@ -10,6 +10,7 @@ RUN apt-get -o Acquire::Retries=10 update \
     && DEBIAN_FRONTEND=noninteractive apt-get -o Acquire::Retries=10 install -y --no-install-recommends \
         tzdata \
         tmux \
+        less \
         vim \
         neovim \
         curl \
