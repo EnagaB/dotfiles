@@ -2,10 +2,10 @@
 
 ## Usage
 
-Clone this repository and place to `HOME`.  
+Clone this repository and place to `HOME`.
 Build my environment.
 ```
-bash ~/dotfiles/setup/run.sh [all]
+bash ~/dotfiles/setup.sh [all]
 ```
 In vim or neovim, install the packages and apply thats.
 ```
