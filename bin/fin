@@ -1,69 +1,61 @@
 #!/bin/bash
 set -u
-# usage: fin [-n|-N|-c|-C] <search_word>
-# options:
-#  -n: search files and directories in CWD
-#  -N: search files and directories in CWD and its sub-directories
-#  -c: search word in contents of files in CWD
-#  -C: search word in contents of files in CWD and its sub-directories
-#
-# # a.txt b.txt c.dat dtxt.xyz atxt/
-# > fin -n txt
-# a.txt
-# b.txt
-# dtxt.xyz
-# atxt/
 
-# parameters
-declare -ar HELPLINES=(3 15)
+usage="search filename or word in contents of files
+> fin [--chnr] <word>
+options:
+-n: find files and directories with names containing <word>
+-h: show help
+-c: find sentences in files that contain <word>
+-r: search recursively"
 
 # get option
-declare find_cwd_only=true
-declare find_name=true
-declare showhelp=false
-while getopts chnCN option; do
-  case $option in
-    c)
-      find_name=false
-      ;;
-    C)
-      find_cwd_only=false
-      find_name=false
-      ;;
-    n) ;;
-    N)
-      find_cwd_only=false
-      ;;
-    h)
-      showhelp=true
-      ;;
-  esac
+find_names=false
+find_recursively=false
+while getopts chnr option; do
+    case $option in
+        c)
+            # find_names=false
+            :
+            ;;
+        h)
+            echo "$usage"
+            exit 0
+            ;;
+        n)
+            find_names=true
+            ;;
+        r)
+            find_recursively=true
+            ;;
+        *)
+            echo "ERROR: Invalid options"
+            echo "$usage"
+            exit 1
+            ;;
+    esac
 done
 shift $((OPTIND - 1))
 
-# show help text
-if $showhelp; then
-  declare -r script="${BASE_SOURCE:-$0}"
-  head "$script" -n "${HELPLINES[1]}" \
-    | tail -n $((${HELPLINES[1]} - ${HELPLINES[0]} + 1))
-  exit 0
+if [[ "$#" -ne 1 ]];then
+    echo "ERROR: Num of arguments is wrong."
+    exit 1
 fi
 
-[[ "$#" -ne 1 ]] && echo "Num of arguments is wrong." && exit 1
 declare -r search_word="$1"
 
-maxdepth1=()
-${find_cwd_only} && maxdepth1=(-maxdepth 1)
+maxdepth1=(-maxdepth 1)
+"$find_recursively" && maxdepth1=()
 
-if $find_name; then # file and directory name
-  searched_fds=( $(find . "${maxdepth1[@]}" -name "*${search_word}*") )
-  for ifd in "${searched_fds[@]}"; do
-    if [[ -d "$ifd" ]]; then
-      echo "${ifd}/"
-    else
-      echo "$ifd"
-    fi
-  done
+if $find_names; then # file and directory name
+    searched_fds=( $(find . "${maxdepth1[@]}" -name "*${search_word}*") )
+    for ifd in "${searched_fds[@]}"; do
+        if [[ -d "$ifd" ]]; then
+            echo "${ifd}/"
+        else
+            echo "$ifd"
+        fi
+    done
 else # contents of file
-  find . "${maxdepth1[@]}" -type f -print0 | xargs -0 grep "$search_word"
+    find . "${maxdepth1[@]}" -type f -print0 | xargs -0 grep "$search_word"
 fi

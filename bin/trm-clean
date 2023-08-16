@@ -1,19 +1,19 @@
 #!/bin/bash
 set -eu
 
-trashbox="${TRASHBOX:-""}"
-if [ -z "$trashbox" ]; then
-    echo "ERROR: trash box (TRASHBOX) is not defined"
+trash_can="${TRASHCAN:-""}"
+if [ -z "$trash_can" ]; then
+    echo "ERROR: trash box (TRASHCAN) is not defined"
     echo "$usage"
 fi
 
 max_cnt_down=10
 
-echo "trash box: $trashbox"
+echo "trash box: $trash_can"
 
 # show files/dirs
 echo "files and directories in trash box:"
-delete_filedirs=( $(find ${trashbox} -maxdepth 1) )
+delete_filedirs=( $(find ${trash_can} -maxdepth 1) )
 for fd in "${delete_filedirs[@]}"; do
     base_fd=$(basename "$fd")
     [[ "$base_fd" = '.'  ]] && continue
@@ -31,7 +31,7 @@ done
 echo ''
 
 echo "delete trash box"
-rm -rf $trashbox
+rm -rf $trash_can
 
 echo "make new trash box"
-mkdir -p $trashbox
+mkdir -p $trash_can

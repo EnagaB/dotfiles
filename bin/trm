@@ -7,7 +7,7 @@ Move files to trash box
 Usage:
   > trm [FILE]...
 
-The path of trash box is defined as environment variable TRASHBOX."
+The path of trash box is defined as environment variable TRASHCAN."
 
 n_args="$#"
 if [ "$n_args" -eq 0 ]; then
@@ -15,16 +15,16 @@ if [ "$n_args" -eq 0 ]; then
     echo "$usage"
 fi
 
-trashbox="${TRASHBOX:-""}"
-if [ -z "$trashbox" ]; then
-    echo "ERROR: trash box (TRASHBOX) is not defined"
+trash_can="${TRASHCAN:-""}"
+if [ -z "$trash_can" ]; then
+    echo "ERROR: trash can (TRASHCAN) is not defined"
     echo "$usage"
 fi
-[ ! -d "$trashbox" ] && mkdir -p "$trashbox"
+[ ! -d "$trash_can" ] && mkdir -p "$trash_can"
 
 for trash_file in "$@" ; do
     trash_filename=$(basename "$trash_file")
-    trash_path="${trashbox}/${trash_filename}"
+    trash_path="${trash_can}/${trash_filename}"
     if [ -e "$trash_path" ]; then
         n_ver=1
         org_trash_path="$trash_path"

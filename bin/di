@@ -1,64 +1,60 @@
 #!/usr/bin/env bash
 set -u
-# Translate <chars> into Japanese or English
-# usage: di [-h|-w] <chars>
-# option
-#   -h: show help text
-#   -w: match whole word only
 
-# parameters
-declare -ar EJ_DICTS=("${LOCAL}/share/dict/ejdic-eijiro1448-utf8unix.dat.gz"
-                     "${DOTFILES}/share/dict/ejdic-hand-utf8unix.dat.gz"
-                   )
-declare -ar HELPLINES=(3 7)
+usage="Translate <chars> into Japanese or English
+> di [-hw] <chars>
+options
+-h: show help text
+-w: match whole word only"
 
-# get option
-declare word_search=false
-declare showhelp=false
+EJ_DICTS=(
+    "${LOCAL}/share/dict/ejdic-eijiro1448-utf8unix.dat.gz"
+    "${DOTFILES}/share/dict/ejdic-hand-utf8unix.dat.gz"
+)
+
+# parse options
+word_search=false
 while getopts hw option; do
-  case $option in
-    w)
-      word_search=true
-      ;;
-    h)
-      showhelp=true
-      ;;
-  esac
+    case $option in
+        h)
+            echo "$usage"
+            exit 0
+            ;;
+        w)
+            word_search=true
+            ;;
+        *)
+            echo "ERROR: Invalid options"
+            echo "$usage"
+            exit 1
+            ;;
+    esac
 done
 shift $((OPTIND - 1))
 
-# show help text
-if $showhelp; then
-  declare -r script="${BASE_SOURCE:-$0}"
-  head "$script" -n "${HELPLINES[1]}" \
-    | tail -n $((${HELPLINES[1]} - ${HELPLINES[0]} + 1))
-  exit 0
+# parse arguments
+if [[ "$#" -ne 1 ]]; then
+    echo "Num of arguments is wrong."
+    exit 1
 fi
-
 declare -r search_word="$1"
 
-# get argument
-if [[ "$#" -ne 1 ]]; then
-  echo "Num of arguments is wrong."
-  exit 1
-fi
-shift 1
-
 # get dictionary
+ej_dict=""
 for di in "${EJ_DICTS[@]}"; do
-  if [[ -f "$di" ]]; then
-    declare -r ej_dict="$di"
-    break
-  fi
+    if [[ -f "$di" ]]; then
+        ej_dict="$di"
+        break
+    fi
 done
-if [[ ! -v ej_dict ]];then
-  echo 'All the dictionaries do not exist.'
-  exit 1
+if [ -z "$ej_dict" ];then
+    echo 'All the dictionaries do not exist.'
+    exit 1
 fi
 
 # search
 if $word_search; then
-  zgrep "$search_word" "$ej_dict" -E -iw --color=always | less -R -FX
+    zgrep "$search_word" "$ej_dict" -E -iw --color=always | less -R -FX
 else
-  zgrep "$search_word" "$ej_dict" -E -i --color=always | less -R -FX
+    zgrep "$search_word" "$ej_dict" -E -i --color=always | less -R -FX
 fi

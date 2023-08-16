@@ -3,7 +3,7 @@ set -u
 
 # paths
 local_dir=${LOCAL:-${HOME}/.local}
-trashbox_dir=${TRASHBOX:-${HOME}/.t}
+trashbox_dir=${TRASHCAN:-${HOME}/.t}
 npm_dir="${HOME}/.npm-global"
 fonts_dir="${HOME}/.fonts"
 

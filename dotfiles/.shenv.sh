@@ -4,8 +4,7 @@
 export DOTFILES="${HOME}/dotfiles"
 # local directories
 export LOCAL="${HOME}/.local"
-export TRASHBOX="${HOME}/.t"
-export T="$TRASHBOX"
+export TRASHCAN="${HOME}/.t"
 
 # PATH
 [[ -d "${DOTFILES}/bin" ]]  && export PATH=$PATH:"${DOTFILES}/bin"
