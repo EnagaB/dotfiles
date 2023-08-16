@@ -18,10 +18,13 @@ export T="$TRASHBOX"
 [[ -d "${HOME}/.npm-global" ]] && export PATH=$PATH:"${HOME}/.npm-global/bin"
 
 # shell
-export DOTSH="${DOTFILES}/etc/shell"
-export BASH_ENV="${DOTSH}/.bashenv"
-export ZDOTDIR="${DOTSH}"
-[[ -z "$ZDOTDIR" ]] && export ZDOTDIR="$HOME"
+export DOTSH="${DOTFILES}/dotfiles/shell"
+export BASH_ENV="${HOME}/.bashenv"
+export ZDOTDIR="${HOME}"
+
+# .shrc.sh
+export DOT_SHRC="${HOME}/.shrc.sh"
+export SYMLINKS_JUMP_DIR="${HOME}/.symlinks"
 
 # terminal
 export TERM=xterm-256color
@@ -41,12 +44,10 @@ export GNUTERM=x11
 export GNUPLOT_LIB="${DOTFILES}/lib/gnuplot"
 
 # C/C++
-export C_INCLUDE_PATH="${DOTFILES}/lib/c/include"
-export CPLUS_INCLUDE_PATH="${C_INCLUDE_PATH}"
-export CPLUS_INCLUDE_PATH=${CPLUS_INCLUDE_PATH}:"~/.local/include"
-export CPLUS_INCLUDE_PATH=${CPLUS_INCLUDE_PATH}:/usr/include/opencv4
+# export C_INCLUDE_PATH=""
+export CPLUS_INCLUDE_PATH="${HOME}/.local/include"
 
-# WSL (Windows Subsystem for Linux)
+# WSL
 if [[ -d '/mnt/c/Windows' ]]; then
     export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
     export LIBGL_ALWAYS_INDIRECT=1
@@ -66,5 +67,3 @@ export TEXMFHOME="${DOTFILES}/lib/tex/texmf"
 export WWW_HOME="https://www.google.com"
 # XDG Base Directory
 export XDG_CONFIG_FILE="$HOME/.config"
-# Openmp
-export OMP_NUM_THREADS=2

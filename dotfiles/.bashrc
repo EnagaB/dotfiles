@@ -8,7 +8,7 @@ esac
 
 # rc/env dir
 export DOTFILES=${HOME}/dotfiles
-export DOTSH=${DOTFILES}/etc/shell
+export DOTSH=${DOTFILES}/dotfiles/shell
 
 # .bashenv
 [[ -f "${HOME}/.bashenv" ]] && . "${HOME}/.bashenv"
@@ -88,4 +88,4 @@ fi
 
 ulimit -c 0 # not output core files
 
-[[ -f "${DOTSH}/shrc.sh" ]] && source "${DOTSH}/shrc.sh"
+[[ -f "$DOT_SHRC" ]] && . "$DOT_SHRC"

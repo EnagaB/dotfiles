@@ -4,6 +4,7 @@ set -u
 work_dir="$(pwd)"
 
 root_dir=$(cd "$(dirname "${BASH_SOURCE:-$0}")/.." || exit; pwd)
+df_dir="${root_dir}/dotfiles"
 
 image=${IMAGE:-""}
 if [ -z "$image" ]; then
@@ -27,42 +28,39 @@ dkr_work_dir="/work"
 mnt_work=(--mount "type=bind,src=${work_dir},dst=${dkr_work_dir}")
 echo "mount work: $work_dir -> $dkr_work_dir"
 
-dotvim_dir="${root_dir}/etc/vim"
-dkr_dotvim_dir="${dkr_home}/.vim"
-dkr_dotvim_nvim_dir="${dkr_home}/.config/nvim"
 mnt_vim=(
-    --mount "type=bind,src=${dotvim_dir},dst=${dkr_dotvim_dir}"
-    --mount "type=bind,src=${dotvim_dir},dst=${dkr_dotvim_nvim_dir}"
+    --mount "type=bind,src=${df_dir}/.vim,dst=${dkr_home}/.vim"
+    --mount "type=bind,src=${df_dir}/.vim,dst=${dkr_home}/.config/nvim"
 )
-echo "mount vim: $dotvim_dir -> $dkr_dotvim_dir"
+echo "mount vim configs"
 
 tmuxconf="${root_dir}/etc/.tmux.conf"
 dkr_tmuxconf="${dkr_home}/.tmux.conf"
-mnt_tmuxconf=(--mount "type=bind,src=${tmuxconf},dst=${dkr_tmuxconf},readonly")
-echo "mount tmux conf: $tmuxconf -> $dkr_tmuxconf (readonly)"
+mnt_tmuxconf=(--mount "type=bind,src=${df_dir}/.tmux.conf,dst=${dkr_home}/.tmux.conf,readonly")
+echo "mount tmux configs in read-only mode"
 
 gitconf="${HOME}/.gitconfig"
 dkr_gitconf="${dkr_home}/.gitconfig"
 mnt_gitconf=(--mount "type=bind,src=${gitconf},dst=${dkr_gitconf},readonly")
-echo "mount gitconfig: $gitconf -> $dkr_gitconf (readonly)"
+echo "mount git global configs in read-only mode"
 
-shrc="${root_dir}/docker/.bashrc"
-dkr_shrc="${dkr_home}/.bashrc"
-sh_hist="${HOME}/.bash_history"
-dkr_sh_hist="${dkr_home}/.bash_history"
 mnt_bash=(
-    --mount "type=bind,src=${shrc},dst=${dkr_shrc}"
-    --mount "type=bind,src=${sh_hist},dst=${dkr_sh_hist}"
+    --mount "type=bind,src=${df_dir}/.bashrc,dst=${dkr_home}/.bashrc"
+    --mount "type=bind,src=${df_dir}/.bash_profile,dst=${dkr_home}/.bash_profile"
+    --mount "type=bind,src=${df_dir}/.bashenv,dst=${dkr_home}/.bashenv"
+    --mount "type=bind,src=${df_dir}/.dir_colors,dst=${dkr_home}/.dir_colors"
+    --mount "type=bind,src=${df_dir}/.shrc.sh,dst=${dkr_home}/.shrc.sh"
+    --mount "type=bind,src=${df_dir}/.shenv.sh,dst=${dkr_home}/.shenv.sh"
+    --mount "type=bind,src=${HOME}/.bash_history,dst=${dkr_home}/.bash_history"
 )
-echo "mount bashrc: $shrc -> $dkr_shrc"
-echo "mount bash history: $sh_hist -> $dkr_sh_hist"
+echo "mount bash dotfiles configs and history"
 
-dkr_root_dir="${dkr_home}/dotfiles"
-mnt_root=(--mount "type=bind,src=${root_dir},dst=${dkr_root_dir},readonly")
-echo "mount root: $root_dir -> $dkr_root_dir (readonly)"
+mnt_root=(--mount "type=bind,src=${root_dir},dst=${dkr_home}/dotfiles,readonly")
+echo "mount dotfiles repository in read-only mode"
 
-mnt_host=(--mount "type=bind,src=/,dst=/mnt/host,readonly")
-echo "mount host: / -> /mnt/host (readonly)"
+# mnt_host=(--mount "type=bind,src=/,dst=/mnt/host,readonly")
+# echo "mount host in read-only mode"
+mnt_host=()
 
 set_user=(
     "-u=$(id -u):$(id -g)"

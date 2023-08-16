@@ -41,10 +41,36 @@ alias texmk-lua='latexmk -gg -lualatex -pvc'
 alias texmk-up='latexmk -gg -pdfdvi -pvc'
 
 # symbolic link jump
-. "${DOTSH}/symbolic_link_jump.sh"
+function __make_symbolic_link_jump() {
+    local usage="> command link_name"
+    if [ ! -d "$SYMLINKS_JUMP_DIR" ]; then
+        mkdir -p "$SYMLINKS_JUMP_DIR"
+    fi
+    if [ "$#" -ne 1 ]; then
+        echo "ERROR: Invalid arguments"
+        echo "$usage"
+        return 1
+    fi
+    ln -snfv "$(pwd)" "${SYMLINKS_JUMP_DIR}/${1}"
+}
+function __cd_symbolic_link_jump() {
+    local usage="> command link_name"
+    if [ "$#" -ne 1 ]; then
+        echo "ERROR: Invalid arguments"
+        echo "$usage"
+        return 1
+    fi
+    local link_path
+    link_path="${SYMLINKS_JUMP_DIR}/${1}"
+    if [ ! -L "$link_path" ]; then
+        echo "ERROR: Given link doesn't exist."
+        return 1
+    fi
+    cd -P "$link_path"
+}
 alias mkj='__make_symbolic_link_jump'
 alias cdj='__cd_symbolic_link_jump'
-alias lsj='echo "${__symlinks_dir}" && ll "${__symlinks_dir}"'
+alias lsj='echo "${SYMLINKS_JUMP_DIR}" && ll "${SYMLINKS_JUMP_DIR}"'
 
 # os
 declare -r __kernel_name=$(uname -s)
@@ -69,6 +95,8 @@ declare -r __shrc_loc="${HOME}/.shrc_local.sh"
 
 # delete duplicated path
 function __delete_duplicated_paths() {
+    local _path
+    local _p
     _path=""
     for _p in $(echo $PATH | tr ':' ' '); do
         case ":${_path}:" in
@@ -86,7 +114,5 @@ function __delete_duplicated_paths() {
     if [ ! -z "$_path" ]; then
         export PATH=$_path
     fi
-    unset _p
-    unset _path
 }
 __delete_duplicated_paths
