@@ -10,6 +10,7 @@ RUN apt-get -o Acquire::Retries=10 update \
     && DEBIAN_FRONTEND=noninteractive apt-get -o Acquire::Retries=10 install -y --no-install-recommends \
         tzdata \
         tmux \
+        nano \
         less \
         vim \
         neovim \
@@ -20,6 +21,9 @@ RUN apt-get -o Acquire::Retries=10 update \
     && ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime \
     && apt-get -y clean \
     && rm -rf /var/lib/apt/lists/*
+
+# install docker
+RUN curl -fsSL https://get.docker.com | sh
 
 # python (miniconda)
 ARG conda_root=/conda

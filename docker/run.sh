@@ -58,6 +58,13 @@ echo "mount bash dotfiles configs and history"
 mnt_root=(--mount "type=bind,src=${root_dir},dst=${dkr_home}/dotfiles,readonly")
 echo "mount dotfiles repository in read-only mode"
 
+dkr_skt=/var/run/docker.sock
+mnt_dkr_skt=()
+if [ -S "$dkr_skt" ]; then
+    mnt_dkr_skt=(-v "${dkr_skt}:${dkr_skt}")
+    echo "mount docker socket"
+fi
+
 # mnt_host=(--mount "type=bind,src=/,dst=/mnt/host,readonly")
 # echo "mount host in read-only mode"
 mnt_host=()
@@ -73,6 +80,7 @@ done
 
 detachkeys="ctrl-\\,ctrl-\\"
 
+echo $container_name
 docker run -it --rm \
     --name "$container_name" \
     "${set_user[@]}" \
@@ -82,8 +90,10 @@ docker run -it --rm \
     "${mnt_gitconf[@]}" \
     "${mnt_bash[@]}" \
     "${mnt_root[@]}" \
+    "${mnt_dkr_skt[@]}" \
     "${mnt_host[@]}" \
     -e "TERM=$TERM" \
+    -e "CONTAINER_NAME=$container_name" \
     --detach-keys="$detachkeys" \
     -w "$dkr_work_dir" \
     "$image" /bin/bash
