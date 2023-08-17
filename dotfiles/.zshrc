@@ -28,6 +28,7 @@ autoload -Uz add-zsh-hook
 # prompt
 setopt prompt_subst
 [[ ! -z "$SSH_CONNECTION" ]] && declare -r __prompt_std=$'%F{cyan}%n@%m %~%f'
+[[ ! -z "$CONTAINER_NAME" ]] && declare -r __prompt_std=$'%F{cyan}%n@%m %~%f'
 [[ ! -v __prompt_std ]] && declare -r __prompt_std=$'%F{cyan}%~%f'
 declare -r __prompt_date=$''
 declare -r __prompt_last=$'\n%F{cyan}>%f '

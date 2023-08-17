@@ -40,6 +40,7 @@ if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
 fi
 PS1=${PS1}'\[\033[33m\]'
 [[ ! -z "$SSH_CONNECTION" ]] && PS1=${PS1}'\u@\h '
+[[ ! -z "$CONTAINER_NAME" ]] && PS1=${PS1}'\u@\h '
 PS1=${PS1}'\w'
 PS1=${PS1}' \[\033[32m\]$(__prompt_git_branch)\[\033[33m\]'
 PS1=${PS1}'\n> '
