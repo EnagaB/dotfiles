@@ -18,13 +18,13 @@ function install_npm_global_packages() {
 
 function install_fonts_from_urls() {
     local fonts_dir="${HOME}/.fonts"
+    local font_url font_filename
     [ ! -d "$fonts_dir" ] && mkdir -p "$fonts_dir"
     cd "$fonts_dir"
-    local font_url
     for font_url in "$@"; do
         echo "install font: ${font_url}"
-        font_filename="$(basename "${install_font}")"
-        curl -L "$install_font" -o "$font_filename"
+        font_filename="$(basename "${font_url}")"
+        curl -L "$font_url" -o "$font_filename"
         if [ "${font_filename##*.}" = "zip" ]; then
             unzip -o "$font_filename"
         fi
