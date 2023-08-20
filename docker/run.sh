@@ -40,20 +40,25 @@ mnt_tmuxconf=(--mount "type=bind,src=${df_dir}/.tmux.conf,dst=${dkr_home}/.tmux.
 echo "mount tmux configs in read-only mode"
 
 gitconf="${HOME}/.gitconfig"
-dkr_gitconf="${dkr_home}/.gitconfig"
-mnt_gitconf=(--mount "type=bind,src=${gitconf},dst=${dkr_gitconf},readonly")
-echo "mount git global configs in read-only mode"
+mnt_gitconf=()
+if [ -f "$gitconf" ]; then
+    mnt_gitconf=(--mount "type=bind,src=${gitconf},dst=${dkr_home}/.gitconfig,readonly")
+    echo "mount git global configs in read-only mode"
+fi
 
 mnt_bash=(
-    --mount "type=bind,src=${df_dir}/.bashrc,dst=${dkr_home}/.bashrc"
-    --mount "type=bind,src=${df_dir}/.bash_profile,dst=${dkr_home}/.bash_profile"
-    --mount "type=bind,src=${df_dir}/.bashenv,dst=${dkr_home}/.bashenv"
-    --mount "type=bind,src=${df_dir}/.dir_colors,dst=${dkr_home}/.dir_colors"
-    --mount "type=bind,src=${df_dir}/.shrc.sh,dst=${dkr_home}/.shrc.sh"
-    --mount "type=bind,src=${df_dir}/.shenv.sh,dst=${dkr_home}/.shenv.sh"
-    --mount "type=bind,src=${HOME}/.bash_history,dst=${dkr_home}/.bash_history"
+    --mount "type=bind,src=${df_dir}/.bashrc,dst=${dkr_home}/.bashrc,readonly"
+    --mount "type=bind,src=${df_dir}/.bash_profile,dst=${dkr_home}/.bash_profile,readonly"
+    --mount "type=bind,src=${df_dir}/.bashenv,dst=${dkr_home}/.bashenv,readonly"
+    --mount "type=bind,src=${df_dir}/.dir_colors,dst=${dkr_home}/.dir_colors,readonly"
+    --mount "type=bind,src=${df_dir}/.shrc.sh,dst=${dkr_home}/.shrc.sh,readonly"
+    --mount "type=bind,src=${df_dir}/.shenv.sh,dst=${dkr_home}/.shenv.sh,readonly"
 )
-echo "mount bash dotfiles configs and history"
+bash_hist="${HOME}/.bash_history"
+if [ -f "$bash_hist" ]; then
+    mnt_bash+=(--mount "type=bind,src=${bash_hist},dst=${dkr_home}/.bash_history")
+fi
+echo "mount bash dotfiles configs in read-only mode"
 
 mnt_root=(--mount "type=bind,src=${root_dir},dst=${dkr_home}/dotfiles,readonly")
 echo "mount dotfiles repository in read-only mode"
@@ -80,7 +85,6 @@ done
 
 detachkeys="ctrl-\\,ctrl-\\"
 
-echo $container_name
 docker run -it --rm \
     --name "$container_name" \
     "${set_user[@]}" \
