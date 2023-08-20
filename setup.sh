@@ -106,9 +106,7 @@ echo "OS: $os_name"
 
 echo "Make directories."
 make_root_directory "${make_root_directories[@]}"
-for make_dir in "${make_directories[@]}"; do
-    mkdir -p "$make_dir"
-done
+mkdir -p "${make_directories[@]}"
 
 echo "Install packages"
 if "$run_all" && [ "$os_name" = "ubuntu" ]; then
