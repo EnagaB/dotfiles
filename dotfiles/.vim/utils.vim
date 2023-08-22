@@ -43,3 +43,13 @@ function! s:set_default_colorscheme()
   endif
   execute 'set background =' . g:CONFIG['background']
 endfunction
+
+" Return true if given name is install package name
+function! IsInstallPackageName(name)
+    for l:package in g:CONFIG['packages']
+        if l:package['name'] == a:name
+            return v:true
+        endif
+    endfor
+    return v:false
+endfunction

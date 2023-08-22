@@ -9,21 +9,19 @@ let s:packmgr_path = g:dotvim_dir . '/autoload/plug.vim'
 if ! filereadable(s:packmgr_path)
     call system('curl -fLo ' . s:packmgr_path
                 \ . ' --create-dirs '
-                \ . 'https://raw.githubusercontent.com/junegunn'
-                \ . '/vim-plug/master/plug.vim')
+                \ . 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim')
 endif
 
 " set packages
 call plug#begin(s:packmgr_pack_path)
-for _p in g:CONFIG['install_packages']
-    let _n = _p['name']
-    if has_key(_p, 'on_demand')
-        let _od = _p['on_demand']
-        if has_key(_od, 'command')
-            Plug _p['name'], {'on': _od['command']}
+for _package in g:CONFIG['packages']
+    if has_key(_package, 'on_demand')
+        let _package_ondemand = _package['on_demand']
+        if has_key(_package_ondemand, 'command')
+            Plug _package['name'], {'on': _package_ondemand['command']}
         endif
     else
-        Plug _p['name']
+        Plug _package['name']
     endif
 endfor
 call plug#end()

@@ -99,3 +99,4 @@ set foldmethod=marker
 set noshowmatch matchtime=1
 let g:matchparen_timeout        = 10
 let g:matchparen_insert_timeout = 10
+let g:tex_flavor='latex'

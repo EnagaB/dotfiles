@@ -138,7 +138,12 @@ execute 'nnoremap z<S-b> zb' . s:line_margin_x3 . '<C-e>'
 """ toggle comment out
 nmap <C-k>     :<C-u>ToggleCommentout<CR>
 """ tyru/caw.vim: toggle comment out
-if match(g:CONFIG['install_package_names'], 'tyru/caw.vim')
+if IsInstallPackageName('tyru/caw.vim')
     nmap <C-k> <Plug>(caw:hatpos:toggle)
     vmap <C-k> <Plug>(caw:hatpos:toggle)
+endif
+
+if g:CONFIG['auto_completion_condition']
+    inoremap <Tab> <Cmd>call pum#map#insert_relative(+1)<CR>
+    inoremap <S-Tab> <Cmd>call pum#map#insert_relative(-1)<CR>
 endif

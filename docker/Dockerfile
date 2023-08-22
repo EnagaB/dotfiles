@@ -5,7 +5,6 @@ RUN apt-get -o Acquire::Retries=10 update \
     && DEBIAN_FRONTEND=noninteractive apt-get -o Acquire::Retries=10 install -y --no-install-recommends \
         software-properties-common \
     && add-apt-repository ppa:jonathonf/vim \
-    && add-apt-repository ppa:neovim-ppa/stable \
     && apt-get -o Acquire::Retries=10 update \
     && DEBIAN_FRONTEND=noninteractive apt-get -o Acquire::Retries=10 install -y --no-install-recommends \
         tzdata \
@@ -13,7 +12,6 @@ RUN apt-get -o Acquire::Retries=10 update \
         nano \
         less \
         vim \
-        neovim \
         curl \
         wget \
         git \
@@ -54,3 +52,10 @@ ENV HOME="$docker_home"
 RUN curl -fsSL https://deno.land/x/install/install.sh | sh
 ENV DENO_INSTALL="${HOME}/.deno"
 ENV PATH="${DENO_INSTALL}/bin:${PATH}"
+
+# install latest neovim
+RUN cd /usr/local/src \
+    && curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage \
+    && chmod +x nvim.appimage \
+    && ./nvim.appimage --appimage-extract \
+    && ln -s /usr/local/src/squashfs-root/AppRun /usr/bin/nvim

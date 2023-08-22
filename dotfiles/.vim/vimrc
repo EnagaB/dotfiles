@@ -42,7 +42,8 @@ if g:CONFIG['term'] !~ '^xterm' && ! has('gui_running')
     let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
 
-execute 'source ' . g:dotvim_dir . '/package_manager.vim'
+execute 'source ' . g:dotvim_dir . '/packages/manager.vim'
+execute 'source ' . g:dotvim_dir . '/packages/configs_after.vim'
 execute 'source ' . g:dotvim_dir . '/misc.vim'
 execute 'source ' . g:dotvim_dir . '/tab_line.vim'
 execute 'source ' . g:dotvim_dir . '/status_line.vim'
