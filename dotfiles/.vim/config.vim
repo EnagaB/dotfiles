@@ -21,30 +21,25 @@ let g:CONFIG['packages'] = [
             \ {'name': 'gosukiwi/vim-atom-dark'},
             \ {'name': 'jacoborus/tender.vim'},
             \ {'name': 'raphamorim/lucario'},
+            \ {'name': 'EdenEast/nightfox.nvim'},
             \ {'name': 'arcticicestudio/nord-vim'},
             \ {'name': 'junegunn/goyo.vim',
             \  'on_demand': {'command': 'Goyo'}},
-            \ {'name': 'lambdalisue/fern.vim'},
             \ ]
-let g:CONFIG['auto_completion_packages'] = [
-            \ {'name': 'Shougo/ddc.vim'},
-            \ {'name': 'vim-denops/denops.vim'},
-            \ {'name': 'Shougo/pum.vim'},
-            \ {'name': 'Shougo/ddc-around'},
-            \ {'name': 'LumaKernel/ddc-file'},
-            \ {'name': 'Shougo/ddc-matcher_head'},
-            \ {'name': 'Shougo/ddc-sorter_rank'},
-            \ {'name': 'Shougo/ddc-converter_remove_overlap'},
-            \ {'name': 'mattn/vim-lsp-settings'},
-            \ {'name': 'prabirshrestha/vim-lsp'}
+let g:CONFIG["conditional_packages"] = [
+            \ {"condition": has('patch-8.1-2269') || has('nvim-0.4.4'),
+            \  "packages": [{'name': 'lambdalisue/fern.vim'}]}
             \ ]
-let g:CONFIG['auto_completion_condition']  = v:version > 901 || has('nvim-0.8.0')
-if g:CONFIG['auto_completion_condition']
-    let g:CONFIG['packages'] += g:CONFIG['auto_completion_packages']
-endif
+for s:cond_packages in g:CONFIG['conditional_packages']
+    if ! s:cond_packages['condition']
+        continue
+    endif
+    let g:CONFIG['packages'] += s:cond_packages['packages']
+endfor
 
 " colorscheme
-let g:CONFIG['colorscheme'] = 'lucario_noitalic'
+" let g:CONFIG['colorscheme'] = 'lucario_noitalic'
+let g:CONFIG['colorscheme'] = 'nightfox'
 let g:CONFIG['colorscheme_without_packs'] = 'desert'
 let g:CONFIG['background'] = 'dark'
 

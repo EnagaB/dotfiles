@@ -142,8 +142,3 @@ if IsInstallPackageName('tyru/caw.vim')
     nmap <C-k> <Plug>(caw:hatpos:toggle)
     vmap <C-k> <Plug>(caw:hatpos:toggle)
 endif
-
-if g:CONFIG['auto_completion_condition']
-    inoremap <Tab> <Cmd>call pum#map#insert_relative(+1)<CR>
-    inoremap <S-Tab> <Cmd>call pum#map#insert_relative(-1)<CR>
-endif
