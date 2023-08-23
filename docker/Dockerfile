@@ -54,8 +54,9 @@ ENV DENO_INSTALL="${HOME}/.deno"
 ENV PATH="${DENO_INSTALL}/bin:${PATH}"
 
 # install latest neovim
-RUN cd /usr/local/src \
-    && curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage \
+RUN mkdir -p /usr/src/neovim \
+    && cd /usr/src/neovim \
+    && curl -LO https://github.com/neovim/neovim/releases/download/v0.9.1/nvim.appimage \
     && chmod +x nvim.appimage \
     && ./nvim.appimage --appimage-extract \
-    && ln -s /usr/local/src/squashfs-root/AppRun /usr/bin/nvim
+    && ln -s /usr/src/neovim/squashfs-root/AppRun /usr/bin/nvim
