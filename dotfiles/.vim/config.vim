@@ -1,10 +1,9 @@
 let g:CONFIG = {}
-let g:CONFIG["min_required"] = 800
 
 " path
 let g:CONFIG["after_dir"] = g:dotvim_dir . '/after'
-let g:CONFIG['tmp_path'] = expand('$HOME/.local/tmp')
-let g:CONFIG['tplfile_path_without_ext'] = expand('$HOME/.template/tpl')
+let g:CONFIG['tmp_dir'] = expand('$HOME/.local/tmp')
+let g:CONFIG['template_dir'] = expand('$HOME/.template')
 
 " env
 let g:CONFIG['term'] = expand("$TERM")
@@ -21,25 +20,30 @@ let g:CONFIG['packages'] = [
             \ {'name': 'gosukiwi/vim-atom-dark'},
             \ {'name': 'jacoborus/tender.vim'},
             \ {'name': 'raphamorim/lucario'},
-            \ {'name': 'EdenEast/nightfox.nvim'},
             \ {'name': 'arcticicestudio/nord-vim'},
             \ {'name': 'junegunn/goyo.vim',
             \  'on_demand': {'command': 'Goyo'}},
             \ ]
-let g:CONFIG["conditional_packages"] = [
-            \ {"condition": has('patch-8.1-2269') || has('nvim-0.4.4'),
-            \  "packages": [{'name': 'lambdalisue/fern.vim'}]}
-            \ ]
-for s:cond_packages in g:CONFIG['conditional_packages']
-    if ! s:cond_packages['condition']
+
+let g:CONFIG["cond_packages"] = {
+            \ 'fern.vim': {'condition': has('patch-8.1.2269') || has('nvim-0.4.4'),
+            \              'package': {'name': 'lambdalisue/fern.vim'}},
+            \ 'nightfox.nvim': {'condition': (has('patch-9.0.0') && has('lua')) || has('nvim-0.8.0'),
+            \                   'package': {'name': 'EdenEast/nightfox.nvim'}}
+            \ }
+for [s:package_key, s:package] in items(g:CONFIG['cond_packages'])
+    if ! s:package['condition']
         continue
     endif
-    let g:CONFIG['packages'] += s:cond_packages['packages']
+    let g:CONFIG['packages'] += [s:package['package']]
 endfor
 
 " colorscheme
-" let g:CONFIG['colorscheme'] = 'lucario_noitalic'
-let g:CONFIG['colorscheme'] = 'nightfox'
+if g:CONFIG['cond_packages']['nightfox.nvim']['condition']
+    let g:CONFIG['colorscheme'] = 'nordfox'
+else
+    let g:CONFIG['colorscheme'] = 'lucario_noitalic'
+endif
 let g:CONFIG['colorscheme_without_packs'] = 'desert'
 let g:CONFIG['background'] = 'dark'
 
@@ -50,8 +54,3 @@ highlight link User3 DiffText
 highlight link User4 DiffChange
 highlight link User5 IncSearch
 highlight link User6 StatusLineNC
-"
-" keybinding
-let g:CONFIG['kbd_macro_register'] = 'y'
-let g:CONFIG['hilight_word_register'] = 'z'
-let g:CONFIG['line_margin'] = 2

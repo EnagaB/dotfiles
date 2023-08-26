@@ -24,44 +24,46 @@ echo "container name: $container_name"
 dkr_home=/dkrhome
 echo "docker home: $dkr_home"
 
+set_user=(
+    "-u=$(id -u):$(id -g)"
+    -v /etc/group:/etc/group:ro
+    -v /etc/passwd:/etc/passwd:ro
+)
+for group_id in $(id -G "$USER"); do
+    set_user+=("--group-add" "$group_id")
+done
+echo "user: $USER"
+
 dkr_work_dir="/work"
 mnt_work=(--mount "type=bind,src=${work_dir},dst=${dkr_work_dir}")
 echo "mount work: $work_dir -> $dkr_work_dir"
 
-mnt_vim=(
-    --mount "type=bind,src=${df_dir}/.vim,dst=${dkr_home}/.vim"
-    --mount "type=bind,src=${df_dir}/.vim,dst=${dkr_home}/.config/nvim"
-)
-echo "mount vim configs"
+mnt_root=(--mount "type=bind,src=${root_dir},dst=${dkr_home}/dotfiles,readonly")
+echo "mount dotfiles repository in read-only mode"
 
-tmuxconf="${root_dir}/etc/.tmux.conf"
-dkr_tmuxconf="${dkr_home}/.tmux.conf"
-mnt_tmuxconf=(--mount "type=bind,src=${df_dir}/.tmux.conf,dst=${dkr_home}/.tmux.conf,readonly")
-echo "mount tmux configs in read-only mode"
-
-gitconf="${HOME}/.gitconfig"
-mnt_gitconf=()
-if [ -f "$gitconf" ]; then
-    mnt_gitconf=(--mount "type=bind,src=${gitconf},dst=${dkr_home}/.gitconfig,readonly")
-    echo "mount git global configs in read-only mode"
-fi
-
-mnt_bash=(
+mnt_dotfiles=(
     --mount "type=bind,src=${df_dir}/.bashrc,dst=${dkr_home}/.bashrc,readonly"
     --mount "type=bind,src=${df_dir}/.bash_profile,dst=${dkr_home}/.bash_profile,readonly"
     --mount "type=bind,src=${df_dir}/.bashenv,dst=${dkr_home}/.bashenv,readonly"
     --mount "type=bind,src=${df_dir}/.dir_colors,dst=${dkr_home}/.dir_colors,readonly"
     --mount "type=bind,src=${df_dir}/.shrc.sh,dst=${dkr_home}/.shrc.sh,readonly"
     --mount "type=bind,src=${df_dir}/.shenv.sh,dst=${dkr_home}/.shenv.sh,readonly"
+    --mount "type=bind,src=${df_dir}/.template,dst=${dkr_home}/.template,readonly"
+    --mount "type=bind,src=${df_dir}/.tmux.conf,dst=${dkr_home}/.tmux.conf,readonly"
+    --mount "type=bind,src=${df_dir}/.vim,dst=${dkr_home}/.vim"
+    --mount "type=bind,src=${df_dir}/.vim,dst=${dkr_home}/.config/nvim"
 )
+echo "mount dotfiles"
+
 bash_hist="${HOME}/.bash_history"
 if [ -f "$bash_hist" ]; then
-    mnt_bash+=(--mount "type=bind,src=${bash_hist},dst=${dkr_home}/.bash_history")
+    mnt_dotfiles+=(--mount "type=bind,src=${bash_hist},dst=${dkr_home}/.bash_history")
 fi
-echo "mount bash dotfiles configs in read-only mode"
 
-mnt_root=(--mount "type=bind,src=${root_dir},dst=${dkr_home}/dotfiles,readonly")
-echo "mount dotfiles repository in read-only mode"
+gitconf="${HOME}/.gitconfig"
+if [ -f "$gitconf" ]; then
+    mnt_dotfiles+=(--mount "type=bind,src=${gitconf},dst=${dkr_home}/.gitconfig,readonly")
+fi
 
 dkr_skt=/var/run/docker.sock
 mnt_dkr_skt=()
@@ -74,26 +76,15 @@ fi
 # echo "mount host in read-only mode"
 mnt_host=()
 
-set_user=(
-    "-u=$(id -u):$(id -g)"
-    -v /etc/group:/etc/group:ro
-    -v /etc/passwd:/etc/passwd:ro
-)
-for group_id in $(id -G "$USER"); do
-    set_user+=("--group-add" "$group_id")
-done
-
 detachkeys="ctrl-\\,ctrl-\\"
+echo "detach key: $detachkeys"
 
 docker run -it --rm \
     --name "$container_name" \
     "${set_user[@]}" \
     "${mnt_work[@]}" \
-    "${mnt_vim[@]}" \
-    "${mnt_tmuxconf[@]}" \
-    "${mnt_gitconf[@]}" \
-    "${mnt_bash[@]}" \
     "${mnt_root[@]}" \
+    "${mnt_dotfiles[@]}" \
     "${mnt_dkr_skt[@]}" \
     "${mnt_host[@]}" \
     -e "TERM=$TERM" \

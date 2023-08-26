@@ -1,37 +1,7 @@
-" move in normal mode
-noremap j gj
-noremap k gk
-" insert and command modes like emacs
-" char
-noremap! <C-f> <right>
-noremap! <C-b> <left>
-" line
-inoremap <C-a> <C-o>0
-inoremap <C-e> <C-o>$
-cnoremap <C-a> <C-b>
-cnoremap <C-e> <C-e>
-" backspace, delete
-noremap! <C-h> <bs>
-noremap! <C-d> <del>
-" paste
-inoremap <C-y> <C-o>p
-cnoremap <C-y> <C-r>"
-" insert original key
-noremap! <C-q> <C-v>
-" unavailable
-nnoremap K <Nop>
-nnoremap ZQ <Nop>
-nnoremap ZZ <Nop>
-noremap  za <Nop>
-noremap  zA <Nop>
-noremap  zr <Nop>
-noremap  zm <Nop>
-vnoremap u <Nop>
-vnoremap U <Nop>
-
-if v:version < g:CONFIG["min_required"]
-    finish
-endif
+" parameters
+let s:kbd_macro_register = 'y'
+let g:CONFIG['hilight_word_register'] = 'z'
+let s:line_margin = 2
 
 " load
 let s:script_dir = expand("<sfile>:p:h")
@@ -119,8 +89,8 @@ noremap <Plug>(e:mark)<S-x> :<C-u>delmarks!<CR>
 noremap Y y$
 
 " toggle start/end record keyboard macro and call the keyboard macro
-execute 'noremap <S-q> :normal! q' . g:CONFIG['kbd_macro_register'] . '<CR>'
-execute 'noremap <C-q> @' . g:CONFIG['kbd_macro_register']
+execute 'noremap <S-q> :normal! q' . s:kbd_macro_register . '<CR>'
+execute 'noremap <C-q> @' . s:kbd_macro_register
 
 " no hilight
 noremap <C-n> :nohlsearch<CR>
@@ -129,16 +99,13 @@ noremap <C-n> :nohlsearch<CR>
 noremap x "_x
 
 " zt/zb insert margin
-let s:line_margin_x3 = g:CONFIG['line_margin'] * 3
-execute 'nnoremap zt zt' . g:CONFIG['line_margin'] . '<C-y>'
-execute 'nnoremap zb zb' . g:CONFIG['line_margin'] . '<C-e>'
-execute 'nnoremap z<S-t> zt' . s:line_margin_x3 . '<C-y>'
-execute 'nnoremap z<S-b> zb' . s:line_margin_x3 . '<C-e>'
+execute 'nnoremap zt zt' . s:line_margin . '<C-y>'
+execute 'nnoremap zb zb' . s:line_margin . '<C-e>'
 
 """ toggle comment out
 nmap <C-k>     :<C-u>ToggleCommentout<CR>
 """ tyru/caw.vim: toggle comment out
-if IsInstallPackageName('tyru/caw.vim')
+if IsInstallPackageName('caw.vim')
     nmap <C-k> <Plug>(caw:hatpos:toggle)
     vmap <C-k> <Plug>(caw:hatpos:toggle)
 endif

@@ -8,7 +8,6 @@ command! ShowSyntaxInfo call <SID>show_syntax_info()
 command! ShowColors source $VIMRUNTIME/syntax/colortest.vim
 command! ShowHilightgroup verbose highlight
 " edit
-command! -nargs=1 InsertFileOnlyOnce call <SID>insert_file_only_once(<f-args>)
 command! RegisterWord
             \ execute 'let @' . g:CONFIG['hilight_word_register'] . '=expand("<cword>")'
 command! HighlightRegisterWord
@@ -35,13 +34,6 @@ command! ShowFilepath echo expand("%:p")
 command! Pwf ShowFilepath
 command! ReloadVimrc source $MYVIMRC
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" util "
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! Show_filepath()
-    echo expand("%:p")
-endfunction
-
 """ echo highlight
 " error
 function! Error_msg(msg)
@@ -63,6 +55,7 @@ function! Getchar()
     endif
     return l:c
 endfunction
+
 """ modified append(): append string based on the cursor position
 " a:line  = 0 => insert string at the cursor
 "        >= 1 => append line at cursor-line + a:line and insert string
@@ -78,6 +71,7 @@ function! Append(line, string)
     endif
     return a:line+1
 endfunction
+
 """ string list
 " get/match the list of strings as base len(list) num (1-3 digits)
 " recommand that a:list[0]='0'
@@ -312,15 +306,6 @@ function! s:show_syntax_info()
 endfunction
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" init insert file
-function! s:insert_file_only_once(file)
-    if exists('b:did_insert_file_only_once')
-        return
-    endif
-    let b:did_insert_file_only_once = 1
-    execute ':1r ' . a:file
-    execute ':1s/\n//'
-endfunction
 """ toggle comment out
 " not visual mode: mod in visual mode, getpos("'<") ~ getpos("'>")
 function! s:_old_toggle_comment_out()

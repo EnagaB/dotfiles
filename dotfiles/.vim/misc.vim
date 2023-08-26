@@ -20,13 +20,13 @@ augroup end
 " insert template file
 augroup insert_template
     autocmd!
-    let s:tplfile_list = split(glob(g:CONFIG['tplfile_path_without_ext'] . '.*'), "\n")
-    let s:len_tplfile_path_without_ext = strlen(g:CONFIG['tplfile_path_without_ext'])
-    call sort(s:tplfile_list, "CompareStringLength")
-    call reverse(s:tplfile_list)
-    for ff in s:tplfile_list
-        let s:ext = ff[s:len_tplfile_path_without_ext:]
-        execute 'autocmd BufNewFile *' . s:ext . ' InsertFileOnlyOnce ' . ff
+    let s:tplfiles = split(glob(g:CONFIG['template_dir'] . '/*'), "\n")
+    call sort(s:tplfiles, "CompareStringLength")
+    call reverse(s:tplfiles)
+    for s:tplfile in s:tplfiles
+        let s:tplfile_name = split(s:tplfile, '/')[-1]
+        let s:tplfile_ext = join(split(s:tplfile_name, '\.')[1:], '.')
+        execute 'autocmd BufNewFile *' . s:tplfile_ext . ' InsertTemplateFile ' . s:tplfile
     endfor
 augroup end
 
@@ -55,10 +55,10 @@ set noswapfile
 set noundofile
 set viewoptions=
 set viminfo=
-execute 'set directory=' . g:CONFIG['tmp_path']
-execute 'set viewdir=' . g:CONFIG['tmp_path']
-execute 'set backupdir=' . g:CONFIG['tmp_path']
-execute 'set undodir=' . g:CONFIG['tmp_path']
+execute 'set directory=' . g:CONFIG['tmp_dir']
+execute 'set viewdir=' . g:CONFIG['tmp_dir']
+execute 'set backupdir=' . g:CONFIG['tmp_dir']
+execute 'set undodir=' . g:CONFIG['tmp_dir']
 
 " clipboard
 set clipboard&

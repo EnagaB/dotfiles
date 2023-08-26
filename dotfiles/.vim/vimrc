@@ -1,6 +1,26 @@
 if !1
     finish
 endif
+noremap j gj
+noremap k gk
+noremap! <C-f> <right>
+noremap! <C-b> <left>
+inoremap <C-a> <C-o>0
+inoremap <C-e> <C-o>$
+cnoremap <C-a> <C-b>
+cnoremap <C-e> <C-e>
+noremap! <C-h> <bs>
+noremap! <C-d> <del>
+inoremap <C-y> <C-o>p
+cnoremap <C-y> <C-r>"
+noremap! <C-q> <C-v>
+nnoremap K <Nop>
+nnoremap ZQ <Nop>
+nnoremap ZZ <Nop>
+
+if v:version < 800
+    finish
+endif
 
 " directory path
 let g:dotvim_dir = expand("<sfile>:p:h")
@@ -13,11 +33,7 @@ endif
 " load basic
 execute "source " . g:dotvim_dir . "/config.vim"
 execute "source " . g:dotvim_dir . "/utils.vim"
-execute 'source ' . g:dotvim_dir . '/keybindings/keybindings.vim'
-
-if v:version < g:CONFIG["min_required"]
-    finish
-endif
+execute 'source ' . g:dotvim_dir . '/keybindings/main.vim'
 
 " set path
 set runtimepath&
