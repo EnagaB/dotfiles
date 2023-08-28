@@ -1,6 +1,5 @@
-autoload*
+/autoload*
 package
-pack
 plugged
 tmp
 .netrwhist

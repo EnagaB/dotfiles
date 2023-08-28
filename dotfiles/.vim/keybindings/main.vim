@@ -53,14 +53,9 @@ map S <Plug>(e:buffer)
 noremap <Plug>(e:buffer)S :<C-u>bnext<CR>
 noremap <Plug>(e:buffer)n :<C-u>bnext<CR>
 noremap <Plug>(e:buffer)p :<C-u>bprev<CR>
-noremap <Plug>(e:buffer)N :<C-u>Buffers<CR>:<C-u>Buffer<Space>
-noremap <Plug>(e:buffer)l :<C-u>Buffers<CR>
+noremap <Plug>(e:buffer)N :<C-u>buffers<CR>:<C-u>buffer<Space>
+noremap <Plug>(e:buffer)l :<C-u>buffers<CR>
 noremap <Plug>(e:buffer)x :<C-u>Bclose<CR>
-noremap <Plug>(e:buffer)o :<C-u>e<Space>
-noremap <Plug>(e:buffer)O :<C-u>e<Space>~/
-for s:ii in range(1,9)
-    execute 'noremap <Plug>(e:buffer)'.s:ii.' :<C-u>Buffer '.s:ii.'<CR>'
-endfor
 
 " tab
 map t <Plug>(e:tab)
@@ -77,13 +72,14 @@ endfor
 
 " mark prefix
 map m <Plug>(e:mark)
-noremap <Plug>(e:mark)m     :<C-u>SetMarkAuto<CR>
-noremap <Plug>(e:mark)<S-m> :<C-u>SetMarkAuto!<CR>
-noremap <Plug>(e:mark)n     ]`
-noremap <Plug>(e:mark)p     [`
-noremap <Plug>(e:mark)l     :<C-u>marks<CR>
-noremap <Plug>(e:mark)x     :<C-u>DeleteMark<CR>
-noremap <Plug>(e:mark)<S-x> :<C-u>delmarks!<CR>
+noremap <Plug>(e:mark)m :<C-u>SetMarkAuto<CR>
+noremap <Plug>(e:mark)M :<C-u>SetMarkAuto!<CR>
+noremap <Plug>(e:mark)n ]`
+noremap <Plug>(e:mark)p [`
+noremap <Plug>(e:mark)N :<C-u>MoveToMark<CR>
+noremap <Plug>(e:mark)l :<C-u>marks<CR>
+noremap <Plug>(e:mark)x :<C-u>DeleteMark<CR>
+noremap <Plug>(e:mark)X :<C-u>delmarks!<CR>
 
 " yank(copy) from cursor to end-of-line (crsp D)
 noremap Y y$
@@ -105,7 +101,7 @@ execute 'nnoremap zb zb' . s:line_margin . '<C-e>'
 """ toggle comment out
 nmap <C-k>     :<C-u>ToggleCommentout<CR>
 """ tyru/caw.vim: toggle comment out
-if IsInstallPackageName('caw.vim')
+if IsInstalledPackageName('caw.vim')
     nmap <C-k> <Plug>(caw:hatpos:toggle)
     vmap <C-k> <Plug>(caw:hatpos:toggle)
 endif

@@ -33,7 +33,6 @@ endif
 " load basic
 execute "source " . g:dotvim_dir . "/config.vim"
 execute "source " . g:dotvim_dir . "/utils.vim"
-execute 'source ' . g:dotvim_dir . '/keybindings/main.vim'
 
 " set path
 set runtimepath&
@@ -61,9 +60,10 @@ endif
 execute 'source ' . g:dotvim_dir . '/packages/configs_before.vim'
 execute 'source ' . g:dotvim_dir . '/packages/manager.vim'
 execute 'source ' . g:dotvim_dir . '/packages/configs_after.vim'
-execute 'source ' . g:dotvim_dir . '/misc.vim'
+execute 'source ' . g:dotvim_dir . '/keybindings/main.vim'
 execute 'source ' . g:dotvim_dir . '/tab_line.vim'
 execute 'source ' . g:dotvim_dir . '/status_line.vim'
+execute 'source ' . g:dotvim_dir . '/misc.vim'
 
 if has('gui_running')
     execute 'source ' . g:dotvim_dir . '/gui.vim'

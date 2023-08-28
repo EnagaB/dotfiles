@@ -44,14 +44,16 @@ function! s:set_default_colorscheme()
     execute 'set background =' . g:CONFIG['background']
 endfunction
 
-" Return true if given name is install package name
-function! IsInstallPackageName(name, installed=v:true)
-    if a:installed
-        if match(&runtimepath, a:name) != -1
-            return v:true
-        endif
-        return v:false
+" Return true if given name is installed package name
+function! IsInstalledPackageName(name)
+    if match(&runtimepath, a:name) != -1
+        return v:true
     endif
+    return v:false
+endfunction
+
+" Return true if given name is install package name
+function! IsInstallPackageName(name)
     for l:package in g:CONFIG['packages']
         if l:package['name'].split("/")[-1] == a:name
             return v:true

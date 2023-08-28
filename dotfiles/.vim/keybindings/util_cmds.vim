@@ -1,12 +1,3 @@
-" buffer
-command! -bang -complete=buffer -nargs=* Bclose
-            \ call <SID>close_buffer_without_closing_pane(<q-bang>, <q-args>)
-command! Buffers call <SID>Buffers()
-command! -nargs=1 Buffer call <SID>Buffer(<f-args>)
-" syntax
-command! ShowSyntaxInfo call <SID>show_syntax_info()
-command! ShowColors source $VIMRUNTIME/syntax/colortest.vim
-command! ShowHilightgroup verbose highlight
 " edit
 command! RegisterWord
             \ execute 'let @' . g:CONFIG['hilight_word_register'] . '=expand("<cword>")'
@@ -47,16 +38,8 @@ function! Warning_msg(msg)
     echomsg a:msg
     echohl None
 endfunction
-""" get a char
-function! Getchar()
-    let l:c=getchar()
-    if l:c =~ '^\d\+$'
-        let l:c=nr2char(l:c)
-    endif
-    return l:c
-endfunction
 
-""" modified append(): append string based on the cursor position
+" modified append(): append string based on the cursor position
 " a:line  = 0 => insert string at the cursor
 "        >= 1 => append line at cursor-line + a:line and insert string
 " if you insert lines, :let l:ii=0 | let l:ii=FUNC(l:ii,string) | ...
@@ -72,69 +55,11 @@ function! Append(line, string)
     return a:line+1
 endfunction
 
-""" string list
-" get/match the list of strings as base len(list) num (1-3 digits)
-" recommand that a:list[0]='0'
-function! GetStrlist(list,num)
-    let l:str=''
-    let l:len=len(a:list)
-    let l:l1=l:len      | let l:l2=l:len*l:len       | let l:l3=l:l2*l:len
-    let l:d1=a:num%l:l1 | let l:d2=(a:num/l:l1)%l:l1 | let l:d3=a:num/l:l2
-    if a:num < l:l1
-        let l:str=a:list[l:d1]
-    elseif a:num < l:l2
-        let l:str=a:list[l:d2].a:list[l:d1]
-    elseif a:num < l:l3
-        let l:str=a:list[l:d3].a:list[l:d2].a:list[l:d1]
-    else
-        echon 'err: large-num'
-        return
-    endif
-    return l:str
-endfunction
-function! MatchStrlist(list,str)
-    let l:num=-1
-    let l:str=''
-    let l:len=len(a:list)
-    let l:l1=l:len      | let l:l2=l:len*l:len       | let l:l3=l:l2*l:len
-    let l:ii=0
-    while l:ii < l:l3
-        let l:d1=l:ii%l:l1 | let l:d2=(l:ii/l:l1)%l:l1 | let l:d3=l:ii/l:l2
-        if l:ii < l:l1
-            let l:str=a:list[l:d1]
-        elseif l:ii < l:l2
-            let l:str=a:list[l:d2].a:list[l:d1]
-        elseif l:ii < l:l3
-            let l:str=a:list[l:d3].a:list[l:d2].a:list[l:d1]
-        endif
-        if l:str == a:str
-            let l:num=l:ii
-            break
-        endif
-        let l:ii=l:ii+1
-    endwhile
-    return l:num
-endfunction
-""" correct string-length
-function! CorrStrlength(str,len)
-    let l:len=len(a:str)
-    let l:dlen=a:len-l:len
-    if l:dlen <= 0
-        return a:str
-    endif
-    let l:str=repeat(' ',l:dlen)
-    " let l:str=''
-    " let l:ii=1
-    " while l:ii <= l:dlen
-    "   let l:str=l:str.' '
-    "   let l:ii=l:ii+1
-    " endwhile
-    let l:str=l:str.a:str
-    return l:str
-endfunction
-" save and restore mapping
+" Save and restore mappings
 " https://vi.stackexchange.com/questions/7734/how-to-save-and-restore-a-mapping
-function! Save_mappings(keys, mode, global) abort
+" saved_maps = SaveMappings(['a', 'b'], 'n', v:false)
+" call RestoreMappings(saved_maps)
+function! SaveMappings(keys, mode, global) abort
     let mappings = {}
     if a:global
         for l:key in a:keys
@@ -144,11 +69,11 @@ function! Save_mappings(keys, mode, global) abort
             let mappings[l:key] = !empty(map_info)
                         \     ? map_info
                         \     : {
-                            \ 'unmapped' : 1,
-                            \ 'buffer'   : 0,
-                            \ 'lhs'      : l:key,
-                            \ 'mode'     : a:mode,
-                            \ }
+                        \ 'unmapped' : 1,
+                        \ 'buffer'   : 0,
+                        \ 'lhs'      : l:key,
+                        \ 'mode'     : a:mode,
+                        \ }
             call Restore_mappings({l:key : buf_local_map})
         endfor
     else
@@ -157,16 +82,16 @@ function! Save_mappings(keys, mode, global) abort
             let mappings[l:key] = !empty(map_info)
                         \     ? map_info
                         \     : {
-                            \ 'unmapped' : 1,
-                            \ 'buffer'   : 1,
-                            \ 'lhs'      : l:key,
-                            \ 'mode'     : a:mode,
-                            \ }
+                        \ 'unmapped' : 1,
+                        \ 'buffer'   : 1,
+                        \ 'lhs'      : l:key,
+                        \ 'mode'     : a:mode,
+                        \ }
         endfor
     endif
     return mappings
 endfunction
-function! Restore_mappings(mappings) abort
+function! RestoreMappings(mappings) abort
     for mapping in values(a:mappings)
         if !has_key(mapping, 'unmapped') && !empty(mapping)
             exe     mapping.mode
@@ -185,126 +110,6 @@ function! Restore_mappings(mappings) abort
         endif
     endfor
 endfunction
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" buffer "
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" buffer functions
-" let s:bufcharlist = Numlist() + Lowerlist()
-let s:bufcharlist = map(range(char2nr('0'),char2nr('9')),'nr2char(v:val)')
-            \             + map(range(char2nr('a'),char2nr('z')),'nr2char(v:val)')
-" close buffer without closing pane
-function! s:close_buffer_without_closing_pane(bang, buffer)
-    if empty(a:buffer)
-        let btarget = bufnr('%')
-    elseif a:buffer =~ '^\d\+$'
-        let btarget = bufnr(str2nr(a:buffer))
-    else
-        let btarget = bufnr(a:buffer)
-    endif
-    if btarget < 0 | call Warning_msg('No matching buffer for ' . a:buffer) | return | endif
-    if empty(a:bang) && getbufvar(btarget, '&modified')
-        call Warning_msg('No write since last change for buffer '.btarget.' (use :Bclose!)')
-        return
-    endif
-    let wnums = filter(range(1, winnr('$')), 'winbufnr(v:val) == btarget')
-    let wcurrent = winnr()
-    for w in wnums
-        execute w.'wincmd w'
-        let prevbuf = bufnr('#')
-        if prevbuf > 0 && buflisted(prevbuf) && prevbuf != btarget
-            buffer #
-        else
-            bprevious
-        endif
-        if btarget == bufnr('%')
-            let blisted = filter(range(1, bufnr('$')), 'buflisted(v:val) && v:val != btarget')
-            let bhidden = filter(copy(blisted), 'bufwinnr(v:val) < 0')
-            let bjump = (bhidden + blisted + [-1])[0]
-            if bjump > 0
-                execute 'buffer '.bjump
-            else
-                execute 'enew'.a:bang
-            endif
-        endif
-    endfor
-    execute 'bdelete'.a:bang.' '.btarget
-    execute wcurrent.'wincmd w'
-endfunction
-" modified :buffers (:ls)
-" set new buffer-number :buffers
-function! s:Buffers()
-    let l:buffer_info = getbufinfo({'buflisted': 1})
-    let l:num_buffer = len(l:buffer_info)
-    let l:current_buffer_num = bufnr("")
-    let l:ii = 0
-    echo 'key : buffer-name'
-    while l:ii < l:num_buffer
-        echo CorrStrlength(GetStrlist(s:bufcharlist, l:ii+1), 3)
-        if l:current_buffer_num == l:buffer_info[l:ii]["bufnr"]
-            echon ' % '
-        else
-            echon ' : '
-        endif
-        echon l:buffer_info[l:ii]["name"]
-        let l:ii = l:ii + 1
-    endwhile
-endfunction
-" modified :buffer
-" use buffer-number by function s:Buffers()
-function! s:Buffer(key)
-    let l:bufinfo = getbufinfo({'buflisted':1})
-    let l:jj = MatchStrlist(s:bufcharlist, a:key)
-    if l:jj <= 0 || l:jj > len(l:bufinfo)
-        return
-    endif
-    execute 'buffer ' . l:bufinfo[l:jj-1]['bufnr']
-endfunction
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" syntax "
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" show syntax information under cursor
-" cohama, http://cohama.hateblo.jp/entry/2013/08/11/020849
-function! s:show_syntax_id(transparent)
-    let synid = synID(line("."), col("."), 1)
-    if a:transparent
-        return synIDtrans(synid)
-    else
-        return synid
-    endif
-endfunction
-function! s:show_syntax_attr(synid)
-    let name = synIDattr(a:synid, "name")
-    let ctermfg = synIDattr(a:synid, "fg", "cterm")
-    let ctermbg = synIDattr(a:synid, "bg", "cterm")
-    let guifg = synIDattr(a:synid, "fg", "gui")
-    let guibg = synIDattr(a:synid, "bg", "gui")
-    return {
-                \ "name": name,
-                \ "ctermfg": ctermfg,
-                \ "ctermbg": ctermbg,
-                \ "guifg": guifg,
-                \ "guibg": guibg}
-endfunction
-function! s:show_syntax_info()
-    let baseSyn = s:show_syntax_attr(s:show_syntax_id(0))
-    echo "name: " . baseSyn.name .
-                \ " ctermfg: " . baseSyn.ctermfg .
-                \ " ctermbg: " . baseSyn.ctermbg .
-                \ " guifg: " . baseSyn.guifg .
-                \ " guibg: " . baseSyn.guibg
-    let linkedSyn = s:show_syntax_attr(s:show_syntax_id(1))
-    echo "link to"
-    echo "name: " . linkedSyn.name .
-                \ " ctermfg: " . linkedSyn.ctermfg .
-                \ " ctermbg: " . linkedSyn.ctermbg .
-                \ " guifg: " . linkedSyn.guifg .
-                \ " guibg: " . linkedSyn.guibg
-endfunction
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """ toggle comment out
 " not visual mode: mod in visual mode, getpos("'<") ~ getpos("'>")
