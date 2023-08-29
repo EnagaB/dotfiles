@@ -1,9 +1,44 @@
 " parameters
 let s:kbd_macro_register = 'y'
-let g:CONFIG['hilight_word_register'] = 'z'
+let s:hilight_word_register = 'z'
 let s:line_margin = 2
 
-" load
+" commmand and functions
+command! RegisterWord
+            \ execute 'let @' . s:hilight_word_register . '=expand("<cword>")'
+command! HighlightRegisterWord
+            \ set nohlsearch |
+            \ let @/='\<' . eval('@' . s:hilight_word_register) . '\>' | set hlsearch
+command! HighlightRegister
+            \ set nohlsearch |
+            \ let @/=eval('@' . s:hilight_word_register) | set hlsearch
+command! ShowFilepath echo expand("%:p")
+command! Pwf ShowFilepath
+command! ReloadVimrc source $MYVIMRC
+
+command! ToggleResizePanes call <SID>toggle_resize_panes()
+function! s:toggle_resize_panes()
+    if !exists('b:toggleMaxPane')
+        let b:toggleMaxPane=0
+    endif
+    if b:toggleMaxPane == 0
+        execute "normal! \<C-w>_\<C-w>\<Bar>"
+        let b:toggleMaxPane=1
+    else
+        execute "normal! \<C-w>="
+        let b:toggleMaxPane=0
+    endif
+endfunction
+
+command! OpenFiler call <SID>OpenFiler()
+function s:OpenFiler()
+    if exists(":Fern")
+        Fern .
+    else
+        edit .
+    endif
+endfunction
+
 let s:script_dir = expand("<sfile>:p:h")
 call SourceGlobpattern(s:script_dir . "/*_cmds.vim")
 
@@ -98,9 +133,8 @@ noremap x "_x
 execute 'nnoremap zt zt' . s:line_margin . '<C-y>'
 execute 'nnoremap zb zb' . s:line_margin . '<C-e>'
 
-""" toggle comment out
-nmap <C-k>     :<C-u>ToggleCommentout<CR>
-""" tyru/caw.vim: toggle comment out
+" toggle comment out
+" noremap <C-k> :<C-u>ToggleCommentout<CR>
 if IsInstalledPackageName('caw.vim')
     nmap <C-k> <Plug>(caw:hatpos:toggle)
     vmap <C-k> <Plug>(caw:hatpos:toggle)

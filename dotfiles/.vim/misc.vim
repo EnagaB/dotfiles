@@ -1,3 +1,12 @@
+" color
+if has('termguicolors')
+    set termguicolors
+endif
+if g:CONFIG['term'] !~ '^xterm' && ! has('gui_running')
+    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+endif
+
 " reset registers
 if has('vim_starting')
     for s:reg in map(range(char2nr('a'),char2nr('z')),'nr2char(v:val)')
@@ -66,14 +75,8 @@ if has('unnamedplus')
     set clipboard^=unnamedplus
 endif
 
-" list
-set nolist
-set listchars=
-set listchars+=tab:>-
-set listchars+=trail:-
-set listchars+=eol:$
-set listchars+=extends:>
-set listchars+=precedes:<
+set list
+set listchars=tab:>.,trail:-
 
 " indentkeys
 set indentkeys&

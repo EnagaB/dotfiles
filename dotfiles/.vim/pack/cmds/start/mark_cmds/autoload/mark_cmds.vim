@@ -1,21 +1,21 @@
 let s:marklist = map(range(char2nr('a'),char2nr('z')),'nr2char(v:val)')
 
 function! mark_cmds#set_mark_auto(bang)
-    if !exists('b:markpos')
-        let b:markpos=-1
+    if !exists('b:mark_cmds_markpos')
+        let b:mark_cmds_markpos=-1
     endif
     if empty(a:bang)
-        let b:markpos=(b:markpos + 1) % len(s:marklist)
+        let b:mark_cmds_markpos=(b:mark_cmds_markpos + 1) % len(s:marklist)
     else
         echon 'next mark: '
         let l:mark=s:get_char()
         echon l:mark.', '
         let l:ml=match(s:marklist,l:mark)
         if l:ml == -1 | echon 'err: not match marklist' | return | endif
-        let b:markpos=l:ml
+        let b:mark_cmds_markpos=l:ml
     endif
-    execute 'mark '.s:marklist[b:markpos]
-    echon 'marked '.s:marklist[b:markpos]
+    execute 'mark '.s:marklist[b:mark_cmds_markpos]
+    echon 'marked '.s:marklist[b:mark_cmds_markpos]
 endfunction
 
 function! mark_cmds#delete_mark()

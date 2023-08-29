@@ -1,7 +1,6 @@
 let g:CONFIG = {}
 
 " path
-let g:CONFIG["after_dir"] = g:dotvim_dir . '/after'
 let g:CONFIG['tmp_dir'] = expand('$HOME/.local/tmp')
 let g:CONFIG['template_dir'] = expand('$HOME/.template')
 

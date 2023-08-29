@@ -24,15 +24,26 @@ endif
 
 " directory path
 let g:dotvim_dir = expand("<sfile>:p:h")
+let g:after_dir = g:dotvim_dir . '/after'
 
 " basic settings
 if has('vim_starting')
     set encoding=utf-8
 endif
 
+command! -nargs=1 SourceVimFile call <SID>source_vimfile(<args>)
+function! s:source_vimfile(path)
+    try
+        execute 'source ' . a:path
+    catch
+        echomsg 'ERROR: Failed to source ' . a:path
+        echomsg v:exception
+    endtry
+endfunction
+
 " load basic
-execute "source " . g:dotvim_dir . "/config.vim"
-execute "source " . g:dotvim_dir . "/utils.vim"
+SourceVimFile g:dotvim_dir . '/config.vim'
+SourceVimFile g:dotvim_dir . "/utils.vim"
 
 " set path
 set runtimepath&
@@ -40,8 +51,8 @@ set packpath&
 if match(&runtimepath, g:dotvim_dir) == -1
     execute 'set runtimepath ^=' . g:dotvim_dir
 endif
-if match(&runtimepath, g:CONFIG["after_dir"]) == -1
-    execute 'set runtimepath +=' . g:CONFIG["after_dir"]
+if match(&runtimepath, g:after_dir) == -1
+    execute 'set runtimepath +=' . g:after_dir
 endif
 
 " set basic settings
@@ -49,22 +60,15 @@ filetype plugin indent on
 if ! exists("g:syntax_on")
     syntax enable
 endif
-if has('termguicolors')
-    set termguicolors
-endif
-if g:CONFIG['term'] !~ '^xterm' && ! has('gui_running')
-    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-endif
 
-execute 'source ' . g:dotvim_dir . '/packages/configs_before.vim'
-execute 'source ' . g:dotvim_dir . '/packages/manager.vim'
-execute 'source ' . g:dotvim_dir . '/packages/configs_after.vim'
-execute 'source ' . g:dotvim_dir . '/keybindings/main.vim'
-execute 'source ' . g:dotvim_dir . '/tab_line.vim'
-execute 'source ' . g:dotvim_dir . '/status_line.vim'
-execute 'source ' . g:dotvim_dir . '/misc.vim'
+SourceVimFile g:dotvim_dir . '/packages/configs_before.vim'
+SourceVimFile g:dotvim_dir . '/packages/manager.vim'
+SourceVimFile g:dotvim_dir . '/packages/configs_after.vim'
+SourceVimFile g:dotvim_dir . '/keybindings.vim'
+SourceVimFile g:dotvim_dir . '/tab_line.vim'
+SourceVimFile g:dotvim_dir . '/status_line.vim'
+SourceVimFile g:dotvim_dir . '/misc.vim'
 
 if has('gui_running')
-    execute 'source ' . g:dotvim_dir . '/gui.vim'
+    SourceVimFile g:dotvim_dir . '/gui.vim'
 endif
