@@ -136,6 +136,7 @@ for link_df2home_dir in "${link_dotfiles2home_dir[@]}"; do
         [ "$link_file" = '..' ] && continue
         [ "$link_file" = '.gitignore' ] && continue
         [ "$link_file" = '.zcompdump' ] && continue
+        [ "$link_file" = '.DS_Store' ] && continue
         [[ "$link_file" =~ \.zwc$ ]] && continue
         ln -snfv "${link_df2home_dir}/${link_file}" "${HOME}/${link_file}"
     done
