@@ -1,178 +1,32 @@
-" toggle commentout
-" function! s:toggle_oneline_commentout(linenum)
-function! comment_cmds#toggle_commentout()
-    " Change a:linenum-th line to comment.
-    " b:toggle_comment is the list of comment sign.
-    " if len(b:toggle_comment) == 0 (oneline commentout sign):
-    "   get oneline comment prefix.
-    " if len(b:toggle_comment) == 1 (oneline commentout sign):
-    "   b:toggle_comment[0] is the oneline comment prefix.
-    " if len(b:toggle_comment) == 2 (multiline commentout sign):
-    "   b:toggle_comment[0] and [1] are the multiline comment prefix and suffix.
-    " otherwise: Error.
+let s:max_line_length = 5000
+let s:spaces_pat = '\s*'
+let s:init_spaces_pat = '^' . s:spaces_pat
 
-    let b:toggle_comments = ['/*', '*/']
-
-    if ! exists('b:toggle_comments')
-        let b:toggle_comments = []
+function! comment_cmds#toggle_commentout() abort range
+    if ! exists('b:comment_cmds_marks')
+        let b:comment_cmds_marks = s:get_comment_marks()
     endif
-    " get comment
-    if len(b:toggle_comments) == 0
-        call add(b:toggle_comments, s:get_oneline_comments())
-        if b:toggle_comments[0] == v:null
-            let b:toggle_comments = []
-            return 1
-        endif
+    if b:comment_cmds_marks is v:null
+        echomsg 'ERROR: Not support this filetype. :let b:comment_cmds_marks = COMMENT_MARK'
+        return
     endif
-    if len(b:toggle_comments) > 2 || len(b:toggle_comments) < 1
-        echo 'Num of b:toggle_comments items must be 1 or 2.'
-        return 1
+    let l:lines = getline(a:firstline, a:lastline)
+    if ! validate_lines(l:lines)
+        return
     endif
-    " get current line
-    let l:current_cursor_pos = getpos('.')
-    let l:current_line = getline(l:current_cursor_pos[1])
-    if strlen(l:current_line) == 0
-        return 1
-    endif
-    " delete prefix and suffix spaces
-    let [l:current_line_wosp, l:prefix_spaces_num] =
-                \ s:delete_prefix_suffix_spaces(l:current_line, len(b:toggle_comments) == 2)
-    echo l:current_line_wosp
-    echo l:prefix_spaces_num
-    " is current line comment
-    let l:is_line_comment = v:false
-    if stridx(l:current_line_wosp, b:toggle_comments[0]) == 0
-        let l:is_line_comment = v:true
-    endif
-    if len(b:toggle_comments) == 2 && strridx(l:current_line_wosp, b:toggle_comments[0]) == 0
-        let l:rev_current_line_wosp = s:str_reverse(l:current_line_wosp)
-        let l:rev_suf_comment = s:str_reverse(b:toggle_comments[1])
-        if stridx(l:rev_current_line_wosp, rev_suf_comment) == 0
-            let l:is_line_comment = v:true
-        endif
-    endif
-    " comment out
-    if l:is_line_comment
-        " uncomment
-        if l:pre_comment_idx != -1
-        endif
-        if len(b:toggle_comments) == 2 && l:suf_comment_id != -1
-        endif
-    else
-        " to comment
-    endif
-
-
-    return 1
-
-    " set/remove comment prefix/suffix
-    if len(b:toggle_comments) == 1
-
-    elseif len(b:toggle_comments) == 2
-        " call Error_msg('ERR: now making')
-    else
-        " call Error_msg('ERR: now making')
-    endif
-
-    echo b:toggle_comments
-    return 1
-
-    " " if b:ecom == "XXX"
-    " "   call Error_msg('err: comments')
-    " "   return 1
-    " " endif
-    " """ parameters
-    " " let l:comtypes=[ ',:' , ',b:' ]
-    " " detect comment character
-    " if b:ecom == ""
-    "   " get comment str
-    "   let l:com=',' . &comments . ','
-    "   for l:ct in l:comtypes
-    "     let l:comPos=matchend(l:com,l:ct)
-    "     if l:comPos != -1
-    "       break
-    "     endif
-    "   endfor
-    "   if l:comPos == -1
-    "     call Error_msg('err: comments')
-    "     let b:ecom="XXX"
-    "     return 1
-    "   endif
-    " endif
-
-    let l:com=strpart(l:com,l:comPos,1)
-    " echo l:com
-    " get line
-    " let l:cpos=getpos('.')
-    " let l:cline=getline(l:cpos[1])
-    " if len(l:cline) == 0
-    "   return 1
-    " endif
-    let l:start=matchend(l:cline,'^\s*')
-    if match(l:cline,'^\s*\'.l:com) == -1
-        " non comment line => insert comment string
-        call setline(l:cpos[1],strpart(l:cline,0,l:start).l:com.' '.strpart(l:cline,l:start))
-    else
-        " comment line => remove comment string
-        let l:start2=matchend(l:cline,'^\s*\'.l:com.'\s*')
-        call setline(l:cpos[1],strpart(l:cline,0,l:start).strpart(l:cline,l:start2))
-    endif
-endfunction
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-
-
-""" echo highlight
-" error
-function! Error_msg(msg)
-    echohl ErrorMsg
-    echomsg a:msg
-    echohl None
-endfunction
-" warning
-function! Warning_msg(msg)
-    echohl WarningMsg
-    echomsg a:msg
-    echohl None
-endfunction
-
-""" toggle comment out
-" not visual mode: mod in visual mode, getpos("'<") ~ getpos("'>")
-function! s:_old_toggle_comment_out()
-    """ parameters
-    let l:comtypes=[ ',:' , ',b:' ]
-    " get comment str
-    let l:com=',' . &comments
-    for l:ct in l:comtypes
-        let l:comPos=matchend(l:com,l:ct)
-        if l:comPos != -1
-            break
-        endif
-    endfor
-    if l:comPos == -1
-        call Error_msg('err: comments')
-        return 1
-    endif
-    let l:com=strpart(l:com,l:comPos,1)
-    " echo l:com
-    " get line
-    let l:cpos=getpos('.')
-    let l:cline=getline(l:cpos[1])
-    if len(l:cline) == 0
-        return 1
-    endif
-    let l:start=matchend(l:cline,'^\s*')
-    if match(l:cline,'^\s*\'.l:com) == -1
-        " non comment line => insert comment string
-        call setline(l:cpos[1],strpart(l:cline,0,l:start).l:com.' '.strpart(l:cline,l:start))
-    else
-        " comment line => remove comment string
-        let l:start2=matchend(l:cline,'^\s*\'.l:com.'\s*')
-        call setline(l:cpos[1],strpart(l:cline,0,l:start).strpart(l:cline,l:start2))
+    let n_lines = range(a:firstline, a:lastline)
+    let l:init_spaces = s:get_init_spaces(l:lines)
+    if type(b:comment_cmds_marks) == type('')
+        call s:toggle_commentout_oneline(l:n_lines, l:lines, l:init_spaces)
+    elseif type(b:comment_cmds_marks) == type([])
+        " call comment_cmds#toggle_multiline_commentout(b:comment_cmds_marks)
+        echomsg 'ERROR: Not support multiline comment'
+        return
     endif
 endfunction
 
-function! s:get_oneline_comments()
+" Note: support only one-line comment mark
+function! s:get_comment_marks()
     let l:oneline_comments = ''
     let l:flag_comments = split(&comments, ',')
     let l:flags = [':', 'b:']
@@ -188,39 +42,102 @@ function! s:get_oneline_comments()
         endif
     endfor
     if strlen(l:oneline_comments) == 0
-        echo 'Getting one-line comments failed.'
+        echomsg 'Failed to get one-line comment mark'
         return v:null
     endif
     return l:oneline_comments
 endfunction
 
-function! s:delete_prefix_suffix_spaces(line, del_suffix)
-    " return list index 0: deleted line
-    "                   1: length of prefix spaces
-    let l:line = a:line
-    " delete prefix spaces
-    let l:prefix_spaces = matchlist(l:line, '^\s\+')
-    let l:prefix_spaces_num = len(l:prefix_spaces) != 0 ? strlen(l:prefix_spaces[0]) : 0
-    " delete suffix spaces
-    let l:suffix_spaces_num = 0
-    if a:del_suffix
-        let l:suffix_spaces = matchlist(l:line, '\s\+$')
-        let l:suffix_spaces_num = len(l:suffix_spaces) != 0 ? strlen(l:suffix_spaces[0]) : 0
-    endif
-    let l:line = l:line[l:prefix_spaces_num:strlen(l:line)-l:suffix_spaces_num-1]
-    return [l:line, l:prefix_spaces_num]
+function! s:validate_lines(lines)
+    for l:line in a:lines
+        if strlen(l:line) > s:max_line_length
+            echoerr 'ERROR: Too long line.'
+            return v:false
+        endif
+    endfor
+    return v:true
 endfunction
 
-function! s:str_reverse(string)
-    let l:strlen = strlen(a:string)
-    if l:strlen == 0
-        return ''
-    endif
-    let l:retstr = ''
-    for l:i in range(1, l:strlen)
-        let l:retstr = l:retstr . a:string[l:strlen - l:i]
+function! s:get_init_spaces(lines)
+    let l:init_spaces = v:null
+    for l:line in a:lines
+        if s:is_empty_line(l:line)
+            continue
+        endif
+        let l:matched = matchstr(l:line, s:init_spaces_pat)
+        if l:init_spaces is v:null || strlen(l:init_spaces) > strlen(l:matched)
+            let l:init_spaces = l:matched
+        endif
     endfor
-    return l:retstr
+    return l:init_spaces
+endfunction
+
+function! s:is_empty_line(line)
+    if strlen(a:line) == 0 || a:line =~ '^' . s:spaces_pat . '$'
+        return v:true
+    endif
+    return v:false
+endfunction
+
+function! comment_cmds#_toggle_commentout_normal_mode()
+    if type(b:comment_cmds_marks) == type('')
+        call comment_cmds#_toggle_oneline_commentout()
+    elseif type(b:comment_cmds_marks) == type([])
+        " call comment_cmds#toggle_multiline_commentout(b:comment_cmds_marks)
+        echomsg 'ERROR: Not support multiline comment'
+        return
+    endif
+endfunction
+
+function! comment_cmds#_toggle_commentout_visual()
+    let n_begin_line = getpos("'<")[1]
+    let n_finish_line = getpos("'>")[1]
+    echo n_begin_line n_finish_line
+endfunction
+
+function! s:toggle_commentout_oneline(n_lines, lines, init_spaces)
+    let l:cmt_mark_pat = s:init_spaces_pat . b:comment_cmds_marks . s:spaces_pat
+    let l:is_comments = s:is_comments_oneline(a:lines, l:cmt_mark_pat)
+
+
+
+
+    let l:n_line = getpos('.')[1]
+    let l:line = getline(l:n_line)
+    if comment_cmds#_is_empty_line(l:line)
+        return
+    endif
+    let l:cmt_mark_pat = s:init_spaces_pat . b:comment_cmds_marks . s:spaces_pat
+    if l:line =~ l:cmt_mark_pat
+        call comment_cmds#_oneline_delete_comment_mark(l:line, l:n_line, l:cmt_mark_pat)
+    else
+        call comment_cmds#_oneline_commentout(l:line, l:n_line)
+    endif
+endfunction
+
+function! s:is_comments_oneline(lines, cmt_mark_pat)
+    for l:line in a:lines
+        if s:is_empty_line(l:line)
+            continue
+        endif
+        if l:line !~ a:cmt_mark_pat
+            return v:false
+        endif
+    endfor
+    return v:true
+endfunction
+
+function! comment_cmds#_oneline_delete_comment_mark(line, n_line, cmt_mark_pat)
+    let l:init_spaces = matchstr(a:line, s:init_spaces_pat)
+    let l:cmt = matchstr(a:line, a:cmt_mark_pat)
+    let l:cmt_line = l:init_spaces . a:line[strlen(l:cmt):]
+    call setline(a:n_line, l:cmt_line)
+endfunction
+
+function! comment_cmds#_oneline_commentout(line, n_line)
+    let l:init_spaces = matchstr(a:line, s:init_spaces_pat)
+    let l:cmt_line = l:init_spaces . b:comment_cmds_marks . ' ' . a:line[strlen(l:init_spaces):]
+    call setline(a:n_line, l:cmt_line)
 endfunction
 
 """ get visual selection
@@ -238,4 +155,3 @@ endfunction
 "   let lines[0] = lines[0][column_start - 1:]
 "   return join(lines, "\n")
 " endfunction
-
