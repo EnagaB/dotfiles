@@ -1,6 +1,5 @@
 let s:max_line_length = 5000
-let s:spaces_pat = '\s*'
-let s:init_spaces_pat = '^' . s:spaces_pat
+let s:spat = '\s'
 
 function! comment_cmds#toggle_commentout() abort range
     if ! exists('b:comment_cmds_marks')
@@ -11,7 +10,7 @@ function! comment_cmds#toggle_commentout() abort range
         return
     endif
     let l:lines = getline(a:firstline, a:lastline)
-    if ! validate_lines(l:lines)
+    if ! s:validate_lines(l:lines)
         return
     endif
     let n_lines = range(a:firstline, a:lastline)
@@ -64,7 +63,7 @@ function! s:get_init_spaces(lines)
         if s:is_empty_line(l:line)
             continue
         endif
-        let l:matched = matchstr(l:line, s:init_spaces_pat)
+        let l:matched = matchstr(l:line, '^' . s:spat . '*')
         if l:init_spaces is v:null || strlen(l:init_spaces) > strlen(l:matched)
             let l:init_spaces = l:matched
         endif
@@ -73,7 +72,7 @@ function! s:get_init_spaces(lines)
 endfunction
 
 function! s:is_empty_line(line)
-    if strlen(a:line) == 0 || a:line =~ '^' . s:spaces_pat . '$'
+    if strlen(a:line) == 0 || a:line =~ '^' . s:spat . '*$'
         return v:true
     endif
     return v:false
@@ -89,55 +88,44 @@ function! comment_cmds#_toggle_commentout_normal_mode()
     endif
 endfunction
 
-function! comment_cmds#_toggle_commentout_visual()
-    let n_begin_line = getpos("'<")[1]
-    let n_finish_line = getpos("'>")[1]
-    echo n_begin_line n_finish_line
-endfunction
-
 function! s:toggle_commentout_oneline(n_lines, lines, init_spaces)
-    let l:cmt_mark_pat = s:init_spaces_pat . b:comment_cmds_marks . s:spaces_pat
-    let l:is_comments = s:is_comments_oneline(a:lines, l:cmt_mark_pat)
-
-
-
-
-    let l:n_line = getpos('.')[1]
-    let l:line = getline(l:n_line)
-    if comment_cmds#_is_empty_line(l:line)
-        return
-    endif
-    let l:cmt_mark_pat = s:init_spaces_pat . b:comment_cmds_marks . s:spaces_pat
-    if l:line =~ l:cmt_mark_pat
-        call comment_cmds#_oneline_delete_comment_mark(l:line, l:n_line, l:cmt_mark_pat)
+    if s:is_comments_oneline(a:lines)
+        call s:delete_comment_mark_oneline(a:n_lines, a:lines)
     else
-        call comment_cmds#_oneline_commentout(l:line, l:n_line)
+        call s:commentout_oneline(a:n_lines, a:lines, a:init_spaces)
     endif
 endfunction
 
-function! s:is_comments_oneline(lines, cmt_mark_pat)
+function! s:is_comments_oneline(lines)
+    let l:cmt_mark_pat = '^' . s:spat . '*' . b:comment_cmds_marks
     for l:line in a:lines
         if s:is_empty_line(l:line)
             continue
         endif
-        if l:line !~ a:cmt_mark_pat
+        if l:line !~ l:cmt_mark_pat
             return v:false
         endif
     endfor
     return v:true
 endfunction
 
-function! comment_cmds#_oneline_delete_comment_mark(line, n_line, cmt_mark_pat)
-    let l:init_spaces = matchstr(a:line, s:init_spaces_pat)
-    let l:cmt = matchstr(a:line, a:cmt_mark_pat)
-    let l:cmt_line = l:init_spaces . a:line[strlen(l:cmt):]
-    call setline(a:n_line, l:cmt_line)
+function! s:delete_comment_mark_oneline(n_lines, lines)
+    let l:init_spaces_pat = '^' . s:spat . '*'
+    let l:cmt_mark_pat = l:init_spaces_pat . b:comment_cmds_marks . s:spat . '\?'
+    for l:i_line in range(len(a:n_lines))
+        let l:n_line = a:n_lines[l:i_line]
+        let l:line = a:lines[l:i_line]
+        let l:cmt_matched = matchstr(l:line, l:cmt_mark_pat)
+        let l:inisp_matched = matchstr(l:line, l:init_spaces_pat)
+        let l:rep_line = l:inisp_matched . l:line[strlen(cmt_matched):]
+        call setline(l:n_line, l:rep_line)
+    endfor
 endfunction
 
-function! comment_cmds#_oneline_commentout(line, n_line)
-    let l:init_spaces = matchstr(a:line, s:init_spaces_pat)
-    let l:cmt_line = l:init_spaces . b:comment_cmds_marks . ' ' . a:line[strlen(l:init_spaces):]
-    call setline(a:n_line, l:cmt_line)
+function! comment_cmds#_oneline_commentout(n_lines, lines, init_spaces)
+    " let l:init_spaces = matchstr(a:line, s:init_spaces_pat)
+    " let l:cmt_line = l:init_spaces . b:comment_cmds_marks . ' ' . a:line[strlen(l:init_spaces):]
+    " call setline(a:n_line, l:cmt_line)
 endfunction
 
 """ get visual selection
