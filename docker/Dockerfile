@@ -48,11 +48,6 @@ RUN mkdir -p "$docker_home" \
     && chmod -R 777 "$docker_home"
 ENV HOME="$docker_home"
 
-# install deno
-RUN curl -fsSL https://deno.land/x/install/install.sh | sh
-ENV DENO_INSTALL="${HOME}/.deno"
-ENV PATH="${DENO_INSTALL}/bin:${PATH}"
-
 # install latest neovim
 RUN mkdir -p /usr/src/neovim \
     && cd /usr/src/neovim \
