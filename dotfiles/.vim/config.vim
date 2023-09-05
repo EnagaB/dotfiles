@@ -26,13 +26,18 @@ let g:CONFIG['packages'] = [
             \  'for': 'python'},
             \ {'name': 'Vimjas/vim-python-pep8-indent',
             \  'for': 'python'},
+            \ {'name': 'godlygeek/tabular'},
+            \ {'name': 'preservim/vim-markdown',
+            \  'for': 'markdown'},
             \ ]
 
 let g:CONFIG["cond_packages"] = {
             \ 'fern.vim': {'condition': has('patch-8.1.2269') || has('nvim-0.4.4'),
             \              'package': {'name': 'lambdalisue/fern.vim'}},
             \ 'nightfox.nvim': {'condition': (has('patch-9.0.0') && has('lua')) || has('nvim-0.8.0'),
-            \                   'package': {'name': 'EdenEast/nightfox.nvim'}}
+            \                   'package': {'name': 'EdenEast/nightfox.nvim'}},
+            \ 'hop.nvim': {'condition': has('nvim-0.5.0'),
+            \              'package': {'name': 'phaazon/hop.nvim'}},
             \ }
 for [s:package_key, s:package] in items(g:CONFIG['cond_packages'])
     if ! s:package['condition']
