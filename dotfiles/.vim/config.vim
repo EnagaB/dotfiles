@@ -14,7 +14,6 @@ let g:CONFIG['packages'] = [
             \ {'name': 'tyru/caw.vim'},
             \ {'name': 'vim-jp/cpp-vim'},
             \ {'name': 'octol/vim-cpp-enhanced-highlight'},
-            \ {'name': 'sheerun/vim-polyglot'},
             \ {'name': 'morhetz/gruvbox'},
             \ {'name': 'gosukiwi/vim-atom-dark'},
             \ {'name': 'jacoborus/tender.vim'},
@@ -22,6 +21,11 @@ let g:CONFIG['packages'] = [
             \ {'name': 'arcticicestudio/nord-vim'},
             \ {'name': 'junegunn/goyo.vim',
             \  'on_demand': {'command': 'Goyo'}},
+            \ {'name': 'arcticicestudio/nord-vim'},
+            \ {'name': 'vim-python/python-syntax',
+            \  'for': 'python'},
+            \ {'name': 'Vimjas/vim-python-pep8-indent',
+            \  'for': 'python'},
             \ ]
 
 let g:CONFIG["cond_packages"] = {

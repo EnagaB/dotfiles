@@ -15,14 +15,17 @@ endif
 " set packages
 call plug#begin(s:packmgr_pack_path)
 for _package in g:CONFIG['packages']
+    let _packconf = {}
     if has_key(_package, 'on_demand')
         let _package_ondemand = _package['on_demand']
         if has_key(_package_ondemand, 'command')
-            Plug _package['name'], {'on': _package_ondemand['command']}
+            let _packconf['on'] = _package_ondemand['command']
         endif
-    else
-        Plug _package['name']
     endif
+    if has_key(_package, 'for')
+        let _packconf['for'] = _package['for']
+    endif
+    Plug _package['name'], _packconf
 endfor
 call plug#end()
 
