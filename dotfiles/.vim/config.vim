@@ -29,6 +29,8 @@ let g:CONFIG['packages'] = [
             \ {'name': 'godlygeek/tabular'},
             \ {'name': 'preservim/vim-markdown',
             \  'for': 'markdown'},
+            \ {'name': 'lunacookies/vim-sh',
+            \  'for': 'sh'},
             \ ]
 
 let g:CONFIG["cond_packages"] = {
