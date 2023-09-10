@@ -1,4 +1,4 @@
-if exists('g:loaded_packmgr')
+if exists('g:loaded_packmgr') && g:loaded_packmgr
     finish
 endif
 let g:loaded_packmgr = 1

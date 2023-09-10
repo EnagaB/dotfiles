@@ -61,9 +61,8 @@ if ! exists("g:syntax_on")
     syntax enable
 endif
 
-SourceVimFile g:dotvim_dir . '/packconf_before.vim'
-SourceVimFile g:dotvim_dir . '/package_manager.vim'
-SourceVimFile g:dotvim_dir . '/packconf_after.vim'
+SourceVimFile g:dotvim_dir . '/config_packages.vim'
+SourceVimFile g:dotvim_dir . '/manager.vim'
 SourceVimFile g:dotvim_dir . '/keybindings.vim'
 SourceVimFile g:dotvim_dir . '/tab_line.vim'
 SourceVimFile g:dotvim_dir . '/status_line.vim'
