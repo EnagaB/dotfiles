@@ -2,7 +2,7 @@
 
 ## Usage
 
-Clone this repository and place to `HOME`.  
+Clone this repository and place to `HOME`.
 Build my environment.
 ```
 bash ~/dotfiles/setup.sh [all]

@@ -13,12 +13,14 @@ n_args="$#"
 if [ "$n_args" -eq 0 ]; then
     echo "ERROR: Number of arguments is 0."
     echo "$usage"
+    exit 1
 fi
 
 trash_can="${TRASHCAN:-""}"
 if [ -z "$trash_can" ]; then
     echo "ERROR: trash can (TRASHCAN) is not defined"
     echo "$usage"
+    exit 1
 fi
 [ ! -d "$trash_can" ] && mkdir -p "$trash_can"
 
