@@ -39,6 +39,11 @@ augroup insert_template
     endfor
 augroup end
 
+" other augroup
+augroup others
+    autocmd BufNewFile,BufRead *.py set keywordprg=man
+augroup end
+
 " set color
 SetDefaultColorscheme
 
@@ -96,6 +101,7 @@ set shortmess+=I
 set formatoptions-=t
 set formatoptions-=c
 set ruler wrap showcmd
+set mouse=
 set display=lastline
 set pumheight=10
 set foldmethod=marker
