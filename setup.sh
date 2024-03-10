@@ -10,14 +10,12 @@ root_dir="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" || exit; pwd)"
 
 # parameters
 local_dir=${LOCAL:-${HOME}/.local}
-trashcan_dir=${TRASHCAN:-${HOME}/.t}
 npm_dir="${HOME}/.npm-global"
 fonts_dir="${HOME}/.fonts"
 make_root_directories=(
     "$local_dir"
 )
 make_directories=(
-    "${trashcan_dir}"
     "${HOME}/.config/zathura"
     "${HOME}/.symlinks"
     "$npm_dir"
