@@ -1,32 +1,52 @@
 #!/bin/bash
-set -u
+set -eu
+
+trashcan="${TRASHCAN:-"${HOME}/._trashcan"}"
+is_clean=false
 
 usage="
-Move files to trash box
+Send to trashcan ${trashcan}
 
-Usage:
-  > trm [FILE]...
+Usage: $0 [-Dh] [FILE|DIR]...
 
-The path of trash box is defined as environment variable TRASHCAN."
+The trashcan path is given by environment variable TRASHCAN.
+If TRASHCAN is not set, use default value 'HOME/._trashcan'.
 
-n_args="$#"
-if [ "$n_args" -eq 0 ]; then
+Options:
+    -D: Delete trashcan and make a new trashcan
+    -h: show help"
+
+if [ "$#" -eq 0 ]; then
     echo "ERROR: Number of arguments is 0."
     echo "$usage"
     exit 1
 fi
+while getopts ":Dh" OPT; do
+    case "$OPT" in
+        D) is_clean=true ;;
+        h) echo "$usage"
+            exit 0 ;;
+        :) echo  "ERROR: Option argument is undefined."
+            echo "$usage"
+            exit 1 ;;
+        \?) echo "ERROR: Undefined options."
+            echo "$usage"
+            exit 1 ;;
+    esac
+done
+shift $((OPTIND - 1))
+n_args="$#"
+args=("$@")
 
-trash_can="${TRASHCAN:-""}"
-if [ -z "$trash_can" ]; then
-    echo "ERROR: trash can (TRASHCAN) is not defined"
-    echo "$usage"
-    exit 1
+if [ ! -d "$trashcan" ]; then
+    echo "There is not trashcan. make a trashcan ${trashcan}"
+    mkdir -p "$trashcan"
 fi
-[ ! -d "$trash_can" ] && mkdir -p "$trash_can"
 
-for trash_file in "$@" ; do
-    trash_filename=$(basename "$trash_file")
-    trash_path="${trash_can}/${trash_filename}"
+function make_trash_path() {
+    local trash_path org_trash_path n_ver
+    trash_file="$1"
+    trash_path="${trashcan}/$(basename "$trash_file")"
     if [ -e "$trash_path" ]; then
         n_ver=1
         org_trash_path="$trash_path"
@@ -36,5 +56,55 @@ for trash_file in "$@" ; do
             n_ver=$(($n_ver+1))
         done
     fi
+    echo "$trash_path"
+}
+
+function has_symbolic_link() {
+    local fds fd has_no
+    fds=($(find -P "$1"))
+    has_no=false
+    for fd in "${fds[@]}"; do
+        if [ -L "$fd" ]; then
+            echo "${fd} is symbolic link."
+            has_no=true
+        fi
+    done
+    if "$has_no"; then
+        return 0
+    fi
+    return 1
+}
+
+function echo_symlinks_stop() {
+    echo -n "Process is stopped"
+    echo -n " because the symbolic links may refer to a object outside trashcan."
+    echo " If you want to run the process, delete the symbolic links."
+}
+
+for trash_file in "${args[@]}" ; do
+    if [ ! -e "$trash_file" ]; then
+        echo "ERROR: the trash ${trash_file} doesn't exist."
+        exit 1
+    fi
+    if [ -L "$trash_file" ] || has_symbolic_link "$trash_file"; then
+        echo "ERROR: ${trash_file} is symbolic link or directory with symbolic links."
+        echo_symlinks_stop
+        exit 1
+    fi
+    trash_path="$(make_trash_path "$trash_file")"
     mv "$trash_file" "$trash_path"
 done
+
+! "$is_clean" && exit 0
+
+echo "Check for symbolic links in the trashcan ${trashcan}"
+if has_symbolic_link "$trashcan"; then
+    echo "ERROR: the trashcan ${trashcan} has symbolic links."
+    echo_symlinks_stop
+    exit 1
+fi
+echo "Delete the trashcan after 10 seconds"
+sleep 10
+rm -frv "$trashcan"
+echo "Make a new trashcan"
+mkdir -p "$trashcan"
