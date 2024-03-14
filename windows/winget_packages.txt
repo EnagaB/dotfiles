@@ -1,0 +1,6 @@
+Git.Git
+Neovim.Neovim
+7zip.7zip
+Google.Chrome
+Microsoft.WindowsTerminal
+marha.VcXsrv
