@@ -6,7 +6,8 @@ or, change default execution policy.
 ```
 Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
-write on PROFILE.
+make PROFILE directory and copy profile.ps1.
 ```
-. "${HOME}\dotfiles\windows\profile.ps1"
+New-Item -Type File -Path $PROFILE -Force
+cp profile.ps1 $PROFILE
 ```
