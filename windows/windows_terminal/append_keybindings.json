@@ -1,0 +1,16 @@
+{
+    "actions": 
+    [
+        { "command": { "action": "copy", "singleLine": false }, "keys": "ctrl+shift+c" },
+        { "command": "paste", "keys": "ctrl+shift+v" },
+        { "command": "duplicateTab", "keys": "ctrl+shift+t" },
+        { "command": { "action": "splitPane", "split": "down", "splitMode": "duplicate" },
+            "keys": "alt+shift+h" },
+        { "command": { "action": "splitPane", "split": "right", "splitMode": "duplicate" },
+            "keys": "alt+shift+v" },
+        { "command": { "action": "scrollUp" }, "keys": "shift+up" },
+        { "command": { "action": "scrollDown" }, "keys": "shift+down" },
+        { "command": "scrollUpPage", "keys": "shift+pgup" },
+        { "command": "scrollDownPage", "keys": "shift+pgdn" }
+    ]
+}
