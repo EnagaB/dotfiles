@@ -1,4 +1,4 @@
-$local_profile = "${HOME}/local_profile.ps1"
+﻿$local_profile = "${HOME}/local_profile.ps1"
 
 Import-Module PSReadLine
 Set-PSReadlineOption -EditMode Emacs
