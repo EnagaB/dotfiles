@@ -1,12 +1,13 @@
 FROM ubuntu:20.04
 
 # install packages
-RUN apt-get -o Acquire::Retries=10 update \
-    && DEBIAN_FRONTEND=noninteractive apt-get -o Acquire::Retries=10 install -y --no-install-recommends \
+RUN echo 'APT::Acquire::Retries "10";' >> /etc/apt/apt.conf.d/80-retries \
+    && apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         software-properties-common \
     && add-apt-repository ppa:jonathonf/vim \
-    && apt-get -o Acquire::Retries=10 update \
-    && DEBIAN_FRONTEND=noninteractive apt-get -o Acquire::Retries=10 install -y --no-install-recommends \
+    && apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         tzdata \
         tmux \
         nano \
