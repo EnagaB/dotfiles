@@ -8,6 +8,7 @@
             "keys": "alt+shift+h" },
         { "command": { "action": "splitPane", "split": "right", "splitMode": "duplicate" },
             "keys": "alt+shift+v" },
+        { "command": "togglePaneZoom", "keys": "alt+shift+z" },
         { "command": { "action": "scrollUp" }, "keys": "shift+up" },
         { "command": { "action": "scrollDown" }, "keys": "shift+down" },
         { "command": "scrollUpPage", "keys": "shift+pgup" },
