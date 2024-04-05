@@ -1,4 +1,6 @@
-﻿Import-Module PSReadLine
+﻿# utf-8-bom + CRLF
+
+Import-Module PSReadLine
 Set-PSReadlineOption -EditMode Emacs
 Set-PSReadlineKeyHandler -Key Ctrl+d -Function DeleteCharOrExit
 

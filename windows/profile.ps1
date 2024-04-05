@@ -1,1 +1,3 @@
-﻿. "${HOME}\dotfiles\windows\src_profile.ps1"
+﻿# utf-8-bom + CRLF
+
+. "${HOME}\dotfiles\windows\src_profile.ps1"
