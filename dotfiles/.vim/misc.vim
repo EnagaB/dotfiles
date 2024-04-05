@@ -96,7 +96,7 @@ set autoread
 set hidden
 set whichwrap=b,s,h,l,<,>,[,]
 set backspace=indent,eol,start
-set visualbell
+set visualbell t_vb=
 set shortmess+=I
 set formatoptions-=t
 set formatoptions-=c
