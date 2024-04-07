@@ -1,6 +1,8 @@
 #!/bin/bash
 set -u
 
+echo "Setup git"
+
 git config --global core.ignorecase false
 git config --global core.quotepath false
 git config --global core.safecrlf true
