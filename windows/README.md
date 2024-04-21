@@ -1,3 +1,7 @@
+Install latest powershell.
+"""
+Invoke-Expression "& { $(Invoke-RestMethod https://aka.ms/install-powershell.ps1) } -UseMSI"
+"""
 set execution policy.
 ```
 powershell.exe -ExecutionPolicy RemoteSigned
