@@ -8,7 +8,6 @@ esac
 
 # rc/env dir
 export DOTFILES=${HOME}/dotfiles
-export DOTSH=${DOTFILES}/dotfiles/shell
 
 # .bashenv
 [[ -f "${HOME}/.bashenv" ]] && . "${HOME}/.bashenv"

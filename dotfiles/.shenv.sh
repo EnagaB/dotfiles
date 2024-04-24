@@ -5,6 +5,7 @@ export DOTFILES="${HOME}/dotfiles"
 # local directories
 export LOCAL="${HOME}/.local"
 export TRASHCAN="${HOME}/._trashcan"
+export LIBSH_DIR="${DOTFILES}/lib/sh"
 
 # PATH
 [[ -d "${DOTFILES}/bin" ]]  && export PATH=$PATH:"${DOTFILES}/bin"
@@ -17,7 +18,6 @@ export TRASHCAN="${HOME}/._trashcan"
 [[ -d "${HOME}/.npm-global" ]] && export PATH=$PATH:"${HOME}/.npm-global/bin"
 
 # shell
-export DOTSH="${DOTFILES}/dotfiles/shell"
 export BASH_ENV="${HOME}/.bashenv"
 export ZDOTDIR="${HOME}"
 
@@ -47,10 +47,17 @@ export GNUPLOT_LIB="${DOTFILES}/lib/gnuplot"
 export CPLUS_INCLUDE_PATH="${HOME}/.local/include"
 
 # WSL
-if [[ -d '/mnt/c/Windows' ]]; then
-    export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
-    export LIBGL_ALWAYS_INDIRECT=1
+. "${LIBSH_DIR}/wsl.sh"
+if is_wsl; then
+    if has_wslg; then
+        export DISPLAY=:0
+    else
+        # use VcXsrv
+        export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
+        export LIBGL_ALWAYS_INDIRECT=1
+    fi
 fi
+unset_wsl_functions
 
 # fcitx
 export GTK_IM_MODULE=fcitx
