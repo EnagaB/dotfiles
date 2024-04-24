@@ -1,8 +1,8 @@
 #!/bin/bash
 
 root_dir="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")/.." || exit; pwd)"
-libsh_dir="${root_dir}/lib/sh"
-. "${libsh_dir}/apt_utils.sh"
+setup_dir="${root_dir}/setup"
+. "${setup_dir}/apt_utils.sh"
 
 _npm_upgraded=false
 _npm_prefix_dir="${HOME}/.npm-global"

@@ -3,13 +3,14 @@ set -u
 
 root_dir="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")/.." || exit; pwd)"
 libsh_dir="${root_dir}/lib/sh"
+setup_dir="${root_dir}/setup"
 . "${libsh_dir}/echos.sh"
-. "${libsh_dir}/apt_utils.sh"
-. "${libsh_dir}/snap_utils.sh"
+. "${setup_dir}/apt_utils.sh"
+. "${setup_dir}/snap_utils.sh"
 
 basic_packs=(
     bash zsh shellcheck
-    curl wget git unzip
+    curl wget git zip unzip
     fzf file nkf bc busybox
     # peco
     # fzy
