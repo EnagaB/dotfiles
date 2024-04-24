@@ -40,7 +40,8 @@ function _add_apt_repo_packages() {
 function _add_apt_retry_option() {
     local retry_opt='APT::Acquire::Retries'
     local retry_opt_file='/etc/apt/apt.conf.d/80-retries'
-    if [ ! -z "$(cat "$retry_opt_file" | grep "$retry_opt")" ]; then
+    if [ -f "$retry_opt_file" ] \
+        && [ ! -z "$(cat "$retry_opt_file" | grep "$retry_opt")" ]; then
         return 0
     fi
     sudo sh -c "echo '${retry_opt} \"10\";' >> ${retry_opt_file}"
