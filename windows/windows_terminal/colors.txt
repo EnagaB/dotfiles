@@ -1,0 +1,9 @@
+windows terminalでタブバーのアクティブタブがわからない問題
+バーが黒で、アクティブタブの背景色でタブが塗られるせいでわからない
+タブバーを明示的に変更する。
+
+settings.json、profiles listで追加
+# powershell
+"tabColor": "#71B4D0"
+# ubuntu
+"tabColor": "#EDAD82"

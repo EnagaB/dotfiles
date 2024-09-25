@@ -1,5 +1,10 @@
 {
-    "actions": 
+    "$comment": [
+        "Delete alt+enter, ctrl+c and ctrl+v shortcuts."
+    ]
+},
+{
+    "actions":
     [
         { "command": { "action": "copy", "singleLine": false }, "keys": "ctrl+shift+c" },
         { "command": "paste", "keys": "ctrl+shift+v" },
@@ -12,6 +17,10 @@
         { "command": { "action": "scrollUp" }, "keys": "shift+up" },
         { "command": { "action": "scrollDown" }, "keys": "shift+down" },
         { "command": "scrollUpPage", "keys": "shift+pgup" },
-        { "command": "scrollDownPage", "keys": "shift+pgdn" }
+        { "command": "scrollDownPage", "keys": "shift+pgdn" },
+        { "command": "toggleBroadcastInput", "keys": "alt+shift+b" },
+        { "command": "unbound", "keys": "alt+enter"},
+        { "command": "unbound", "keys": "ctrl+c" },
+        { "command": "unbound", "keys": "ctrl+v" }
     ]
 }
