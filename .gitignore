@@ -4,6 +4,8 @@ a.out
 __pycache__/
 build/
 
+gitps
+
 # safety
 !.gitignore
 !.gitkeep
