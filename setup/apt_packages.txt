@@ -1,0 +1,78 @@
+# basics
+bash
+zsh
+shellcheck
+curl
+wget
+git
+zip
+unzip
+zstd
+fzf
+file
+nkf
+bc
+busybox
+# peco
+# fzy
+
+### image editor
+# inkscape
+# imagemagick
+# poppler-utils
+# pstoedit
+# epstool
+# gimp
+
+text_editor_repos=(
+    # ppa:jonathonf/vim
+    ppa:neovim-ppa/stable
+)
+text_editor_packs=(
+    neovim
+    # emacs
+    # vim vim-gnome
+)
+text_editor_snap_packs=(nvim)
+
+viewer_packs=(
+    # feh okular zathura
+    gnuplot-x11
+    # eog evince
+)
+
+jp_packs=(
+    language-pack-ja manpages-ja manpages-ja-dev
+    fcitx fcitx-mozc
+    fontconfig fonts-noto
+    # fonts-ipafont
+    # fonts-ipaexfont
+)
+
+python_packs=(python3.10 tk-dev python3-tk)
+
+programming_packs=(
+    build-essential cmake make gfortran gcc g++
+    # golang rustc nodejs
+    liblapack-dev libblas-dev
+)
+
+tex_packs=(
+    texlive-latex-base texlive-latex-extra texlive-latex-recommended
+    texlive-publishers texlive-extra-utils
+    texlive-lang-japanese xdvik-ja
+    texlive-plain-generic texlive-fonts-recommended texlive-fonts-extra
+    texlive-luatex latexmk
+    # texlive-lang-cjk
+)
+
+x11_packs=(
+    x11-apps
+    x11-utils
+    x11-xserver-utils
+    dbus-x11
+    xauth
+    xsel
+    xclip
+)
+

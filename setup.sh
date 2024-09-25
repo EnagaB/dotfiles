@@ -11,6 +11,7 @@ setup_dir="${root_dir}/setup"
 libsh_dir="${root_dir}/lib/sh"
 . "${libsh_dir}/echos.sh"
 . "${libsh_dir}/os.sh"
+. "${libsh_dir}/wsl.sh"
 . "${setup_dir}/utils.sh"
 
 local_dir=${LOCAL:-${HOME}/.local}
@@ -22,7 +23,7 @@ make_links_sh="${setup_dir}/make_links.sh"
 
 echo "Confirm running without administrative privilege."
 if [ "$EUID" -eq 0 ];then
-    echo -e "\e[31mERROR: EUID is 0. Run with administrative privilege.\e[m"
+    echo_err "ERROR: EUID is 0. Run with administrative privilege."
     echo "$usage"
     exit 1
 fi
