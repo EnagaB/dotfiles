@@ -10,7 +10,7 @@ setup_dir="${root_dir}/setup"
 
 basic_packs=(
     bash zsh shellcheck
-    curl wget git zip unzip
+    curl wget git zip unzip zstd
     fzf file nkf bc busybox
     # peco
     # fzy
