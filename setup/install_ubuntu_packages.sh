@@ -46,7 +46,7 @@ jp_packs=(
     # fonts-ipaexfont
 )
 
-python_packs=(python3.9 python3.9-distutils tk-dev python3-tk)
+python_packs=(python3.10 tk-dev python3-tk)
 
 programming_packs=(
     build-essential cmake make gfortran gcc g++
