@@ -5,7 +5,6 @@ export DOTFILES="${HOME}/dotfiles"
 # local directories
 export LOCAL="${HOME}/.local"
 export TRASHCAN="${HOME}/._trashcan"
-export LIBSH_DIR="${DOTFILES}/lib/sh"
 
 # PATH
 [[ -d "${DOTFILES}/bin" ]]  && export PATH=$PATH:"${DOTFILES}/bin"
@@ -47,7 +46,7 @@ export GNUPLOT_LIB="${DOTFILES}/lib/gnuplot"
 export CPLUS_INCLUDE_PATH="${HOME}/.local/include"
 
 # WSL
-. "${LIBSH_DIR}/wsl.sh"
+. "${DOTFILES}/lib/sh/wsl.sh"
 if is_wsl; then
     if has_wslg; then
         export DISPLAY=:0
