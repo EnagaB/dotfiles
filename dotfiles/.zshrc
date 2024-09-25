@@ -91,6 +91,7 @@ bindkey -d # reset keybindings
 bindkey -e # set keybindings as emacs-mode
 bindkey '^[[1;5D' backward-word # C-left
 bindkey '^[[1;5C' forward-word  # C-right
+bindkey '^[[3~' delete-char
 
 # other
 KEYTIMEOUT=1
