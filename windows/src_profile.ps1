@@ -4,17 +4,19 @@ Import-Module PSReadLine
 Set-PSReadlineOption -EditMode Emacs
 Set-PSReadlineKeyHandler -Key Ctrl+d -Function DeleteCharOrExit
 
-Set-Alias -Name op -Value Invoke-Item
+# alias
 function _ls_sort_time { Get-ChildItem | sort -Property LastWriteTime }
-Set-Alias -Name lst -Value _ls_sort_time
 function _su {
     Start-Process powershell.exe `
         -ArgumentList "-ExecutionPolicy RemoteSigned -NoExit -command `"& {Set-Location $HOME}`"" `
         -Verb runas
 }
+Set-Alias -Name op -Value Invoke-Item
+Set-Alias -Name sl -Value Get-ChildItem
+Set-Alias -Name lst -Value _ls_sort_time
 Set-Alias -Name su -Value _su
 
-# use third-party apps
+# alias for third-party apps
 function _linux_ls {
     $ls_path = 'C:\Program Files\Git\usr\bin\ls.exe'
     & "$ls_path" --color=auto $args
