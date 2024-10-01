@@ -4,6 +4,7 @@ a.out
 __pycache__/
 build/
 
+tmp/
 gitps
 
 # safety
