@@ -12,7 +12,7 @@ function _su {
         -Verb runas
 }
 Set-Alias -Name op -Value Invoke-Item
-Set-Alias -Name sl -Value Get-ChildItem
+Set-Alias -Name sl -Value Get-ChildItem -Force
 Set-Alias -Name lst -Value _ls_sort_time
 Set-Alias -Name su -Value _su
 
