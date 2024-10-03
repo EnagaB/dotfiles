@@ -14,7 +14,7 @@ function prompt {
     $is_admin = $principal.IsInRole($adminRole)
     if ($is_admin) { $ppt1 += "[ADMIN]:" }
     # ssh
-    $is_ssh = (-not [string]::IsNullOrEmpty("$env:SSH_CONNECTION"))-
+    $is_ssh = (-not [string]::IsNullOrEmpty("$env:SSH_CONNECTION"))
     if ($is_ssh) { $ppt1 += "${env:USERNAME}@${env:COMPUTERNAME} " }
     $pth = $executionContext.SessionState.Path.CurrentLocation
     $ppt1 += "$pth"
