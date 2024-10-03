@@ -18,7 +18,10 @@ function prompt {
     if ($is_ssh) { $ppt1 += "${env:USERNAME}@${env:COMPUTERNAME} " }
     $pth = $executionContext.SessionState.Path.CurrentLocation
     $ppt1 += "$pth"
-    Write-Host "$ppt1"                                                                                                 $ppt2 = "PS $('>' * ($nestedPromptLevel + 1)) "                                                                    return "$ppt2"                                                                                                 }
+    Write-Host "$ppt1"
+    $ppt2 = "PS $('>' * ($nestedPromptLevel + 1)) "
+    return "$ppt2"
+}
 
 # alias
 function _ls_sort_time { Get-ChildItem | sort -Property LastWriteTime }
