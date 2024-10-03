@@ -4,6 +4,22 @@ Import-Module PSReadLine
 Set-PSReadlineOption -EditMode Emacs
 Set-PSReadlineKeyHandler -Key Ctrl+d -Function DeleteCharOrExit
 
+# prompt
+function prompt {
+    $ppt1 = ""
+    # admin
+    $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
+    $principal = [Security.Principal.WindowsPrincipal] $identity
+    $adminRole = [Security.Principal.WindowsBuiltInRole]::Administrator
+    $is_admin = $principal.IsInRole($adminRole)
+    if ($is_admin) { $ppt1 += "[ADMIN]:" }
+    # ssh
+    $is_ssh = (-not [string]::IsNullOrEmpty("$env:SSH_CONNECTION"))-
+    if ($is_ssh) { $ppt1 += "${env:USERNAME}@${env:COMPUTERNAME} " }
+    $pth = $executionContext.SessionState.Path.CurrentLocation
+    $ppt1 += "$pth"
+    Write-Host "$ppt1"                                                                                                 $ppt2 = "PS $('>' * ($nestedPromptLevel + 1)) "                                                                    return "$ppt2"                                                                                                 }
+
 # alias
 function _ls_sort_time { Get-ChildItem | sort -Property LastWriteTime }
 function _su {
