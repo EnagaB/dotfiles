@@ -19,7 +19,11 @@
         { "command": "scrollUpPage", "keys": "shift+pgup" },
         { "command": "scrollDownPage", "keys": "shift+pgdn" },
         { "command": "toggleBroadcastInput", "keys": "alt+shift+b" },
+        { "command": "openTabRenamer", "keys": "ctrl+shift+r" },
+        { "command": "unbound", "keys": "enter" },
         { "command": "unbound", "keys": "alt+enter"},
+        { "command": "unbound", "keys": "shift+insert" },
+        { "command": "unbound", "keys": "ctrl+insert" },
         { "command": "unbound", "keys": "ctrl+c" },
         { "command": "unbound", "keys": "ctrl+v" }
     ]
