@@ -4,6 +4,13 @@ Import-Module PSReadLine
 Set-PSReadlineOption -EditMode Emacs
 Set-PSReadlineKeyHandler -Key Ctrl+d -Function DeleteCharOrExit
 
+# Path
+$miniconda_path = "${HOME}\apps\miniconda3\Scripts"
+if (Test-Path -Path "$miniconda_path" -PathType Container) {
+    $env:Path += "${miniconda_path};"
+}
+Remove-Variable -Name miniconda_path
+
 # prompt
 function prompt {
     $ppt1 = ""
@@ -11,13 +18,12 @@ function prompt {
     $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
     $principal = [Security.Principal.WindowsPrincipal] $identity
     $adminRole = [Security.Principal.WindowsBuiltInRole]::Administrator
-    $is_admin = $principal.IsInRole($adminRole)
-    if ($is_admin) { $ppt1 += "[ADMIN]:" }
+    if ($principal.IsInRole($adminRole)) { $ppt1 += "[ADMIN]:" }
     # ssh
-    $is_ssh = (-not [string]::IsNullOrEmpty("$env:SSH_CONNECTION"))
-    if ($is_ssh) { $ppt1 += "${env:USERNAME}@${env:COMPUTERNAME} " }
-    $pth = $executionContext.SessionState.Path.CurrentLocation
-    $ppt1 += "$pth"
+    if (-not [string]::IsNullOrEmpty("$env:SSH_CONNECTION")) {
+        $ppt1 += "${env:USERNAME}@${env:COMPUTERNAME} "
+    }
+    $ppt1 += "$($executionContext.SessionState.Path.CurrentLocation)"
     Write-Host "$ppt1"
     $ppt2 = "PS $('>' * ($nestedPromptLevel + 1)) "
     return "$ppt2"
@@ -36,10 +42,7 @@ Set-Alias -Name lst -Value _ls_sort_time
 Set-Alias -Name su -Value _su
 
 # alias for third-party apps
-function _linux_ls {
-    $ls_path = 'C:\Program Files\Git\usr\bin\ls.exe'
-    & "$ls_path" --color=auto $args
-}
+function _linux_ls { & 'C:\Program Files\Git\usr\bin\ls.exe' --color=auto $args }
 Set-Alias -Name lls -Value _linux_ls
 Set-Alias -Name vi -Value 'C:\Program Files\Neovim\bin\nvim.exe'
 Set-Alias -Name skr -Value "${HOME}\apps\sakura\sakura.exe"
