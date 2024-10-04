@@ -4,13 +4,6 @@ Import-Module PSReadLine
 Set-PSReadlineOption -EditMode Emacs
 Set-PSReadlineKeyHandler -Key Ctrl+d -Function DeleteCharOrExit
 
-# Path
-$miniconda_path = "${HOME}\apps\miniconda3\Scripts"
-if (Test-Path -Path "$miniconda_path" -PathType Container) {
-    $env:Path += "${miniconda_path};"
-}
-Remove-Variable -Name miniconda_path
-
 # prompt
 function prompt {
     $ppt1 = ""
