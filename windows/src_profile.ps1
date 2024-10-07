@@ -43,7 +43,11 @@ Set-Alias -Name su -Value _su
 if (-not $is_admin) { Set-Alias -Name sl -Value Get-ChildItem -Force }
 
 # alias for third-party apps
-function _linux_ls { & 'C:\Program Files\Git\usr\bin\ls.exe' --color=auto $args }
-Set-Alias -Name lls -Value _linux_ls
+# function _linux_ls { & 'C:\Program Files\Git\usr\bin\ls.exe' --color=auto $args }
+# Set-Alias -Name lsd -Value _linux_ls
+# eza: https://github.com/eza-community
+Set-Alias -Name lsd -Value eza
+# neovim: https://neovim.io/
 Set-Alias -Name vi -Value 'C:\Program Files\Neovim\bin\nvim.exe'
+# sakura editor: https://sakura-editor.github.io/
 Set-Alias -Name skr -Value "${HOME}\apps\sakura\sakura.exe"

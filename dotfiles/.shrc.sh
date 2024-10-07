@@ -25,11 +25,11 @@ alias shutdown-now='sudo shutdown -h now'
 alias relogin='exec "$SHELL" -l'
 
 # ls
-alias l='ls --color=auto'
 alias ls='ls --color=auto'
-alias sl='ls --color=auto'
 alias la='ls -A --color=auto'
 alias ll='ls -AlFh --color=auto'
+# eza: https://github.com/eza-community
+alias lsd='eza'
 
 # grep
 alias grep='grep --color=auto'

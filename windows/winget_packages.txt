@@ -4,3 +4,4 @@ Neovim.Neovim
 Google.Chrome
 Microsoft.WindowsTerminal
 marha.VcXsrv
+eza-community.eza
