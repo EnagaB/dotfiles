@@ -18,6 +18,10 @@ function prompt {
     $ppt_color = "Cyan"
     $ppt_color_warn = "Red"
     $ppt = ""
+    # # conda
+    # if (-not [string]::IsNullOrEmpty("$env:CONDA_PROMPT_MODIFIER")) {
+    #     Write-Host "$env:CONDA_PROMPT_MODIFIER" -NoNewLine
+    # }
     if ($is_admin) {
         Write-Host "[ADMIN] " -ForegroundColor "$ppt_color_warn" -NoNewLine
     }
