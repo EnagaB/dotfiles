@@ -1,7 +1,9 @@
+# winget install -e --id <package_name>
 Git.Git
 Neovim.Neovim
 7zip.7zip
 Google.Chrome
-Microsoft.WindowsTerminal
-marha.VcXsrv
 eza-community.eza
+
+marha.VcXsrv
+Microsoft.WindowsTerminal
