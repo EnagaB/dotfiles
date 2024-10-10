@@ -38,7 +38,8 @@ if "$run_all"; then
     install_apt_packages \
         bash zsh shellcheck \
         curl wget git zip unzip zstd \
-        fzf file nkf bc busybox
+        fzf file nkf bc busybox \
+        software-properties-common ppa-purge gpg
     install_apt_packages \
         language-pack-ja manpages-ja manpages-ja-dev \
         fcitx fcitx-mozc \
@@ -61,6 +62,7 @@ if "$run_all"; then
     if is_npm_available; then
         install_npm_global_packages wsl-open
     fi
+    install_eza
     # font
     download_fonts \
         'https://github.com/yuru7/PlemolJP/releases/download/v1.7.1/PlemolJP_v1.7.1.zip' \

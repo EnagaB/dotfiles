@@ -2,11 +2,6 @@
 
 [ ! -v _APT_UPGRADED ] && _APT_UPGRADED=false
 
-_APT_REPO_PACKAGES=(
-    software-properties-common
-    ppa-purge
-)
-
 function install_apt_packages() {
     _add_apt_retry_option
     _apt_upgrade
@@ -14,7 +9,6 @@ function install_apt_packages() {
 }
 
 function add_apt_repositories() {
-    install_apt_packages "${_APT_REPO_PACKAGES[@]}"
     local repo
     for repo in "$@"; do
         sudo add-apt-repository -y "$repo"
