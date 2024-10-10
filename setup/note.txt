@@ -1,0 +1,23 @@
+# apt packages
+## tex
+
+## image editor
+inkscape imagemagick poppler-utils pstoedit epstool gimp
+
+## viewer
+feh okular zathura gnuplot-x11 eog evince
+
+## programming
+golang rustc nodejs
+
+## tex
+texlive-latex-base texlive-latex-extra texlive-latex-recommended
+texlive-publishers texlive-extra-utils
+texlive-lang-japanese xdvik-ja
+texlive-plain-generic texlive-fonts-recommended texlive-fonts-extra
+texlive-luatex latexmk
+
+# font
+https://github.com/yuru7/PlemolJP
+https://github.com/yuru7/HackGen
+https://github.com/tomokuni/Myrica

@@ -6,7 +6,10 @@ function make_root_directory() {
     for root_dir in "$@"; do
         for sub_dirname in "${sub_dirnames[@]}"; do
             make_dir="${root_dir}/${sub_dirname}"
-            [ ! -d "$make_dir" ] && mkdir -p "$make_dir"
+            if [ ! -d "$make_dir" ]; then
+                echo "make $make_dir"
+                mkdir -p "$make_dir"
+            fi
         done
     done
 }
