@@ -19,6 +19,7 @@ libsh_dir="${root_dir}/lib/sh"
 local_dir="${LOCAL:-"${HOME}/.local"}"
 fonts_dir="${HOME}/.fonts"
 
+echo "Import functions"
 . "${libsh_dir}/echos.sh"
 . "${libsh_dir}/os.sh"
 . "${libsh_dir}/wsl.sh"
@@ -26,15 +27,17 @@ for setup_src in $(ls "${setup_dir}/src"/*.sh); do
     . "$setup_src"
 done
 
+echo "Parse arguments"
 . "${setup_dir}/parse_args.sh"
 echo "run all: $run_all"
 
 # make directory
+echo "Make directories"
 make_root_directory "$local_dir"
 [ ! -d "$fonts_dir" ] && mkdir -p "$fonts_dir"
 
 if "$run_all"; then
-    # install packages
+    echo "Install packages"
     install_apt_packages \
         bash zsh shellcheck \
         curl wget git zip unzip zstd \
@@ -63,11 +66,9 @@ if "$run_all"; then
         install_npm_global_packages wsl-open
     fi
     install_eza
-    # font
+    echo "Download fonts"
     download_fonts \
-        'https://github.com/yuru7/PlemolJP/releases/download/v1.7.1/PlemolJP_v1.7.1.zip' \
-        'https://github.com/yuru7/HackGen/releases/download/v2.5.2/HackGenNerd_v2.5.2.zip' \
-        'https://github.com/tomokuni/Myrica/raw/master/product/Myrica.zip'
+        'https://github.com/yuru7/PlemolJP/releases/download/v1.7.1/PlemolJP_v1.7.1.zip'
     fc-cache -fv "$fonts_dir"
 fi
 
