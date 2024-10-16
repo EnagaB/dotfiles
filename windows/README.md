@@ -1,3 +1,5 @@
+First, update all packages from the library of Microsoft Store application.
+
 Install latest powershell.
 ```
 Invoke-Expression "& { $(Invoke-RestMethod https://aka.ms/install-powershell.ps1) } -UseMSI"
