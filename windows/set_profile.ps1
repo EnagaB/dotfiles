@@ -1,3 +1,4 @@
+# utf-8-nobomb-CRLF
 # set profile
 
 $dfwp_dir = "${HOME}\dotfiles\windows\profiles"

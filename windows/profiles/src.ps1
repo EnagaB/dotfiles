@@ -1,4 +1,6 @@
-﻿# utf-8-bom + CRLF
+# utf-8-nobomb-CRLF
+
+if ( $PSVersionTable.PSVersion.Major -lt 7 ) { exit }
 
 # admin
 $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
@@ -61,6 +63,8 @@ $prf_loc = "${HOME}/.profile_local.ps1"
 if ( -not ( Test-Path -Path "$prf_loc" -PathType Leaf) )
 {
     New-Item "$prf_loc" -Force
+    @("# utf-8-nobomb + CRLF", "# local setting") `
+        | Out-File -FilePath "$prf_loc" -Encoding utf8NoBOM
 }
 . "$prf_loc"
 Remove-Variable prf_loc

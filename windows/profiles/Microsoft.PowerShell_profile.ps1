@@ -1,3 +1,3 @@
-﻿# utf-8-bom + CRLF
+# utf-8-nobomb-CRLF
 
 . "${HOME}\dotfiles\windows\profiles\src.ps1"
