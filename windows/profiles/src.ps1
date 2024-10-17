@@ -14,6 +14,7 @@ Set-PSReadlineOption -EditMode Emacs
 Set-PSReadlineKeyHandler -Key Ctrl+d -Function DeleteCharOrExit
 
 # prompt
+$is_ssh = -not [string]::IsNullOrEmpty("$env:SSH_CONNECTION")
 function prompt {
     $ppt_color = "Cyan"
     $ppt_color_warn = "Red"
@@ -25,7 +26,7 @@ function prompt {
     if ($is_admin) {
         Write-Host "[ADMIN] " -ForegroundColor "$ppt_color_warn" -NoNewLine
     }
-    if (-not [string]::IsNullOrEmpty("$env:SSH_CONNECTION")) {
+    if ($is_ssh) {
         $ppt += "${env:USERNAME}@${env:COMPUTERNAME} "
     }
     $ppt += "$($executionContext.SessionState.Path.CurrentLocation)"
@@ -44,7 +45,6 @@ function _su {
 Set-Alias -Name op -Value Invoke-Item
 Set-Alias -Name lst -Value _ls_sort_time
 Set-Alias -Name su -Value _su
-if (-not $is_admin) { Set-Alias -Name sl -Value Get-ChildItem -Force }
 
 # alias for third-party apps
 # function _linux_ls { & 'C:\Program Files\Git\usr\bin\ls.exe' --color=auto $args }
@@ -55,3 +55,12 @@ Set-Alias -Name lsd -Value eza
 Set-Alias -Name vi -Value 'C:\Program Files\Neovim\bin\nvim.exe'
 # sakura editor: https://sakura-editor.github.io/
 Set-Alias -Name skr -Value "${HOME}\apps\sakura\sakura.exe"
+
+# source local profile
+$prf_loc = "${HOME}/.profile_local.ps1"
+if ( -not ( Test-Path -Path "$prf_loc" -PathType Leaf) )
+{
+    New-Item "$prf_loc" -Force
+}
+. "$prf_loc"
+Remove-Variable prf_loc
