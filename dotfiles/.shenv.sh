@@ -22,7 +22,7 @@ export ZDOTDIR="${HOME}"
 
 # .shrc.sh
 export DOT_SHRC="${HOME}/.shrc.sh"
-export SYMLINKS_JUMP_DIR="${HOME}/.symlinks"
+export SYMLINKS_JUMP_DIR="${HOME}/._jump_symlinks"
 
 # terminal
 export TERM=xterm-256color
