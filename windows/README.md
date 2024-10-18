@@ -14,6 +14,5 @@ Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 make PROFILE directory and copy profile.ps1.
 ```
-New-Item -Type File -Path $PROFILE -Force
-cp profile.ps1 $PROFILE
+.\set_profile.ps1
 ```
