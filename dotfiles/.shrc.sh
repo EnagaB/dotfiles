@@ -68,9 +68,9 @@ function __cd_symbolic_link_jump() {
     fi
     cd -P "$link_path"
 }
-alias mkj='__make_symbolic_link_jump'
-alias cdj='__cd_symbolic_link_jump'
-alias lsj='echo "${SYMLINKS_JUMP_DIR}" && ll "${SYMLINKS_JUMP_DIR}"'
+alias jmk='__make_symbolic_link_jump'
+alias jcd='__cd_symbolic_link_jump'
+alias jls='echo "${SYMLINKS_JUMP_DIR}" && ll "${SYMLINKS_JUMP_DIR}"'
 
 # os
 declare -r __kernel_name=$(uname -s)
