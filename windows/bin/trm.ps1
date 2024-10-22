@@ -5,7 +5,7 @@ $recycleBin = $shell.Namespace(0xA)
 
 foreach ($trash in $args) {
     if (-not (Test-Path "$trash")) { continue }
-    echo $trash
     $trash_fullpath = (Resolve-Path $trash).Path
+    echo $trash_fullpath
     $recycleBin.MoveHere("$trash_fullpath")
 }
