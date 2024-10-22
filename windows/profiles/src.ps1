@@ -11,6 +11,8 @@ Remove-Variable identity
 Remove-Variable principal
 Remove-Variable adminRole
 
+$env:Path = "${env:Path}${HOME}\dotfiles\windows\bin;"
+
 Import-Module PSReadLine
 Set-PSReadlineOption -EditMode Emacs
 Set-PSReadlineKeyHandler -Key Ctrl+d -Function DeleteCharOrExit
