@@ -50,7 +50,7 @@ if "$run_all"; then
     install_apt_packages \
         build-essential cmake make gfortran gcc g++ \
         liblapack-dev libblas-dev
-    install_apt_packages python3.10 tk-dev python3-tk
+    install_apt_packages python3.10-full tk-dev
     install_apt_packages \
         x11-apps x11-utils x11-xserver-utils dbus-x11 \
         xauth xsel xclip
