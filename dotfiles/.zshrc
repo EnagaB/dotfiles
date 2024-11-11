@@ -102,7 +102,7 @@ function chpwd() {
   if [[ "$fn" -le "maxfn" ]] ; then
     ls --color=auto
   else
-    echo "There are over ${maxfn} files."
+    echo "There are over ${maxfn} items."
   fi
 }
 setopt auto_pushd
