@@ -11,7 +11,11 @@ Remove-Variable identity
 Remove-Variable principal
 Remove-Variable adminRole
 
+# set env
 $env:Path = "${env:Path}${HOME}\dotfiles\windows\bin;"
+$env:AUTOLS_MAX_ITEMS = 100
+$env:JUMPLINK_DIR = "${HOME}/._jump_links"
+$env:IS_LS_DELUXE = (Get-Command eza -ErrorAction SilentlyContinue) -ne $null
 
 Import-Module PSReadLine
 Set-PSReadlineOption -EditMode Emacs
@@ -46,12 +50,33 @@ function _su {
         -ArgumentList "-ExecutionPolicy RemoteSigned -NoExit -command `"& {Set-Location $HOME}`"" `
         -Verb runas
 }
+function _cd_auto_ls {
+    param($path)
+    try {
+        Set-Location $path -ErrorAction 'stop'
+        [String]$cpath = (Get-Location).Path
+        $n_items = [System.IO.Directory]::GetFiles("$cpath").Count
+        $n_items += [System.IO.Directory]::GetDirectories("$cpath").Count
+        if ($n_items -gt $env:AUTOLS_MAX_ITEMS) {
+            Write-Output "There are over 100 items."
+            return
+        }
+        if ($env:IS_LS_DELUXE) {
+            eza
+        } else {
+            Get-ChildItem
+        }
+    }
+    catch { "$_" }
+}
+Remove-Item Alias:cd
+Remove-Item -Force Alias:sl
+Set-Alias -Name cd -Value _cd_auto_ls
 Set-Alias -Name op -Value Invoke-Item
 Set-Alias -Name lst -Value _ls_sort_time
 Set-Alias -Name np -Value notepad.exe
 Set-Alias -Name su -Value _su
 
-$env:JUMPLINK_DIR = "${HOME}/._jump_links"
 if ( -not ( Test-Path -Path "$env:JUMPLINK_DIR" -PathType Container ) )
 {
     New-Item "$env:JUMPLINK_DIR" -ItemType Directory -Force
@@ -94,9 +119,11 @@ Set-Alias -Name jcd -Value _cd_jump_link
 
 # alias for third-party apps
 # function _linux_ls { & 'C:\Program Files\Git\usr\bin\ls.exe' --color=auto $args }
-# Set-Alias -Name lsd -Value _linux_ls
 # eza: https://github.com/eza-community
-Set-Alias -Name lsd -Value eza
+if ($env:IS_LS_DELUXE) {
+    Remove-Item Alias:ls
+    Set-Alias -Name ls -Value eza
+}
 # neovim: https://neovim.io/
 Set-Alias -Name vi -Value 'C:\Program Files\Neovim\bin\nvim.exe'
 # sakura editor: https://sakura-editor.github.io/
