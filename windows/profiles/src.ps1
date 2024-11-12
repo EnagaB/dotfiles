@@ -54,7 +54,7 @@ function _cd_auto_ls {
     param($path)
     try {
         Set-Location $path -ErrorAction 'stop'
-        [String]$cpath = (Get-Location).Path
+        [String]$cpath = Convert-Path -Path (Get-Location).Path
         $n_items = [System.IO.Directory]::GetFiles("$cpath").Count
         $n_items += [System.IO.Directory]::GetDirectories("$cpath").Count
         if ($n_items -gt $env:AUTOLS_MAX_ITEMS) {
@@ -69,8 +69,8 @@ function _cd_auto_ls {
     }
     catch { "$_" }
 }
+if (Test-Path -Path Alias:sl) { Remove-Item -Force Alias:sl }
 Remove-Item Alias:cd
-Remove-Item -Force Alias:sl
 Set-Alias -Name cd -Value _cd_auto_ls
 Set-Alias -Name op -Value Invoke-Item
 Set-Alias -Name lst -Value _ls_sort_time
@@ -107,7 +107,7 @@ function _cd_jump_link {
     }
     if ( -not ( Test-Path -Path "${env:JUMPLINK_DIR}\${linkname}" -PathType Leaf ) )
     {
-        Write-Host "ERROR: The link ${linkname} doesn't exist." -ForegroundColor "Red"
+        Write-Host "ERROR: Link ${linkname} doesn't exist." -ForegroundColor "Red"
         return
     }
     $linkpath = Get-Content "${env:JUMPLINK_DIR}\${linkname}"
