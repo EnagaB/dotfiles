@@ -14,9 +14,10 @@ Remove-Variable adminRole
 # set env
 $env:Path = "${env:Path}${HOME}\dotfiles\windows\bin;"
 $env:AUTOLS_MAX_ITEMS = 100
-$env:JUMPLINK_DIR = "${HOME}/._jump_links"
+$env:JUMPLINK_DIR = "${HOME}/.jump_links"
 $env:IS_LS_DELUXE = (Get-Command eza -ErrorAction SilentlyContinue) -ne $null
 
+# import
 Import-Module PSReadLine
 Set-PSReadlineOption -EditMode Emacs
 Set-PSReadlineKeyHandler -Key Ctrl+d -Function DeleteCharOrExit
@@ -118,11 +119,15 @@ Set-Alias -Name jls -Value _show_jump_link
 Set-Alias -Name jcd -Value _cd_jump_link
 
 # alias for third-party apps
-# function _linux_ls { & 'C:\Program Files\Git\usr\bin\ls.exe' --color=auto $args }
+# function _linux_ls { & 'C:\Program Files\Git\usr\bin\ls.exe' --color=auto @args }
 # eza: https://github.com/eza-community
 if ($env:IS_LS_DELUXE) {
     Remove-Item Alias:ls
     Set-Alias -Name ls -Value eza
+    function _ls_deluxe_la { eza -a @args }
+    function _ls_deluxe_ll { eza -alF @args }
+    Set-Alias -Name la -Value _ls_deluxe_la
+    Set-Alias -Name ll -Value _ls_deluxe_ll
 }
 # neovim: https://neovim.io/
 Set-Alias -Name vi -Value 'C:\Program Files\Neovim\bin\nvim.exe'
