@@ -10,12 +10,8 @@ feh okular zathura gnuplot-x11 eog evince
 ## programming
 golang rustc nodejs
 
-## tex
-texlive-latex-base texlive-latex-extra texlive-latex-recommended
-texlive-publishers texlive-extra-utils
-texlive-lang-japanese xdvik-ja
-texlive-plain-generic texlive-fonts-recommended texlive-fonts-extra
-texlive-luatex latexmk
+## tex (recommend to add retry option to /etc/apt/apt.conf.d/80-retries)
+texlive-full xdvik-ja
 
 # font
 https://github.com/yuru7/PlemolJP
