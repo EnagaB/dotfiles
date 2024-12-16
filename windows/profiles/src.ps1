@@ -11,11 +11,11 @@ Remove-Variable identity
 Remove-Variable principal
 Remove-Variable adminRole
 
-# set env
+# set parameters
 $env:Path = "${env:Path}${HOME}\dotfiles\windows\bin;"
-$env:AUTOLS_MAX_ITEMS = 100
 $env:JUMPLINK_DIR = "${HOME}/.jump_links"
-$env:IS_LS_DELUXE = (Get-Command eza -ErrorAction SilentlyContinue) -ne $null
+$autols_max_items = 100
+$is_ls_deluxe = (Get-Command eza -ErrorAction SilentlyContinue) -ne $null
 
 # import
 Import-Module PSReadLine
@@ -58,11 +58,11 @@ function _cd_auto_ls {
         [String]$cpath = Convert-Path -Path (Get-Location).Path
         $n_items = [System.IO.Directory]::GetFiles("$cpath").Count
         $n_items += [System.IO.Directory]::GetDirectories("$cpath").Count
-        if ($n_items -gt $env:AUTOLS_MAX_ITEMS) {
+        if ($n_items -gt $autols_max_items) {
             Write-Output "There are over 100 items."
             return
         }
-        if ($env:IS_LS_DELUXE) {
+        if ($is_ls_deluxe) {
             eza
         } else {
             Get-ChildItem
@@ -121,7 +121,7 @@ Set-Alias -Name jcd -Value _cd_jump_link
 # alias for third-party apps
 # function _linux_ls { & 'C:\Program Files\Git\usr\bin\ls.exe' --color=auto @args }
 # eza: https://github.com/eza-community
-if ($env:IS_LS_DELUXE) {
+if ($is_ls_deluxe) {
     Remove-Item Alias:ls
     Set-Alias -Name ls -Value eza
     function _ls_deluxe_la { eza -a @args }
