@@ -84,7 +84,19 @@ if [[ "$__os" = "cygwin" ]]; then
     alias vir='vim -X -M'
 elif [[ "$__os" = "ubuntu" ]] && [[ ! -z "${WSLENV:-}" ]]; then
     alias winroot='cd /mnt/c'
-    alias op='wsl-open'
+    function __wsl_open() {
+        local explorer_path='/mnt/c/Windows/explorer.exe'
+        if [ $# != 1 ]; then
+            "$explorer_path" .
+        else
+            if [ -e $1 ]; then
+                "$explorer_path" $(wslpath -w $1) 2> /dev/null
+            else
+                echo "open: $1 : No such file or directory"
+            fi
+        fi
+    }
+    alias op='__wsl_open'
 fi
 
 # local config

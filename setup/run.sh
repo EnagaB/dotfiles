@@ -61,10 +61,6 @@ if "$run_all"; then
         add_apt_repositories 'ppa:neovim-ppa/stable'
         install_apt_packages neovim vim
     fi
-    install_apt_packages npm
-    if is_npm_available; then
-        install_npm_global_packages wsl-open
-    fi
     install_eza
     echo "Download fonts"
     download_fonts \
