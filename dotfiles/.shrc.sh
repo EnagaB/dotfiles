@@ -2,8 +2,8 @@
 # source in (bash|zsh)rc
 
 # shell
-[[ ! -z "${BASH_VERSION:-}" ]] && declare -r __shell='bash'
-[[ ! -z  "${ZSH_VERSION:-}" ]] && declare -r __shell='zsh'
+[[ ! -z "${BASH_VERSION:-}" ]] && declare __shell='bash'
+[[ ! -z  "${ZSH_VERSION:-}" ]] && declare __shell='zsh'
 
 # stty
 [[ -t 0 ]] && stty -ixon
@@ -21,7 +21,6 @@ else
 fi
 
 # system
-alias shutdown-now='sudo shutdown -h now'
 alias relogin='exec "$SHELL" -l'
 
 # ls
@@ -31,9 +30,9 @@ alias ll='ls -AlFh --color=auto'
 # eza: https://github.com/eza-community
 alias lsd='eza'
 
-# grep
+# etc
+alias dates='date "+%Y%m%dT%H%M%S"'
 alias grep='grep --color=auto'
-alias ngrep='grep -v --color=auto'
 
 # tex
 alias texmk-pdf='latexmk -gg -pdf -pvc'
@@ -73,9 +72,9 @@ alias jcd='__cd_symbolic_link_jump'
 alias jls='echo "${SYMLINKS_JUMP_DIR}" && ll "${SYMLINKS_JUMP_DIR}"'
 
 # os
-declare -r __kernel_name=$(uname -s)
-[[ "$__kernel_name" =~ ^CYGWIN ]] && declare -r __os='cygwin'
-[[ ! -v __os ]] && declare -r __os='ubuntu'
+declare __kernel_name=$(uname -s)
+[[ "$__kernel_name" =~ ^CYGWIN ]] && declare __os='cygwin'
+[[ ! -v __os ]] && declare __os='ubuntu'
 # settings by os
 if [[ "$__os" = "cygwin" ]]; then
     alias winroot='cd /cygdrive/c'
@@ -98,12 +97,15 @@ elif [[ "$__os" = "ubuntu" ]] && [[ ! -z "${WSLENV:-}" ]]; then
     }
     alias op='__wsl_open'
 fi
+unset __kernel_name
+unset __os
 
 # local config
-declare -r __shrc_loc="${HOME}/.shrc_local.sh"
+declare __shrc_loc="${HOME}/.shrc_local.sh"
 [[ ! -f "$__shrc_loc" ]] && touch "$__shrc_loc"
 [[ "$__shell" = 'zsh' ]] && __autozcomp "$__shrc_loc"
 . "$__shrc_loc"
+unset __shrc_loc
 
 # delete duplicated path
 function __delete_duplicated_paths() {
@@ -128,3 +130,5 @@ function __delete_duplicated_paths() {
     fi
 }
 __delete_duplicated_paths
+unset __delete_duplicated_paths
+unset __shell
