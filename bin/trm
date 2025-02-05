@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eu
 
-trashcan="${TRASHCAN:-"${HOME}/._trashcan"}"
+trashcan="${TRASHCAN:-"${HOME}/.trashcan"}"
 is_clean=false
 
 usage="
@@ -10,7 +10,7 @@ Send to trashcan ${trashcan}
 Usage: $0 [-Dh] [FILE|DIR]...
 
 The trashcan path is given by environment variable TRASHCAN.
-If TRASHCAN is not set, use default value 'HOME/._trashcan'.
+If TRASHCAN is not set, use default value 'HOME/.trashcan'.
 
 Options:
     -D: Delete trashcan and make a new trashcan
