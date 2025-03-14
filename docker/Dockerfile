@@ -9,7 +9,6 @@ RUN echo 'APT::Acquire::Retries "10";' >> /etc/apt/apt.conf.d/80-retries \
     && apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         tzdata \
-        tmux \
         nano \
         less \
         vim \
@@ -38,16 +37,16 @@ COPY docker/requirements.txt "$conda_root"
 RUN pip install --upgrade pip \
     && pip install -r "${conda_root}/requirements.txt"
 
-# create docker home
-ARG docker_home=/dkrhome
-RUN mkdir -p "$docker_home" \
-    && mkdir -p "${docker_home}/.config" \
-    && mkdir -p "${docker_home}/.local/tmp" \
-    && mkdir -p "${docker_home}/.local/share" \
-    && mkdir -p "${docker_home}/.cache/nvim" \
-    && mkdir -p "${docker_home}/.cache/pip" \
-    && chmod -R 777 "$docker_home"
-ENV HOME="$docker_home"
+# # create docker home
+# ARG docker_home=/dkrhome
+# RUN mkdir -p "$docker_home" \
+#     && mkdir -p "${docker_home}/.config" \
+#     && mkdir -p "${docker_home}/.local/tmp" \
+#     && mkdir -p "${docker_home}/.local/share" \
+#     && mkdir -p "${docker_home}/.cache/nvim" \
+#     && mkdir -p "${docker_home}/.cache/pip" \
+#     && chmod -R 777 "$docker_home"
+# ENV HOME="$docker_home"
 
 # install latest neovim
 RUN mkdir -p /usr/src/neovim \
@@ -56,3 +55,16 @@ RUN mkdir -p /usr/src/neovim \
     && chmod +x nvim.appimage \
     && ./nvim.appimage --appimage-extract \
     && ln -s /usr/src/neovim/squashfs-root/AppRun /usr/bin/nvim
+
+# add user
+ARG USER_NAME=user
+ARG GROUP_NAME=user
+ARG USER_ID=1000
+ARG GROUP_ID=1000
+RUN groupadd -g "$GROUP_ID" "$GROUP_NAME" \
+    && useradd -m -s /bin/bash -u "$USER_ID" -g "$GROUP_ID" "$USER_NAME" \
+    && echo "$USER_NAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+USER "$USER_NAME"
+WORKDIR "/home/$USER_NAME"
+RUN mkdir -p "/home/${USER_NAME}/.local/bin"
+ENV PATH="${PATH}:/home/${USER_NAME}/.local/bin"
