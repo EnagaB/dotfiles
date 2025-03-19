@@ -37,17 +37,6 @@ COPY docker/requirements.txt "$conda_root"
 RUN pip install --upgrade pip \
     && pip install -r "${conda_root}/requirements.txt"
 
-# # create docker home
-# ARG docker_home=/dkrhome
-# RUN mkdir -p "$docker_home" \
-#     && mkdir -p "${docker_home}/.config" \
-#     && mkdir -p "${docker_home}/.local/tmp" \
-#     && mkdir -p "${docker_home}/.local/share" \
-#     && mkdir -p "${docker_home}/.cache/nvim" \
-#     && mkdir -p "${docker_home}/.cache/pip" \
-#     && chmod -R 777 "$docker_home"
-# ENV HOME="$docker_home"
-
 # install latest neovim
 RUN mkdir -p /usr/src/neovim \
     && cd /usr/src/neovim \

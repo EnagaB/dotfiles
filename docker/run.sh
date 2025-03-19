@@ -12,6 +12,8 @@ use_gui="${USE_GUI:-"true"}"
 detachkeys="ctrl-\\,ctrl-\\"
 
 root_dir=$(cd "$(dirname "${BASH_SOURCE:-$0}")/.." || exit; pwd)
+dkr_dir="${root_dir}/docker"
+. "${dkr_dir}/src.sh"
 df_dir="${root_dir}/dotfiles"
 runopts=(
     -it --rm
@@ -21,7 +23,7 @@ runopts=(
 
 image=${IMAGE:-""}
 if [ -z "$image" ]; then
-    image="${USER}/denv:latest"
+    image="$default_image_name"
 fi
 echo "image: $image"
 

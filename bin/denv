@@ -27,6 +27,7 @@ cmd="$1"
 case "$cmd" in
     "build") "${dkr_dir}/build.sh" ;;
     "run") "${dkr_dir}/run.sh" ;;
+    "exec") "${dkr_dir}/exec.sh" ;;
     "-h" | "--help") echo "$usage" ;;
     *) echo "ERROR: Invalid COMMAND."
         echo "$usage"
