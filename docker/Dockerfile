@@ -9,13 +9,9 @@ RUN echo 'APT::Acquire::Retries "10";' >> /etc/apt/apt.conf.d/80-retries \
     && apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         tzdata \
-        nano \
-        less \
-        vim \
-        curl \
-        wget \
-        git \
-        unzip \
+        language-pack-ja manpages-ja manpages-ja-dev \
+        nano less vim \
+        git curl wget zip unzip zstd \
     && ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime \
     && apt-get -y clean \
     && rm -rf /var/lib/apt/lists/*
