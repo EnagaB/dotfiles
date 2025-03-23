@@ -21,9 +21,10 @@ RUN curl -fsSL https://get.docker.com | sh
 
 # python (miniconda)
 ARG conda_root=/conda
+ARG miniconda_shname=Miniconda3-py310_25.1.1-2-Linux-x86_64.sh
 RUN mkdir -p "$conda_root" \
     && cd "$conda_root" \
-    && wget https://repo.anaconda.com/miniconda/Miniconda3-py39_23.5.2-0-Linux-x86_64.sh \
+    && wget "https://repo.anaconda.com/miniconda/${miniconda_shname}" \
         -O miniconda.sh \
     && bash miniconda.sh -b -u -p "$conda_root" \
     && rm miniconda.sh \
