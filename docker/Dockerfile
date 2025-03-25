@@ -34,7 +34,7 @@ COPY docker/requirements.txt "$conda_root"
 RUN pip install --upgrade pip \
     && pip install -r "${conda_root}/requirements.txt"
 
-# install latest neovim
+# install neovim
 RUN mkdir -p /usr/src/neovim \
     && cd /usr/src/neovim \
     && curl -LO https://github.com/neovim/neovim/releases/download/v0.9.1/nvim.appimage \
@@ -52,5 +52,6 @@ RUN groupadd -g "$GROUP_ID" "$GROUP_NAME" \
     && echo "$USER_NAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 USER "$USER_NAME"
 WORKDIR "/home/$USER_NAME"
-RUN mkdir -p "/home/${USER_NAME}/.local/bin"
+RUN mkdir -p "/home/${USER_NAME}/.local/bin" \
+    && mkdir -p "/home/${USER_NAME}/.config"
 ENV PATH="${PATH}:/home/${USER_NAME}/.local/bin"
