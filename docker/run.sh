@@ -111,4 +111,7 @@ fi
 echo "detach key: $detachkeys"
 runopts+=(--detach-keys="$detachkeys")
 
+# add arguments
+runopts+=("$@")
+
 docker run "${runopts[@]}" "$image" /bin/bash

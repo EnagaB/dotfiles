@@ -15,18 +15,12 @@ root_dir="$(readlink -m "${script_dir}/..")"
 
 dkr_dir="${root_dir}/docker"
 
-n_args="$#"
-if [ "$n_args" -ne 1 ]; then
-    echo "ERROR: Invalid arguments"
-    echo "$usage"
-    exit 1
-fi
-
 cmd="$1"
+shift 1
 
 case "$cmd" in
-    "build") "${dkr_dir}/build.sh" ;;
-    "run") "${dkr_dir}/run.sh" ;;
+    "build") "${dkr_dir}/build.sh" "$@" ;;
+    "run") "${dkr_dir}/run.sh" "$@" ;;
     "exec") "${dkr_dir}/exec.sh" ;;
     "-h" | "--help") echo "$usage" ;;
     *) echo "ERROR: Invalid COMMAND."

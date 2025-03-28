@@ -12,6 +12,7 @@ RUN echo 'APT::Acquire::Retries "10";' >> /etc/apt/apt.conf.d/80-retries \
         language-pack-ja manpages-ja manpages-ja-dev \
         nano less vim \
         git curl wget zip unzip zstd \
+        x11-apps \
     && ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime \
     && apt-get -y clean \
     && rm -rf /var/lib/apt/lists/*
